@@ -152,7 +152,7 @@ Category::find()->addOrderBy('lft')->all();
 For multiple trees per table:
 
 ```php
-Category::find()->where('root = ?',array($root_id))->addOrderBy('lft')->all();
+Category::find()->where('root = ?', array($root_id))->addOrderBy('lft')->all();
 ```
 
 Modifying a tree
