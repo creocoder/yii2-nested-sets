@@ -110,7 +110,7 @@ class NestedSet extends Behavior
 	 */
 	public function roots($query)
 	{
-		$query->andWhere($this->leftAttribute . '=1');
+		$query->andWhere($this->owner->getDb()->quoteColumnName($this->leftAttribute) . '=1');
 	}
 
 	/**
