@@ -40,12 +40,20 @@ class NestedSet extends Behavior
 	public function events()
 	{
 		return array(
-			ActiveRecord::EVENT_INIT => 'init',
 			ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
 			ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
 			ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
 			ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdate',
 		);
+	}
+
+	/**
+	 * Initializes the object.
+	 */
+	public function init()
+	{
+		parent::init();
+		self::$_cached[get_class($this->owner)][$this->_id = self::$_c++] = $this->owner;
 	}
 
 	/**
@@ -481,15 +489,6 @@ class NestedSet extends Behavior
 	public function setIsDeletedRecord($value)
 	{
 		$this->_deleted = $value;
-	}
-
-	/**
-	 * Handle 'init' event of the owner.
-	 */
-	public function init()
-	{
-		parent::init();
-		self::$_cached[get_class($this->owner)][$this->_id = self::$_c++] = $this->owner;
 	}
 
 	/**
