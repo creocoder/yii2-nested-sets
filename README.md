@@ -13,11 +13,11 @@ First you need to configure model as follows:
 public function behaviors()
 {
     return array(
-        'nestedSetBehavior'=>array(
-            'class'=>'NestedSet',
-            'leftAttribute'=>'lft',
-            'rightAttribute'=>'rgt',
-            'levelAttribute'=>'level',
+        'tree' => array(
+            'class' => 'NestedSet',
+            'leftAttribute' => 'lft',
+            'rightAttribute' => 'rgt',
+            'levelAttribute' => 'level',
         ),
     );
 }
@@ -63,10 +63,10 @@ In this example we have two trees. Tree roots are ones with ID=1 and ID=7.
 
 ### Getting all roots
 
-Using `NestedSetBehavior::roots()`:
+Using `NestedSet::roots()`:
 
 ```php
-$roots=Category::find()->roots()->all();
+$roots = Category::find()->roots()->all();
 ```
 
 Result:
@@ -75,11 +75,11 @@ Array of Active Record objects corresponding to Mobile phones and Cars nodes.
 
 ### Getting all descendants of a node
 
-Using `NestedSetBehavior::descendants()`:
+Using `NestedSet::descendants()`:
 
 ```php
-$category=Category::find(1);
-$descendants=$category->descendants()->all();
+$category = Category::find(1);
+$descendants = $category->descendants()->all();
 ```
 
 Result:
@@ -88,11 +88,11 @@ Array of Active Record objects corresponding to iPhone, Samsung, X100, C200 and 
 
 ### Getting all children of a node
 
-Using `NestedSetBehavior::children()`:
+Using `NestedSet::children()`:
 
 ```php
-$category=Category::find(1);
-$descendants=$category->children()->all();
+$category = Category::find(1);
+$descendants = $category->children()->all();
 ```
 
 Result:
@@ -101,11 +101,11 @@ Array of Active Record objects corresponding to iPhone, Samsung and Motorola.
 
 ### Getting all ancestors of a node
 
-Using `NestedSetBehavior::ancestors()`:
+Using `NestedSet::ancestors()`:
 
 ```php
-$category=Category::find(5);
-$ancestors=$category->ancestors()->all();
+$category = Category::find(5);
+$ancestors = $category->ancestors()->all();
 ```
 
 Result:
@@ -114,11 +114,11 @@ Array of Active Record objects corresponding to Samsung and Mobile phones.
 
 ### Getting parent of a node
 
-Using `NestedSetBehavior::parent()`:
+Using `NestedSet::parent()`:
 
 ```php
-$category=Category::find(9);
-$parent=$category->parent()->find();
+$category = Category::find(9);
+$parent = $category->parent()->find();
 ```
 
 Result:
@@ -127,12 +127,12 @@ Array of Active Record objects corresponding to Cars.
 
 ### Getting node siblings
 
-Using `NestedSetBehavior::prev()` or
-`NestedSetBehavior::next()`:
+Using `NestedSet::prev()` or
+`NestedSet::next()`:
 
 ```php
-$category=Category::find(9);
-$nextSibling=$category->next()->find();
+$category = Category::find(9);
+$nextSibling = $category->next()->find();
 ```
 
 Result:
@@ -162,16 +162,16 @@ In this section we'll build a tree like the one used in the previous section.
 
 ### Creating root nodes
 
-You can create a root node using `NestedSetBehavior::saveNode()`.
+You can create a root node using `NestedSet::saveNode()`.
 In a single tree per table mode you can create only one root node. If you'll attempt
 to create more there will be CException thrown.
 
 ```php
-$root=new Category;
-$root->title='Mobile Phones';
+$root = new Category;
+$root->title = 'Mobile Phones';
 $root->saveNode();
-$root=new Category;
-$root->title='Cars';
+$root = new Category;
+$root->title = 'Cars';
 $root->saveNode();
 ```
 
@@ -189,13 +189,13 @@ about these refer to API. Let's use these
 to add nodes to the tree we have:
 
 ```php
-$category1=new Category;
-$category1->title='Ford';
-$category2=new Category;
-$category2->title='Mercedes';
-$category3=new Category;
-$category3->title='Audi';
-$root=Category::find(1);
+$category1 = new Category;
+$category1->title = 'Ford';
+$category2 = new Category;
+$category2->title = 'Mercedes';
+$category3 = new Category;
+$category3->title = 'Audi';
+$root = Category::find(1);
 $category1->appendTo($root);
 $category2->insertAfter($category1);
 $category3->insertBefore($category1);
@@ -214,13 +214,13 @@ Result:
 Logically the tree above doesn't looks correct. We'll fix it later.
 
 ```php
-$category1=new Category;
-$category1->title='Samsung';
-$category2=new Category;
-$category2->title='Motorola';
-$category3=new Category;
-$category3->title='iPhone';
-$root=Category::find(2);
+$category1 = new Category;
+$category1->title = 'Samsung';
+$category2 = new Category;
+$category2->title = 'Motorola';
+$category3 = new Category;
+$category3->title = 'iPhone';
+$root = Category::find(2);
 $category1->appendTo($root);
 $category2->insertAfter($category1);
 $category3->prependTo($root);
@@ -240,11 +240,11 @@ Result:
 ~~~
 
 ```php
-$category1=new Category;
-$category1->title='X100';
+$category1 = new Category;
+$category1->title = 'X100';
 $category2=new Category;
-$category2->title='C200';
-$node=Category::find(3);
+$category2->title = 'C200';
+$node = Category::find(3);
 $category1->appendTo($node);
 $category2->prependTo($node);
 ```
@@ -278,27 +278,28 @@ Let's start:
 
 ```php
 // move phones to the proper place
-$x100=Category::find(10);
-$c200=Category::find(9);
-$samsung=Category::find(7);
+$x100 = Category::find(10);
+$c200 = Category::find(9);
+$samsung = Category::find(7);
 $x100->moveAsFirst($samsung);
 $c200->moveBefore($x100);
 // now move all Samsung phones branch
-$mobile_phones=Category::find(1);
+$mobile_phones = Category::find(1);
 $samsung->moveAsFirst($mobile_phones);
 // move the rest of phone models
-$iphone=Category::find(6);
+$iphone = Category::find(6);
 $iphone->moveAsFirst($mobile_phones);
-$motorola=Category::find(8);
+$motorola = Category::find(8);
 $motorola->moveAfter($samsung);
 // move car models to appropriate place
-$cars=Category::find(2);
-$audi=Category::find(3);
-$ford=Category::find(4);
-$mercedes=Category::find(5);
+$cars = Category::find(2);
+$audi = Category::find(3);
+$ford = Category::find(4);
+$mercedes = Category::find(5);
 
-foreach(array($audi,$ford,$mercedes) as $category)
+foreach(array($audi, $ford, $mercedes) as $category) {
     $category->moveAsLast($cars);
+}
 ```
 
 Result:
@@ -324,7 +325,7 @@ a new root. All descendants are moved as well in this case.
 Example:
 
 ```php
-$node=Category::find(10);
+$node = Category::find(10);
 $node->moveAsRoot();
 ```
 
@@ -335,15 +336,15 @@ There are three methods to get node type: `isRoot()`, `isLeaf()`, `isDescendantO
 Example:
 
 ```php
-$root=Category::find(1);
-CVarDumper::dump($root->isRoot()); //true;
-CVarDumper::dump($root->isLeaf()); //false;
-$node=Category::find(9);
-CVarDumper::dump($node->isDescendantOf($root)); //true;
-CVarDumper::dump($node->isRoot()); //false;
-CVarDumper::dump($node->isLeaf()); //true;
-$samsung=Category::find(7);
-CVarDumper::dump($node->isDescendantOf($samsung)); //true;
+$root = Category::find(1);
+VarDumper::dump($root->isRoot()); //true;
+VarDumper::dump($root->isLeaf()); //false;
+$node = Category::find(9);
+VarDumper::dump($node->isDescendantOf($root)); //true;
+VarDumper::dump($node->isRoot()); //false;
+VarDumper::dump($node->isLeaf()); //true;
+$samsung = Category::find(7);
+VarDumper::dump($node->isDescendantOf($samsung)); //true;
 ```
 
 Useful code
