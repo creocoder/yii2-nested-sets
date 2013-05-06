@@ -797,7 +797,7 @@ class NestedSet extends Behavior
 	}
 
 	/**
-	 * Correct cache for {@link NestedSet behavior::delete()} and {@link NestedSet behavior::deleteNode()}.
+	 * Correct cache for [[delete()]] and [[deleteNode()]].
 	 */
 	private function correctCachedOnDelete()
 	{
@@ -826,7 +826,7 @@ class NestedSet extends Behavior
 	}
 
 	/**
-	 * Correct cache for {@link NestedSet behavior::addNode()}.
+	 * Correct cache for [[addNode()]].
 	 * @param int $key.
 	 */
 	private function correctCachedOnAddNode($key)
@@ -851,7 +851,7 @@ class NestedSet extends Behavior
 	}
 
 	/**
-	 * Correct cache for {@link NestedSet behavior::moveNode()}.
+	 * Correct cache for [[moveNode()]].
 	 * @param int $key.
 	 * @param int $levelDelta.
 	 */
@@ -897,7 +897,7 @@ class NestedSet extends Behavior
 	}
 
 	/**
-	 * Correct cache for {@link NestedSet behavior::moveNode()}.
+	 * Correct cache for [[moveNode()]].
 	 * @param int $key.
 	 * @param int $levelDelta.
 	 * @param int $root.
