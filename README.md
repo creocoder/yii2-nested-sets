@@ -66,7 +66,7 @@ In this example we have two trees. Tree roots are ones with ID=1 and ID=7.
 Using `NestedSetBehavior::roots()`:
 
 ```php
-$roots=Category::model()->roots()->findAll();
+$roots=Category::find()->roots()->all();
 ```
 
 Result:
@@ -78,8 +78,8 @@ Array of Active Record objects corresponding to Mobile phones and Cars nodes.
 Using `NestedSetBehavior::descendants()`:
 
 ```php
-$category=Category::model()->findByPk(1);
-$descendants=$category->descendants()->findAll();
+$category=Category::find()->one(1);
+$descendants=$category->descendants()->all();
 ```
 
 Result:
@@ -91,8 +91,8 @@ Array of Active Record objects corresponding to iPhone, Samsung, X100, C200 and 
 Using `NestedSetBehavior::children()`:
 
 ```php
-$category=Category::model()->findByPk(1);
-$descendants=$category->children()->findAll();
+$category=Category::find()->one(1);
+$descendants=$category->children()->all();
 ```
 
 Result:
@@ -104,8 +104,8 @@ Array of Active Record objects corresponding to iPhone, Samsung and Motorola.
 Using `NestedSetBehavior::ancestors()`:
 
 ```php
-$category=Category::model()->findByPk(5);
-$ancestors=$category->ancestors()->findAll();
+$category=Category::find()->one(5);
+$ancestors=$category->ancestors()->all();
 ```
 
 Result:
@@ -117,7 +117,7 @@ Array of Active Record objects corresponding to Samsung and Mobile phones.
 Using `NestedSetBehavior::parent()`:
 
 ```php
-$category=Category::model()->findByPk(9);
+$category=Category::find()->one(9);
 $parent=$category->parent()->find();
 ```
 
@@ -131,7 +131,7 @@ Using `NestedSetBehavior::prev()` or
 `NestedSetBehavior::next()`:
 
 ```php
-$category=Category::model()->findByPk(9);
+$category=Category::find()->one(9);
 $nextSibling=$category->next()->find();
 ```
 
@@ -146,13 +146,13 @@ You can get the whole tree using standard AR methods like the following.
 For single tree per table:
 
 ```php
-Category::model()->findAll(array('order'=>'lft'));
+Category::find()->all(array('order'=>'lft'));
 ```
 
 For multiple trees per table:
 
 ```php
-Category::model()->findAll(array('condition'=>'root=?','order'=>'lft'),array($root_id));
+Category::find()->all(array('condition'=>'root=?','order'=>'lft'),array($root_id));
 ```
 
 Modifying a tree
@@ -195,7 +195,7 @@ $category2=new Category;
 $category2->title='Mercedes';
 $category3=new Category;
 $category3->title='Audi';
-$root=Category::model()->findByPk(1);
+$root=Category::find()->one(1);
 $category1->appendTo($root);
 $category2->insertAfter($category1);
 $category3->insertBefore($category1);
@@ -220,7 +220,7 @@ $category2=new Category;
 $category2->title='Motorola';
 $category3=new Category;
 $category3->title='iPhone';
-$root=Category::model()->findByPk(2);
+$root=Category::find()->one(2);
 $category1->appendTo($root);
 $category2->insertAfter($category1);
 $category3->prependTo($root);
@@ -244,7 +244,7 @@ $category1=new Category;
 $category1->title='X100';
 $category2=new Category;
 $category2->title='C200';
-$node=Category::model()->findByPk(3);
+$node=Category::find()->one(3);
 $category1->appendTo($node);
 $category2->prependTo($node);
 ```
@@ -278,24 +278,24 @@ Let's start:
 
 ```php
 // move phones to the proper place
-$x100=Category::model()->findByPk(10);
-$c200=Category::model()->findByPk(9);
-$samsung=Category::model()->findByPk(7);
+$x100=Category::find()->one(10);
+$c200=Category::find()->one(9);
+$samsung=Category::find()->one(7);
 $x100->moveAsFirst($samsung);
 $c200->moveBefore($x100);
 // now move all Samsung phones branch
-$mobile_phones=Category::model()->findByPk(1);
+$mobile_phones=Category::find()->one(1);
 $samsung->moveAsFirst($mobile_phones);
 // move the rest of phone models
-$iphone=Category::model()->findByPk(6);
+$iphone=Category::find()->one(6);
 $iphone->moveAsFirst($mobile_phones);
-$motorola=Category::model()->findByPk(8);
+$motorola=Category::find()->one(8);
 $motorola->moveAfter($samsung);
 // move car models to appropriate place
-$cars=Category::model()->findByPk(2);
-$audi=Category::model()->findByPk(3);
-$ford=Category::model()->findByPk(4);
-$mercedes=Category::model()->findByPk(5);
+$cars=Category::find()->one(2);
+$audi=Category::find()->one(3);
+$ford=Category::find()->one(4);
+$mercedes=Category::find()->one(5);
 
 foreach(array($audi,$ford,$mercedes) as $category)
     $category->moveAsLast($cars);
@@ -324,7 +324,7 @@ a new root. All descendants are moved as well in this case.
 Example:
 
 ```php
-$node=Category::model()->findByPk(10);
+$node=Category::find()->one(10);
 $node->moveAsRoot();
 ```
 
@@ -335,14 +335,14 @@ There are three methods to get node type: `isRoot()`, `isLeaf()`, `isDescendantO
 Example:
 
 ```php
-$root=Category::model()->findByPk(1);
+$root=Category::find()->one(1);
 CVarDumper::dump($root->isRoot()); //true;
 CVarDumper::dump($root->isLeaf()); //false;
-$node=Category::model()->findByPk(9);
+$node=Category::find()->one(9);
 CVarDumper::dump($node->isDescendantOf($root)); //true;
 CVarDumper::dump($node->isRoot()); //false;
 CVarDumper::dump($node->isLeaf()); //true;
-$samsung=Category::model()->findByPk(7);
+$samsung=Category::find()->one(7);
 CVarDumper::dump($node->isDescendantOf($samsung)); //true;
 ```
 
@@ -354,7 +354,7 @@ Useful code
 ```php
 $criteria=new CDbCriteria;
 $criteria->order='t.lft'; // or 't.root, t.lft' for multiple trees
-$categories=Category::model()->findAll($criteria);
+$categories=Category::find()->all($criteria);
 $level=0;
 
 foreach($categories as $n=>$category)
