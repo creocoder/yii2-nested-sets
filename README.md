@@ -353,5 +353,31 @@ Useful code
 ### Non-recursive tree traversal
 
 ```php
-TBD.
+$categories = Category::find()->addOrderBy('lft')->all();
+$level = 0;
+
+foreach ($categories as $n => $category)
+{
+	if ($category->level == $level) {
+		echo Html::closeTag('li') . "\n";
+	} elseif ($category->level > $level) {
+		echo Html::openTag('ul') . "\n";
+	} else {
+		echo Html::closeTag('li') . "\n";
+
+		for ($i = $level - $category->level; $i; $i--) {
+			echo Html::closeTag('ul') . "\n";
+			echo Html::closeTag('li') . "\n";
+		}
+	}
+
+	echo Html::openTag('li');
+	echo Html::encode($category->title);
+	$level = $category->level;
+}
+
+for ($i = $level; $i; $i--) {
+	echo Html::closeTag('li') . "\n";
+	echo Html::closeTag('ul') . "\n";
+}
 ```
