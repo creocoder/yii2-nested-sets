@@ -146,13 +146,13 @@ You can get the whole tree using standard AR methods like the following.
 For single tree per table:
 
 ```php
-TBD.
+Category::find()->addOrderBy('lft')->all();
 ```
 
 For multiple trees per table:
 
 ```php
-TBD.
+Category::find()->where('root = ?',array($root_id))->addOrderBy('lft')->all();
 ```
 
 Modifying a tree
