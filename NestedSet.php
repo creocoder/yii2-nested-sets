@@ -66,18 +66,19 @@ class NestedSet extends Behavior
 		}
 		if ($this->hasManyRoots) {
 			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
-				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}
+				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
 	}
 
 	/**
 	 * Named scope. Gets children for node (direct descendants only).
+	 * @param ActiveQuery $query.
 	 * @return ActiveRecord the owner.
 	 */
-	public function children()
+	public function children($query)
 	{
-		return $this->descendants(1);
+		return $this->descendants($query, 1);
 	}
 
 	/**
@@ -98,7 +99,7 @@ class NestedSet extends Behavior
 		}
 		if ($this->hasManyRoots) {
 			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
-				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}
+				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
 	}
@@ -126,7 +127,7 @@ class NestedSet extends Behavior
 		$query->addOrderBy($db->quoteColumnName($this->rightAttribute));
 		if ($this->hasManyRoots) {
 			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
-				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}
+				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
 	}
@@ -143,7 +144,7 @@ class NestedSet extends Behavior
 			($this->owner->{$this->leftAttribute} - 1));
 		if ($this->hasManyRoots) {
 			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
-				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}
+				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
 	}
@@ -160,7 +161,7 @@ class NestedSet extends Behavior
 			($this->owner->{$this->rightAttribute} + 1));
 		if ($this->hasManyRoots) {
 			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
-				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}
+				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
 	}
