@@ -5,12 +5,12 @@
  * @license http://www.yiiframework.com/license/
  */
 
-use \yii\base\Behavior;
-use \yii\base\Event;
-use \yii\db\ActiveRecord;
-use \yii\db\ActiveQuery;
-use \yii\db\Expression;
-use \yii\db\Exception;
+use yii\base\Behavior;
+use yii\base\Event;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
+use yii\db\Exception;
 
 /**
  * @author Alexander Kochetov <creocoder@gmail.com>
@@ -278,11 +278,11 @@ class NestedSet extends Behavior
 	public function delete()
 	{
 		if ($this->owner->getIsNewRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node cannot be deleted because it is new.'));
+			throw new Exception('The node cannot be deleted because it is new.');
 		}
 
 		if ($this->getIsDeletedRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node cannot be deleted because it is already deleted.'));
+			throw new Exception('The node cannot be deleted because it is already deleted.');
 		}
 
 		$db = $this->owner->getDb();
@@ -467,19 +467,19 @@ class NestedSet extends Behavior
 	public function moveAsRoot()
 	{
 		if (!$this->hasManyRoots) {
-			throw new Exception(\Yii::t('nestedset', 'Many roots mode is off.'));
+			throw new Exception('Many roots mode is off.');
 		}
 
 		if ($this->owner->getIsNewRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node should not be new record.'));
+			throw new Exception('The node should not be new record.');
 		}
 
 		if ($this->getIsDeletedRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node should not be deleted.'));
+			throw new Exception('The node should not be deleted.');
 		}
 
 		if ($this->owner->isRoot()) {
-			throw new Exception(\Yii::t('nestedset', 'The node already is root node.'));
+			throw new Exception('The node already is root node.');
 		}
 
 		$db = $this->owner->getDb();
@@ -596,7 +596,7 @@ class NestedSet extends Behavior
 		if ($this->_ignoreEvent) {
 			return true;
 		} else {
-			throw new Exception(\Yii::t('nestedset', 'You should not use ActiveRecord::insert() or ActiveRecord::save() methods when NestedSet behavior attached.'));
+			throw new Exception('You should not use ActiveRecord::insert() or ActiveRecord::save() methods when NestedSet behavior attached.');
 		}
 	}
 
@@ -611,7 +611,7 @@ class NestedSet extends Behavior
 		if ($this->_ignoreEvent) {
 			return true;
 		} else {
-			throw new Exception(\Yii::t('nestedset', 'You should not use ActiveRecord::update() or ActiveRecord::save() methods when NestedSet behavior attached.'));
+			throw new Exception('You should not use ActiveRecord::update() or ActiveRecord::save() methods when NestedSet behavior attached.');
 		}
 	}
 
@@ -626,7 +626,7 @@ class NestedSet extends Behavior
 		if ($this->_ignoreEvent) {
 			return true;
 		} else {
-			throw new Exception(\Yii::t('nestedset', 'You should not use ActiveRecord::delete() method when NestedSet behavior attached.'));
+			throw new Exception('You should not use ActiveRecord::delete() method when NestedSet behavior attached.');
 		}
 	}
 
@@ -669,23 +669,23 @@ class NestedSet extends Behavior
 	private function addNode($target, $key, $levelUp, $runValidation, $attributes)
 	{
 		if (!$this->owner->getIsNewRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node cannot be inserted because it is not new.'));
+			throw new Exception('The node cannot be inserted because it is not new.');
 		}
 
 		if ($this->getIsDeletedRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node cannot be inserted because it is deleted.'));
+			throw new Exception('The node cannot be inserted because it is deleted.');
 		}
 
 		if ($target->getIsDeletedRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node cannot be inserted because target node is deleted.'));
+			throw new Exception('The node cannot be inserted because target node is deleted.');
 		}
 
 		if ($this->owner->equals($target)) {
-			throw new Exception(\Yii::t('nestedset', 'The target node should not be self.'));
+			throw new Exception('The target node should not be self.');
 		}
 
 		if (!$levelUp && $target->isRoot()) {
-			throw new Exception(\Yii::t('nestedset', 'The target node should not be root.'));
+			throw new Exception('The target node should not be root.');
 		}
 
 		if ($runValidation && !$this->owner->validate()) {
@@ -784,7 +784,7 @@ class NestedSet extends Behavior
 			}
 		} else {
 			if ($this->owner->roots()->exists()) {
-				throw new Exception(\Yii::t('nestedset', 'Cannot create more than one root in single root mode.'));
+				throw new Exception('Cannot create more than one root in single root mode.');
 			}
 
 			$this->_ignoreEvent = true;
@@ -810,27 +810,27 @@ class NestedSet extends Behavior
 	private function moveNode($target, $key, $levelUp)
 	{
 		if ($this->owner->getIsNewRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node should not be new record.'));
+			throw new Exception('The node should not be new record.');
 		}
 
 		if ($this->getIsDeletedRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The node should not be deleted.'));
+			throw new Exception('The node should not be deleted.');
 		}
 
 		if ($target->getIsDeletedRecord()) {
-			throw new Exception(\Yii::t('nestedset', 'The target node should not be deleted.'));
+			throw new Exception('The target node should not be deleted.');
 		}
 
 		if ($this->owner->equals($target)) {
-			throw new Exception(\Yii::t('nestedset', 'The target node should not be self.'));
+			throw new Exception('The target node should not be self.');
 		}
 
 		if ($target->isDescendantOf($this->owner)) {
-			throw new Exception(\Yii::t('nestedset', 'The target node should not be descendant.'));
+			throw new Exception('The target node should not be descendant.');
 		}
 
 		if (!$levelUp && $target->isRoot()) {
-			throw new Exception(\Yii::t('nestedset', 'The target node should not be root.'));
+			throw new Exception('The target node should not be root.');
 		}
 
 		$db = $this->owner->getDb();
