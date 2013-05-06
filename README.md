@@ -242,7 +242,7 @@ Result:
 ```php
 $category1 = new Category;
 $category1->title = 'X100';
-$category2=new Category;
+$category2 = new Category;
 $category2->title = 'C200';
 $node = Category::find(3);
 $category1->appendTo($node);
