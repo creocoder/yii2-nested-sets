@@ -29,8 +29,8 @@ there could be problems if there are validation rules for these. Please
 check if there are no rules for fields mentioned in model's rules() method.
 
 In case of storing a single tree per database, DB structure can be built with
-`extensions/yiiext/behaviors/trees/schema.sql`. If you're going to store multiple
-trees you'll need `extensions/yiiext/behaviors/trees/schema_many_roots.sql`.
+`schema/schema.sql`. If you're going to store multiple trees you'll need
+`schema/schema_many_roots.sql`.
 
 By default `leftAttribute`, `rightAttribute` and `levelAttribute` values are
 matching field names in default DB schemas so you can skip configuring these.
