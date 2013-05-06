@@ -26,6 +26,10 @@ class NestedSet extends Behavior
 	public $leftAttribute = 'lft';
 	public $rightAttribute = 'rgt';
 	public $levelAttribute = 'level';
+	private $_rootAttributeQuoted;
+	private $_leftAttributeQuoted;
+	private $_rightAttributeQuoted;
+	private $_levelAttributeQuoted;
 	private $_ignoreEvent = false;
 	private $_deleted = false;
 	private $_id;
@@ -57,6 +61,54 @@ class NestedSet extends Behavior
 	}
 
 	/**
+	 * Returns [[rootAttribute]] quoted.
+	 * @return string.
+	 */
+	public function getRootAttributeQuoted()
+	{
+		if ($this->_rootAttributeQuoted === null) {
+			$this->_rootAttributeQuoted = $this->owner->db->quoteColumnName($this->rootAttribute);
+		}
+		return $this->_rootAttributeQuoted;
+	}
+
+	/**
+	 * Returns [[leftAttribute]] quoted.
+	 * @return string.
+	 */
+	public function getLeftAttributeQuoted()
+	{
+		if ($this->_leftAttributeQuoted === null) {
+			$this->_leftAttributeQuoted = $this->owner->db->quoteColumnName($this->leftAttribute);
+		}
+		return $this->_leftAttributeQuoted;
+	}
+
+	/**
+	 * Returns [[rightAttribute]] quoted.
+	 * @return string.
+	 */
+	public function getRightAttributeQuoted()
+	{
+		if ($this->_rightAttributeQuoted === null) {
+			$this->_rightAttributeQuoted = $this->owner->db->quoteColumnName($this->rightAttribute);
+		}
+		return $this->_rightAttributeQuoted;
+	}
+
+	/**
+	 * Returns [[levelAttribute]] quoted.
+	 * @return string.
+	 */
+	public function getLevelAttributeQuoted()
+	{
+		if ($this->_levelAttributeQuoted === null) {
+			$this->_levelAttributeQuoted = $this->owner->db->quoteColumnName($this->levelAttribute);
+		}
+		return $this->_levelAttributeQuoted;
+	}
+
+	/**
 	 * Named scope. Gets descendants for node.
 	 * @param ActiveQuery $query.
 	 * @param int $depth the depth.
@@ -64,16 +116,15 @@ class NestedSet extends Behavior
 	 */
 	public function descendants($query, $depth = null)
 	{
-		$db = $this->owner->getDb();
-		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '>' . $this->owner->{$this->leftAttribute});
-		$query->andWhere($db->quoteColumnName($this->rightAttribute) . '<' . $this->owner->{$this->rightAttribute});
-		$query->addOrderBy($db->quoteColumnName($this->leftAttribute));
+		$query->andWhere($this->getLeftAttributeQuoted() . '>' . $this->owner->{$this->leftAttribute});
+		$query->andWhere($this->getRightAttributeQuoted() . '<' . $this->owner->{$this->rightAttribute});
+		$query->addOrderBy($this->getLeftAttributeQuoted());
 		if ($depth !== null) {
-			$query->andWhere($db->quoteColumnName($this->levelAttribute) . '<=' .
+			$query->andWhere($this->getLevelAttributeQuoted() . '<=' .
 				($this->owner->{$this->levelAttribute} + $depth));
 		}
 		if ($this->hasManyRoots) {
-			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
+			$query->andWhere($this->getRootAttributeQuoted() . '=:' . $this->rootAttribute, array(
 				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
@@ -97,16 +148,15 @@ class NestedSet extends Behavior
 	 */
 	public function ancestors($query, $depth = null)
 	{
-		$db = $this->owner->getDb();
-		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '<' . $this->owner->{$this->leftAttribute});
-		$query->andWhere($db->quoteColumnName($this->rightAttribute) . '>' . $this->owner->{$this->rightAttribute});
-		$query->addOrderBy($db->quoteColumnName($this->leftAttribute));
+		$query->andWhere($this->getLeftAttributeQuoted() . '<' . $this->owner->{$this->leftAttribute});
+		$query->andWhere($this->getRightAttributeQuoted() . '>' . $this->owner->{$this->rightAttribute});
+		$query->addOrderBy($this->getLeftAttributeQuoted());
 		if ($depth !== null) {
-			$query->andWhere($db->quoteColumnName($this->levelAttribute) . '>=' .
+			$query->andWhere($this->getLevelAttributeQuoted() . '>=' .
 				($this->owner->{$this->levelAttribute} - $depth));
 		}
 		if ($this->hasManyRoots) {
-			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
+			$query->andWhere($this->getRootAttributeQuoted() . '=:' . $this->rootAttribute, array(
 				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
@@ -119,7 +169,7 @@ class NestedSet extends Behavior
 	 */
 	public function roots($query)
 	{
-		$query->andWhere($this->owner->getDb()->quoteColumnName($this->leftAttribute) . '=1');
+		$query->andWhere($this->getLeftAttributeQuoted() . '=1');
 	}
 
 	/**
@@ -129,12 +179,11 @@ class NestedSet extends Behavior
 	 */
 	public function parent($query)
 	{
-		$db = $this->owner->getDb();
-		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '<' . $this->owner->{$this->leftAttribute});
-		$query->andWhere($db->quoteColumnName($this->rightAttribute) . '>' . $this->owner->{$this->rightAttribute});
-		$query->addOrderBy($db->quoteColumnName($this->rightAttribute));
+		$query->andWhere($this->getLeftAttributeQuoted() . '<' . $this->owner->{$this->leftAttribute});
+		$query->andWhere($this->getRightAttributeQuoted() . '>' . $this->owner->{$this->rightAttribute});
+		$query->addOrderBy($this->getRightAttributeQuoted());
 		if ($this->hasManyRoots) {
-			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
+			$query->andWhere($this->getRootAttributeQuoted() . '=:' . $this->rootAttribute, array(
 				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
@@ -147,11 +196,9 @@ class NestedSet extends Behavior
 	 */
 	public function prev($query)
 	{
-		$db = $this->owner->getDb();
-		$query->andWhere($db->quoteColumnName($this->rightAttribute) . '=' .
-			($this->owner->{$this->leftAttribute} - 1));
+		$query->andWhere($this->getRightAttributeQuoted() . '=' . ($this->owner->{$this->leftAttribute} - 1));
 		if ($this->hasManyRoots) {
-			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
+			$query->andWhere($this->getRootAttributeQuoted() . '=:' . $this->rootAttribute, array(
 				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
@@ -164,11 +211,9 @@ class NestedSet extends Behavior
 	 */
 	public function next($query)
 	{
-		$db = $this->owner->getDb();
-		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '=' .
-			($this->owner->{$this->rightAttribute} + 1));
+		$query->andWhere($this->getLeftAttributeQuoted() . '=' . ($this->owner->{$this->rightAttribute} + 1));
 		if ($this->hasManyRoots) {
-			$query->andWhere($db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute, array(
+			$query->andWhere($this->getRootAttributeQuoted() . '=:' . $this->rootAttribute, array(
 				':' . $this->rootAttribute => $this->owner->{$this->rootAttribute},
 			));
 		}
@@ -189,7 +234,7 @@ class NestedSet extends Behavior
 			return $this->makeRoot($attributes);
 		}
 		$this->_ignoreEvent = true;
-		$result = $this->owner->update($attributes);
+		$result = $this->owner->update(false, $attributes);
 		$this->_ignoreEvent = false;
 		return $result;
 	}
@@ -229,12 +274,11 @@ class NestedSet extends Behavior
 				$result = $this->owner->delete();
 				$this->_ignoreEvent = false;
 			} else {
-				$condition = $db->quoteColumnName($this->leftAttribute) . '>=' . $this->owner->{$this->leftAttribute} .
-					' AND ' . $db->quoteColumnName($this->rightAttribute) . '<=' .
-					$this->owner->{$this->rightAttribute};
+				$condition = $this->getLeftAttributeQuoted() . '>=' . $this->owner->{$this->leftAttribute} . ' AND ' .
+					$this->getRightAttributeQuoted() . '<=' . $this->owner->{$this->rightAttribute};
 				$params = array();
 				if ($this->hasManyRoots) {
-					$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
+					$condition .= ' AND ' . $this->getRootAttributeQuoted() . '=:' . $this->rootAttribute;
 					$params[':' . $this->rootAttribute] = $this->owner->{$this->rootAttribute};
 				}
 				$result = $this->owner->deleteAll($condition, $params) > 0;
@@ -412,20 +456,15 @@ class NestedSet extends Behavior
 			$right = $this->owner->{$this->rightAttribute};
 			$levelDelta = 1 - $this->owner->{$this->levelAttribute};
 			$delta = 1 - $left;
-			$this->owner->updateAll(
-				array(
-					$this->leftAttribute => new Expression($db->quoteColumnName($this->leftAttribute) .
-						sprintf('%+d', $delta)),
-					$this->rightAttribute => new Expression($db->quoteColumnName($this->rightAttribute) .
-						sprintf('%+d', $delta)),
-					$this->levelAttribute => new Expression($db->quoteColumnName($this->levelAttribute) .
-						sprintf('%+d', $levelDelta)),
+			$this->owner->updateAll(array(
+					$this->leftAttribute => new Expression($this->getLeftAttributeQuoted() . sprintf('%+d', $delta)),
+					$this->rightAttribute => new Expression($this->getRightAttributeQuoted() . sprintf('%+d', $delta)),
+					$this->levelAttribute => new Expression($this->getLevelAttributeQuoted() . sprintf('%+d', $levelDelta)),
 					$this->rootAttribute => $this->owner->getPrimaryKey(),
-				),
-				$db->quoteColumnName($this->leftAttribute) . '>=' . $left . ' AND ' .
-					$db->quoteColumnName($this->rightAttribute) . '<=' . $right . ' AND ' .
-					$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}));
+				), $this->getLeftAttributeQuoted() . '>=' . $left . ' AND ' . $this->getRightAttributeQuoted() . '<=' .
+				$right . ' AND ' . $this->getRootAttributeQuoted() . '=:' . $this->rootAttribute,
+				array(':' . $this->rootAttribute => $this->owner->{$this->rootAttribute})
+			);
 			$this->shiftLeftRight($right + 1, $left - $right - 1);
 			if (isset($transaction)) {
 				$transaction->commit();
@@ -552,15 +591,18 @@ class NestedSet extends Behavior
 	private function shiftLeftRight($key, $delta)
 	{
 		$db = $this->owner->getDb();
-		foreach (array($this->leftAttribute, $this->rightAttribute) as $attribute) {
-			$condition = $db->quoteColumnName($attribute) . '>=' . $key;
+		foreach (array(
+			         $this->getLeftAttributeQuoted() => $this->leftAttribute,
+			         $this->getRightAttributeQuoted() => $this->rightAttribute,
+		         ) as $attributeQuoted => $attribute) {
+			$condition = $attributeQuoted . '>=' . $key;
 			$params = array();
 			if ($this->hasManyRoots) {
-				$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
+				$condition .= ' AND ' . $this->getRootAttributeQuoted() . '=:' . $this->rootAttribute;
 				$params[':' . $this->rootAttribute] = $this->owner->{$this->rootAttribute};
 			}
 			$this->owner->updateAll(array(
-				$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $delta)),
+				$attribute => new Expression($attributeQuoted . sprintf('%+d', $delta)),
 			), $condition, $params);
 		}
 	}
@@ -608,7 +650,7 @@ class NestedSet extends Behavior
 			$this->owner->{$this->rightAttribute} = $key + 1;
 			$this->owner->{$this->levelAttribute} = $target->{$this->levelAttribute} + $levelUp;
 			$this->_ignoreEvent = true;
-			$result = $this->owner->insert($attributes);
+			$result = $this->owner->insert(false, $attributes);
 			$this->_ignoreEvent = false;
 			if (!$result) {
 				if (isset($transaction)) {
@@ -647,7 +689,7 @@ class NestedSet extends Behavior
 			}
 			try {
 				$this->_ignoreEvent = true;
-				$result = $this->owner->insert($attributes);
+				$result = $this->owner->insert(false, $attributes);
 				$this->_ignoreEvent = false;
 				if (!$result) {
 					if (isset($transaction)) {
@@ -674,7 +716,7 @@ class NestedSet extends Behavior
 				throw new Exception(\Yii::t('nestedset', 'Cannot create more than one root in single root mode.'));
 			}
 			$this->_ignoreEvent = true;
-			$result = $this->owner->insert($attributes);
+			$result = $this->owner->insert(false, $attributes);
 			$this->_ignoreEvent = false;
 			if (!$result) {
 				return false;
@@ -720,31 +762,27 @@ class NestedSet extends Behavior
 			$right = $this->owner->{$this->rightAttribute};
 			$levelDelta = $target->{$this->levelAttribute} - $this->owner->{$this->levelAttribute} + $levelUp;
 			if ($this->hasManyRoots && $this->owner->{$this->rootAttribute} !== $target->{$this->rootAttribute}) {
-				foreach (array($this->leftAttribute, $this->rightAttribute) as $attribute) {
+				foreach (array(
+					         $this->getLeftAttributeQuoted() => $this->leftAttribute,
+					         $this->getRightAttributeQuoted() => $this->rightAttribute,
+				         ) as $attributeQuoted => $attribute) {
 					$this->owner->updateAll(array(
-							$attribute => new Expression($db->quoteColumnName($attribute) .
-								sprintf('%+d', $right - $left + 1)),
-						),
-						$db->quoteColumnName($attribute) . '>=' . $key . ' AND ' .
-							$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-						array(':' . $this->rootAttribute => $target->{$this->rootAttribute})
+							$attribute => new Expression($attributeQuoted . sprintf('%+d', $right - $left + 1)),
+						), $attributeQuoted . '>=' . $key . ' AND ' . $this->getRootAttributeQuoted() . '=:' .
+						$this->rootAttribute, array(':' . $this->rootAttribute => $target->{$this->rootAttribute})
 					);
 				}
 				$delta = $key - $left;
-				$this->owner->updateAll(
-					array(
-						$this->leftAttribute => new Expression($db->quoteColumnName($this->leftAttribute) .
-							sprintf('%+d', $delta)),
-						$this->rightAttribute => new Expression($db->quoteColumnName($this->rightAttribute) .
-							sprintf('%+d', $delta)),
-						$this->levelAttribute => new Expression($db->quoteColumnName($this->levelAttribute) .
+				$this->owner->updateAll(array(
+						$this->leftAttribute => new Expression($this->getLeftAttributeQuoted() . sprintf('%+d', $delta)),
+						$this->rightAttribute => new Expression($this->getRightAttributeQuoted() . sprintf('%+d', $delta)),
+						$this->levelAttribute => new Expression($this->getLevelAttributeQuoted() .
 							sprintf('%+d', $levelDelta)),
 						$this->rootAttribute => $target->{$this->rootAttribute},
-					),
-					$db->quoteColumnName($this->leftAttribute) . '>=' . $left . ' AND ' .
-						$db->quoteColumnName($this->rightAttribute) . '<=' . $right . ' AND ' .
-						$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-					array(':' . $this->rootAttribute => $this->owner->{$this->rootAttribute}));
+					), $this->getLeftAttributeQuoted() . '>=' . $left . ' AND ' . $this->getRightAttributeQuoted() . '<=' .
+					$right . ' AND ' . $this->getRootAttributeQuoted() . '=:' . $this->rootAttribute,
+					array(':' . $this->rootAttribute => $this->owner->{$this->rootAttribute})
+				);
 				$this->shiftLeftRight($right + 1, $left - $right - 1);
 				if (isset($transaction)) {
 					$transaction->commit();
@@ -757,28 +795,29 @@ class NestedSet extends Behavior
 					$left += $delta;
 					$right += $delta;
 				}
-				$condition = $db->quoteColumnName($this->leftAttribute) . '>=' . $left . ' AND ' .
-					$db->quoteColumnName($this->rightAttribute) . '<=' . $right;
+				$condition = $this->getLeftAttributeQuoted() . '>=' . $left . ' AND ' .
+					$this->getRightAttributeQuoted() . '<=' . $right;
 				$params = array();
 				if ($this->hasManyRoots) {
-					$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
+					$condition .= ' AND ' . $this->getRootAttributeQuoted() . '=:' . $this->rootAttribute;
 					$params[':' . $this->rootAttribute] = $this->owner->{$this->rootAttribute};
 				}
 				$this->owner->updateAll(array(
-					$this->levelAttribute => new Expression($db->quoteColumnName($this->levelAttribute) .
+					$this->levelAttribute => new Expression($this->getLevelAttributeQuoted() .
 						sprintf('%+d', $levelDelta)),
 				), $condition, $params);
-				foreach (array($this->leftAttribute, $this->rightAttribute) as $attribute) {
-					$condition = $db->quoteColumnName($attribute) . '>=' . $left . ' AND ' .
-						$db->quoteColumnName($attribute) . '<=' . $right;
+				foreach (array(
+					         $this->getLeftAttributeQuoted() => $this->leftAttribute,
+					         $this->getRightAttributeQuoted() => $this->rightAttribute,
+				         ) as $attributeQuoted => $attribute) {
+					$condition = $attributeQuoted . '>=' . $left . ' AND ' . $attributeQuoted . '<=' . $right;
 					$params = array();
 					if ($this->hasManyRoots) {
-						$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' .
-							$this->rootAttribute;
+						$condition .= ' AND ' . $this->getRootAttributeQuoted() . '=:' . $this->rootAttribute;
 						$params[':' . $this->rootAttribute] = $this->owner->{$this->rootAttribute};
 					}
 					$this->owner->updateAll(array(
-						$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $key - $left)),
+						$attribute => new Expression($attributeQuoted . sprintf('%+d', $key - $left)),
 					), $condition, $params);
 				}
 				$this->shiftLeftRight($right + 1, -$delta);
