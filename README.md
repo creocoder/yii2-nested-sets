@@ -118,7 +118,7 @@ Using `NestedSet::parent()`:
 
 ```php
 $category = Category::find(9);
-$parent = $category->parent()->find();
+$parent = $category->parent()->one();
 ```
 
 Result:
@@ -132,7 +132,7 @@ Using `NestedSet::prev()` or
 
 ```php
 $category = Category::find(9);
-$nextSibling = $category->next()->find();
+$nextSibling = $category->next()->one();
 ```
 
 Result:
