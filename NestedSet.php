@@ -249,11 +249,11 @@ class NestedSet extends Behavior
 		$owner = $this->owner;
 
 		if ($owner->getIsNewRecord()) {
-			throw new Exception('The node cannot be deleted because it is new.');
+			throw new Exception('The node can\'t be deleted because it is new.');
 		}
 
 		if ($this->getIsDeletedRecord()) {
-			throw new Exception('The node cannot be deleted because it is already deleted.');
+			throw new Exception('The node can\'t be deleted because it is already deleted.');
 		}
 
 		$db = $owner::getDb();
@@ -281,6 +281,7 @@ class NestedSet extends Behavior
 
 				$result = $owner->deleteAll($condition, $params) > 0;
 			}
+
 			if (!$result) {
 				if (isset($transaction)) {
 					$transaction->rollback();
@@ -650,15 +651,15 @@ class NestedSet extends Behavior
 		$owner = $this->owner;
 
 		if (!$owner->getIsNewRecord()) {
-			throw new Exception('The node cannot be inserted because it is not new.');
+			throw new Exception('The node can\'t be inserted because it is not new.');
 		}
 
 		if ($this->getIsDeletedRecord()) {
-			throw new Exception('The node cannot be inserted because it is deleted.');
+			throw new Exception('The node can\'t be inserted because it is deleted.');
 		}
 
 		if ($target->getIsDeletedRecord()) {
-			throw new Exception('The node cannot be inserted because target node is deleted.');
+			throw new Exception('The node can\'t be inserted because target node is deleted.');
 		}
 
 		if ($owner->equals($target)) {
@@ -767,7 +768,7 @@ class NestedSet extends Behavior
 			}
 		} else {
 			if ($owner::find()->roots()->exists()) {
-				throw new Exception('Cannot create more than one root in single root mode.');
+				throw new Exception('Can\'t create more than one root in single root mode.');
 			}
 
 			$this->_ignoreEvent = true;
