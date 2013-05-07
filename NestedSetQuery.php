@@ -27,14 +27,15 @@ class NestedSetQuery extends Behavior
 	public $levelAttribute = 'level';
 
 	/**
-	 * Named scope. Gets root node(s).
-	 * @param ActiveQuery $query.
+	 * Gets root node(s).
 	 * @return ActiveRecord the owner.
 	 */
-	public function roots($query)
+	public function roots()
 	{
 		/** @var $modelClass ActiveRecord */
 		$modelClass=$this->owner->modelClass;
-		$query->andWhere($modelClass::getDb()->quoteColumnName($this->leftAttribute) . '=1');
+		$this->owner->andWhere($modelClass::getDb()->quoteColumnName($this->leftAttribute) . '=1');
+
+		return $this->owner;
 	}
 }
