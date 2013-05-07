@@ -10,16 +10,30 @@ Installing and configuring
 First you need to configure model as follows:
 
 ```php
-public function behaviors()
+class Category extends ActiveRecord
 {
-    return array(
-        'tree' => array(
-            'class' => 'NestedSet',
-            'leftAttribute' => 'lft',
-            'rightAttribute' => 'rgt',
-            'levelAttribute' => 'level',
-        ),
-    );
+	public function behaviors() {
+	    return array(
+	        'tree' => array(
+	            'class' => 'NestedSet',
+	        ),
+	    );
+	}
+}
+```
+
+Second you need to configure query model as follows:
+
+```php
+class CategoryQuery extends ActiveQuery
+{
+	public function behaviors() {
+	    return array(
+	        'tree' => array(
+	            'class' => 'NestedSetQuery',
+	        ),
+	    );
+	}
 }
 ```
 
