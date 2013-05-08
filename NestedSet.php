@@ -618,7 +618,7 @@ class NestedSet extends Behavior
 		if ($this->_ignoreEvent) {
 			return true;
 		} else {
-			throw new Exception('You should not use ActiveRecord::insert() or ActiveRecord::save() methods when NestedSet behavior attached.');
+			throw new Exception('You should not use ActiveRecord::save() or ActiveRecord::insert() methods when NestedSet behavior attached.');
 		}
 	}
 
@@ -633,7 +633,7 @@ class NestedSet extends Behavior
 		if ($this->_ignoreEvent) {
 			return true;
 		} else {
-			throw new Exception('You should not use ActiveRecord::update() or ActiveRecord::save() methods when NestedSet behavior attached.');
+			throw new Exception('You should not use ActiveRecord::save() or ActiveRecord::update() methods when NestedSet behavior attached.');
 		}
 	}
 
@@ -793,9 +793,15 @@ class NestedSet extends Behavior
 				}
 
 				$owner->setAttribute($this->rootAttribute, $owner->getPrimaryKey());
+				$primaryKey = $owner::primaryKey();
+
+				if (!isset($primaryKey[0])) {
+					throw new Exception(get_class($owner) . ' must have a primary key.');
+				}
+
 				$owner->updateAll(
 					array($this->rootAttribute => $owner->getAttribute($this->rootAttribute)),
-					array($owner::primaryKey()[0] => $owner->getAttribute($this->rootAttribute))
+					array($primaryKey[0] => $owner->getAttribute($this->rootAttribute))
 				);
 
 				if (isset($transaction)) {
