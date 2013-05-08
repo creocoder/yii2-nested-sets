@@ -16,13 +16,6 @@ use yii\db\Exception;
 
 /**
  * @author Alexander Kochetov <creocoder@gmail.com>
- * TODO: remove named scope from comments
- * TODO: composite root key support
- * TODO: $this->owner => $owner where we have $owner
- * TODO: replace {} with getAttribute()
- * TODO: use :: for static methods
- * TODO: self => static ?
- * TODO: port unit tests from NestedSetBehavior 1.1.x version
  */
 class NestedSet extends Behavior
 {
@@ -992,6 +985,7 @@ class NestedSet extends Behavior
 		$delta = $left - $right - 1;
 
 		foreach (self::$_cached[get_class($this->owner)] as $node) {
+			/** @var $node ActiveRecord */
 			if ($node->getIsNewRecord() || $node->getIsDeletedRecord()) {
 				continue;
 			}
@@ -1006,11 +1000,17 @@ class NestedSet extends Behavior
 				$node->setIsDeletedRecord(true);
 			} else {
 				if ($node->getAttribute($this->leftAttribute) >= $key) {
-					$node->setAttribute($this->leftAttribute, $node->getAttribute($this->leftAttribute) + $delta);
+					$node->setAttribute(
+						$this->leftAttribute,
+						$node->getAttribute($this->leftAttribute) + $delta
+					);
 				}
 
 				if ($node->getAttribute($this->rightAttribute) >= $key) {
-					$node->setAttribute($this->rightAttribute, $node->getAttribute($this->rightAttribute) + $delta);
+					$node->setAttribute(
+						$this->rightAttribute,
+						$node->getAttribute($this->rightAttribute) + $delta
+					);
 				}
 			}
 		}
@@ -1023,6 +1023,7 @@ class NestedSet extends Behavior
 	private function correctCachedOnAddNode($key)
 	{
 		foreach (self::$_cached[get_class($this->owner)] as $node) {
+			/** @var $node ActiveRecord */
 			if ($node->getIsNewRecord() || $node->getIsDeletedRecord()) {
 				continue;
 			}
@@ -1037,11 +1038,17 @@ class NestedSet extends Behavior
 			}
 
 			if ($node->getAttribute($this->leftAttribute) >= $key) {
-				$node->setAttribute($this->leftAttribute, $node->getAttribute() + 2);
+				$node->setAttribute(
+					$this->leftAttribute,
+					$node->getAttribute($this->leftAttribute) + 2
+				);
 			}
 
 			if ($node->getAttribute($this->rightAttribute) >= $key) {
-				$node->setAttribute($this->rightAttribute, $node->getAttribute() + 2);
+				$node->setAttribute(
+					$this->rightAttribute,
+					$node->getAttribute($this->rightAttribute) + 2
+				);
 			}
 		}
 	}
@@ -1065,6 +1072,7 @@ class NestedSet extends Behavior
 		$delta2 = $key - $left;
 
 		foreach (self::$_cached[get_class($this->owner)] as $node) {
+			/** @var $node ActiveRecord */
 			if ($node->getIsNewRecord() || $node->getIsDeletedRecord()) {
 				continue;
 			}
@@ -1075,34 +1083,55 @@ class NestedSet extends Behavior
 			}
 
 			if ($node->getAttribute($this->leftAttribute) >= $key) {
-				$node->setAttribute($this->leftAttribute, $node->getAttribute() + $delta);
+				$node->setAttribute(
+					$this->leftAttribute,
+					$node->getAttribute($this->leftAttribute) + $delta
+				);
 			}
 
 			if ($node->getAttribute($this->rightAttribute) >= $key) {
-				$node->setAttribute($this->rightAttribute, $node->getAttribute() + $delta);
+				$node->setAttribute(
+					$this->rightAttribute,
+					$node->getAttribute($this->rightAttribute) + $delta
+				);
 			}
 
 			if ($node->getAttribute($this->leftAttribute) >= $left
 				&& $node->getAttribute($this->rightAttribute) <= $right) {
-				$node->setAttribute($this->levelAttribute, $node->getAttribute() + $levelDelta);
+				$node->setAttribute(
+					$this->levelAttribute,
+					$node->getAttribute($this->levelAttribute) + $levelDelta
+				);
 			}
 
 			if ($node->getAttribute($this->leftAttribute) >= $left
 				&& $node->getAttribute($this->leftAttribute) <= $right) {
-				$node->setAttribute($this->leftAttribute, $node->getAttribute() + $delta2);
+				$node->setAttribute(
+					$this->leftAttribute,
+					$node->getAttribute($this->leftAttribute) + $delta2
+				);
 			}
 
 			if ($node->getAttribute($this->rightAttribute) >= $left
 				&& $node->getAttribute($this->rightAttribute) <= $right) {
-				$node->setAttribute($this->rightAttribute, $node->getAttribute() + $delta2);
+				$node->setAttribute(
+					$this->rightAttribute,
+					$node->getAttribute($this->rightAttribute) + $delta2
+				);
 			}
 
 			if ($node->getAttribute($this->leftAttribute) >= $right + 1) {
-				$node->setAttribute($this->leftAttribute, $node->getAttribute() - $delta);
+				$node->setAttribute(
+					$this->leftAttribute,
+					$node->getAttribute($this->leftAttribute) - $delta
+				);
 			}
 
 			if ($node->getAttribute($this->rightAttribute) >= $right + 1) {
-				$node->setAttribute($this->rightAttribute, $node->getAttribute() - $delta);
+				$node->setAttribute(
+					$this->rightAttribute,
+					$node->getAttribute($this->rightAttribute) - $delta
+				);
 			}
 		}
 	}
@@ -1122,33 +1151,55 @@ class NestedSet extends Behavior
 		$delta3 = $left - $right - 1;
 
 		foreach (self::$_cached[get_class($this->owner)] as $node) {
+			/** @var $node ActiveRecord */
 			if ($node->getIsNewRecord() || $node->getIsDeletedRecord()) {
 				continue;
 			}
 
 			if ($node->getAttribute($this->rootAttribute) === $root) {
 				if ($node->getAttribute($this->leftAttribute) >= $key) {
-					$node->setAttribute($this->leftAttribute, $node->getAttribute() + $delta);
+					$node->setAttribute(
+						$this->leftAttribute,
+						$node->getAttribute($this->leftAttribute) + $delta
+					);
 				}
 
 				if ($node->getAttribute($this->rightAttribute) >= $key) {
-					$node->setAttribute($this->rightAttribute, $node->getAttribute() + $delta);
+					$node->setAttribute(
+						$this->rightAttribute,
+						$node->getAttribute($this->rightAttribute) + $delta
+					);
 				}
 			} elseif ($node->getAttribute($this->rootAttribute)
 				=== $this->owner->getAttribute($this->rootAttribute)) {
 				if ($node->getAttribute($this->leftAttribute) >= $left
 					&& $node->getAttribute($this->rightAttribute) <= $right) {
-					$node->setAttribute($this->leftAttribute, $node->getAttribute() + $delta2);
-					$node->setAttribute($this->rightAttribute, $node->getAttribute() + $delta2);
-					$node->setAttribute($this->levelAttribute, $node->getAttribute() + $levelDelta);
+					$node->setAttribute(
+						$this->leftAttribute,
+						$node->getAttribute($this->leftAttribute) + $delta2
+					);
+					$node->setAttribute(
+						$this->rightAttribute,
+						$node->getAttribute($this->rightAttribute) + $delta2
+					);
+					$node->setAttribute(
+						$this->levelAttribute,
+						$node->getAttribute($this->levelAttribute) + $levelDelta
+					);
 					$node->setAttribute($this->rootAttribute, $root);
 				} else {
 					if ($node->getAttribute($this->leftAttribute) >= $right + 1) {
-						$node->setAttribute($this->leftAttribute, $node->getAttribute() + $delta3);
+						$node->setAttribute(
+							$this->leftAttribute,
+							$node->getAttribute($this->leftAttribute) + $delta3
+						);
 					}
 
 					if ($node->getAttribute($this->rightAttribute) >= $right + 1) {
-						$node->setAttribute($this->rightAttribute, $node->getAttribute() + $delta3);
+						$node->setAttribute(
+							$this->rightAttribute,
+							$node->getAttribute($this->rightAttribute) + $delta3
+						);
 					}
 				}
 			}
