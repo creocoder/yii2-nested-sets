@@ -1,7 +1,7 @@
 {
     "name": "creocoder/nested-set-behavior-2",
     "description": "AR models behavior that allows to work with nested sets tree.",
-    "keywords": ["yii2", "extension", "nested set"],
+    "keywords": ["yii", "extension", "nested set"],
     "homepage": "https://github.com/creocoder/nested-set-behavior-2",
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
