@@ -779,6 +779,13 @@ class NestedSet extends Behavior
 					return false;
 				}
 
+				if ($this->owner->getAttribute($this->rootAttribute)) {
+					if (isset($transaction)) {
+						$transaction->commit();
+					}
+					return $result;
+				}
+
 				$this->owner->setAttribute($this->rootAttribute, $this->owner->getPrimaryKey());
 				$primaryKey = $this->owner->primaryKey();
 
