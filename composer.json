@@ -15,5 +15,11 @@
     "require": {
         "php": ">=5.3.0",
         "yiisoft/yii2": "master"
+    },
+    "autoload": {
+        "classmap": [
+            "NestedSet.php",
+            "NestedSetQuery.php"
+        ]
     }
 }
