@@ -1,25 +1,22 @@
 {
-    "name": "creocoder/nested-set-behavior-2",
-    "description": "AR models behavior that allows to work with nested sets tree.",
-    "keywords": ["yii", "extension", "nested set"],
-    "homepage": "https://github.com/creocoder/nested-set-behavior-2",
-    "type": "yii2-extension",
-    "license": "BSD-3-Clause",
-    "authors": [
-        {
-            "name": "Alexander Kochetov",
-            "email": "creocoder@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "php": ">=5.3.0",
-        "yiisoft/yii2": "master"
-    },
-    "autoload": {
-        "classmap": [
-            "NestedSet.php",
-            "NestedSetQuery.php"
-        ]
-    }
+	"name": "creocoder/yii2-nested-set",
+	"description": "Active record model behavior that allows to work with nested set tree",
+	"keywords": ["yii", "extension", "nested set"],
+	"homepage": "https://github.com/creocoder/yii2-nested-set",
+	"type": "yii2-extension",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Alexander Kochetov",
+			"email": "creocoder@gmail.com"
+		}
+	],
+	"require": {
+		"yiisoft/yii2": "*"
+	},
+	"autoload": {
+		"psr-0": {
+			"creocoder\\behaviors\\": ""
+		}
+	}
 }
