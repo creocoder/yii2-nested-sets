@@ -1,11 +1,11 @@
 <?php
 /**
- * @link https://github.com/creocoder/nested-set-behavior-2
+ * @link https://github.com/creocoder/yii2-nested-set
  * @copyright Copyright (c) 2013 Alexander Kochetov
- * @license http://www.yiiframework.com/license/
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
-namespace creocoder\yii\behaviors;
+namespace creocoder\behaviors;
 
 use yii\base\Behavior;
 use yii\base\Event;
