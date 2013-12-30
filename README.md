@@ -1,10 +1,29 @@
-Nested Set behavior 2 (preview version)
-=======================================
+Nested Set behavior for Yii 2
+=============================
 
 This extension allows managing trees stored in database as nested sets.
 It's implemented as Active Record behavior.
 
-Installing and configuring
+Installation
+------------
+
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+
+```
+php composer.phar require creocoder/yii2-nested-set "*"
+```
+
+or add
+
+```json
+"creocoder/yii2-nested-set": "*"
+```
+
+to the require section of your `composer.json` file.
+
+Configuring
 --------------------------
 
 First you need to configure model as follows:
