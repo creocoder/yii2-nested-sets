@@ -63,7 +63,7 @@ check if there are no rules for fields mentioned in model's rules() method.
 
 In case of storing a single tree per database, DB structure can be built with
 `schema/schema.sql`. If you're going to store multiple trees you'll need
-`schema/schema_many_roots.sql`.
+`schema/schema-many-roots.sql`.
 
 By default `leftAttribute`, `rightAttribute` and `levelAttribute` values are
 matching field names in default DB schemas so you can skip configuring these.
