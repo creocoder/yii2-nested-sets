@@ -11,7 +11,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 
 Either run
 
-```sh
+```shell
 php composer.phar require creocoder/yii2-nested-set "*"
 ```
 
