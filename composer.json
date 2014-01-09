@@ -1,8 +1,8 @@
 {
-	"name": "creocoder/yii2-nested-set",
+	"name": "creocoder/yii2-nested-set-behavior",
 	"description": "Active record model behavior that allows to work with nested set tree",
 	"keywords": ["yii", "extension", "nested set"],
-	"homepage": "https://github.com/creocoder/yii2-nested-set",
+	"homepage": "https://github.com/creocoder/yii2-nested-set-behavior",
 	"type": "yii2-extension",
 	"license": "BSD-3-Clause",
 	"authors": [
@@ -15,7 +15,7 @@
 		"yiisoft/yii2": "*"
 	},
 	"autoload": {
-		"psr-0": {
+		"psr-4": {
 			"creocoder\\behaviors\\": ""
 		}
 	}
