@@ -20,10 +20,25 @@ class NestedSetQuery extends Behavior
 	 * @var ActiveQuery the owner of this behavior.
 	 */
 	public $owner;
+	/**
+	 * @var bool
+	 */
 	public $hasManyRoots = false;
+	/**
+	 * @var string
+	 */
 	public $rootAttribute = 'root';
+	/**
+	 * @var string
+	 */
 	public $leftAttribute = 'lft';
+	/**
+	 * @var string
+	 */
 	public $rightAttribute = 'rgt';
+	/**
+	 * @var string
+	 */
 	public $levelAttribute = 'level';
 
 	/**

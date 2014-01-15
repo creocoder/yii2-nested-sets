@@ -23,20 +23,49 @@ class NestedSet extends Behavior
 	 * @var ActiveRecord the owner of this behavior.
 	 */
 	public $owner;
+	/**
+	 * @var bool
+	 */
 	public $hasManyRoots = false;
+	/**
+	 * @var string
+	 */
 	public $rootAttribute = 'root';
+	/**
+	 * @var string
+	 */
 	public $leftAttribute = 'lft';
+	/**
+	 * @var string
+	 */
 	public $rightAttribute = 'rgt';
+	/**
+	 * @var string
+	 */
 	public $levelAttribute = 'level';
+	/**
+	 * @var bool
+	 */
 	private $_ignoreEvent = false;
+	/**
+	 * @var bool
+	 */
 	private $_deleted = false;
+	/**
+	 * @var int
+	 */
 	private $_id;
+	/**
+	 * @var array
+	 */
 	private static $_cached;
+	/**
+	 * @var int
+	 */
 	private static $_c = 0;
 
 	/**
-	 * Declares event handlers for the [[owner]]'s events.
-	 * @return array events (array keys) and the corresponding event handler methods (array values).
+	 * @inheritdoc
 	 */
 	public function events()
 	{
@@ -49,7 +78,7 @@ class NestedSet extends Behavior
 	}
 
 	/**
-	 * Initializes the object.
+	 * @inheritdoc
 	 */
 	public function init()
 	{
