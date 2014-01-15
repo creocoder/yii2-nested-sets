@@ -1,6 +1,6 @@
 <?php
 /**
- * @link https://github.com/creocoder/yii2-nested-set
+ * @link https://github.com/creocoder/yii2-nested-set-behavior
  * @copyright Copyright (c) 2013 Alexander Kochetov
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
@@ -40,12 +40,12 @@ class NestedSet extends Behavior
 	 */
 	public function events()
 	{
-		return array(
+		return [
 			ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
 			ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
 			ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
 			ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdate',
-		);
+		];
 	}
 
 	/**
@@ -80,7 +80,7 @@ class NestedSet extends Behavior
 		if ($this->hasManyRoots) {
 			$query->andWhere(
 				$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 			);
 		}
 
@@ -119,7 +119,7 @@ class NestedSet extends Behavior
 		if ($this->hasManyRoots) {
 			$query->andWhere(
 				$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 			);
 		}
 
@@ -143,7 +143,7 @@ class NestedSet extends Behavior
 		if ($this->hasManyRoots) {
 			$query->andWhere(
 				$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 			);
 		}
 
@@ -164,7 +164,7 @@ class NestedSet extends Behavior
 		if ($this->hasManyRoots) {
 			$query->andWhere(
 				$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 			);
 		}
 
@@ -185,7 +185,7 @@ class NestedSet extends Behavior
 		if ($this->hasManyRoots) {
 			$query->andWhere(
 				$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 			);
 		}
 
@@ -258,7 +258,7 @@ class NestedSet extends Behavior
 					. $this->owner->getAttribute($this->leftAttribute) . ' AND '
 					. $db->quoteColumnName($this->rightAttribute) . '<='
 					. $this->owner->getAttribute($this->rightAttribute);
-				$params = array();
+				$params = [];
 
 				if ($this->hasManyRoots) {
 					$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
@@ -502,7 +502,7 @@ class NestedSet extends Behavior
 			$levelDelta = 1 - $this->owner->getAttribute($this->levelAttribute);
 			$delta = 1 - $left;
 			$this->owner->updateAll(
-				array(
+				[
 					$this->leftAttribute => new Expression($db->quoteColumnName($this->leftAttribute)
 						. sprintf('%+d', $delta)),
 					$this->rightAttribute => new Expression($db->quoteColumnName($this->rightAttribute)
@@ -510,11 +510,11 @@ class NestedSet extends Behavior
 					$this->levelAttribute => new Expression($db->quoteColumnName($this->levelAttribute)
 						. sprintf('%+d', $levelDelta)),
 					$this->rootAttribute => $this->owner->getPrimaryKey(),
-				),
+				],
 				$db->quoteColumnName($this->leftAttribute) . '>=' . $left . ' AND '
 					. $db->quoteColumnName($this->rightAttribute) . '<=' . $right . ' AND '
 					. $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 			);
 			$this->shiftLeftRight($right + 1, $left - $right - 1);
 
@@ -651,9 +651,9 @@ class NestedSet extends Behavior
 	{
 		$db = $this->owner->getDb();
 
-		foreach (array($this->leftAttribute, $this->rightAttribute) as $attribute) {
+		foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
 			$condition = $db->quoteColumnName($attribute) . '>=' . $key;
-			$params = array();
+			$params = [];
 
 			if ($this->hasManyRoots) {
 				$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
@@ -661,7 +661,7 @@ class NestedSet extends Behavior
 			}
 
 			$this->owner->updateAll(
-				array($attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $delta))),
+				[$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $delta))],
 				$condition,
 				$params
 			);
@@ -787,8 +787,8 @@ class NestedSet extends Behavior
 				}
 
 				$this->owner->updateAll(
-					array($this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)),
-					array($primaryKey[0] => $this->owner->getAttribute($this->rootAttribute))
+					[$this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)],
+					[$primaryKey[0] => $this->owner->getAttribute($this->rootAttribute)]
 				);
 
 				if (isset($transaction)) {
@@ -867,19 +867,19 @@ class NestedSet extends Behavior
 			if ($this->hasManyRoots && $this->owner->getAttribute($this->rootAttribute) !==
 				$target->getAttribute($this->rootAttribute)) {
 
-				foreach (array($this->leftAttribute, $this->rightAttribute) as $attribute) {
+				foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
 					$this->owner->updateAll(
-						array($attribute => new Expression($db->quoteColumnName($attribute)
-							. sprintf('%+d', $right - $left + 1))),
+						[$attribute => new Expression($db->quoteColumnName($attribute)
+							. sprintf('%+d', $right - $left + 1))],
 						$db->quoteColumnName($attribute) . '>=' . $key . ' AND '
 							. $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-						array(':' . $this->rootAttribute => $target->getAttribute($this->rootAttribute))
+						[':' . $this->rootAttribute => $target->getAttribute($this->rootAttribute)]
 					);
 				}
 
 				$delta = $key - $left;
 				$this->owner->updateAll(
-					array(
+					[
 						$this->leftAttribute => new Expression($db->quoteColumnName($this->leftAttribute)
 							. sprintf('%+d', $delta)),
 						$this->rightAttribute => new Expression($db->quoteColumnName($this->rightAttribute)
@@ -887,11 +887,11 @@ class NestedSet extends Behavior
 						$this->levelAttribute => new Expression($db->quoteColumnName($this->levelAttribute)
 							. sprintf('%+d', $levelDelta)),
 						$this->rootAttribute => $target->getAttribute($this->rootAttribute),
-					),
+					],
 					$db->quoteColumnName($this->leftAttribute) . '>=' . $left . ' AND '
 						. $db->quoteColumnName($this->rightAttribute) . '<=' . $right . ' AND '
 						. $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-					array(':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute))
+					[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
 				);
 				$this->shiftLeftRight($right + 1, $left - $right - 1);
 
@@ -911,7 +911,7 @@ class NestedSet extends Behavior
 
 				$condition = $db->quoteColumnName($this->leftAttribute) . '>=' . $left . ' AND '
 					. $db->quoteColumnName($this->rightAttribute) . '<=' . $right;
-				$params = array();
+				$params = [];
 
 				if ($this->hasManyRoots) {
 					$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
@@ -919,18 +919,18 @@ class NestedSet extends Behavior
 				}
 
 				$this->owner->updateAll(
-					array(
+					[
 						$this->levelAttribute => new Expression($db->quoteColumnName($this->levelAttribute)
 							. sprintf('%+d', $levelDelta)),
-					),
+					],
 					$condition,
 					$params
 				);
 
-				foreach (array($this->leftAttribute, $this->rightAttribute) as $attribute) {
+				foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
 					$condition = $db->quoteColumnName($attribute) . '>=' . $left . ' AND '
 						. $db->quoteColumnName($attribute) . '<=' . $right;
-					$params = array();
+					$params = [];
 
 					if ($this->hasManyRoots) {
 						$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:'
@@ -939,8 +939,8 @@ class NestedSet extends Behavior
 					}
 
 					$this->owner->updateAll(
-						array($attribute => new Expression($db->quoteColumnName($attribute)
-							. sprintf('%+d', $key - $left))),
+						[$attribute => new Expression($db->quoteColumnName($attribute)
+							. sprintf('%+d', $key - $left))],
 						$condition,
 						$params
 					);
