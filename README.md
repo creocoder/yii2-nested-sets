@@ -32,11 +32,11 @@ First you need to configure model as follows:
 class Category extends ActiveRecord
 {
 	public function behaviors() {
-	    return array(
-	        'tree' => array(
+	    return [
+	        'tree' => [
 	            'class' => 'NestedSet',
-	        ),
-	    );
+	        ],
+	    ];
 	}
 }
 ```
@@ -47,11 +47,11 @@ Second you need to configure query model as follows:
 class CategoryQuery extends ActiveQuery
 {
 	public function behaviors() {
-	    return array(
-	        'tree' => array(
+	    return [
+	        'tree' => [
 	            'class' => 'NestedSetQuery',
-	        ),
-	    );
+	        ],
+	    ];
 	}
 }
 ```
@@ -185,7 +185,7 @@ Category::find()->addOrderBy('lft')->all();
 For multiple trees per table:
 
 ```php
-Category::find()->where('root = ?', array($root_id))->addOrderBy('lft')->all();
+Category::find()->where('root = ?', [$root_id])->addOrderBy('lft')->all();
 ```
 
 Modifying a tree
@@ -330,7 +330,7 @@ $audi = Category::find(3);
 $ford = Category::find(4);
 $mercedes = Category::find(5);
 
-foreach(array($audi, $ford, $mercedes) as $category) {
+foreach([$audi, $ford, $mercedes] as $category) {
     $category->moveAsLast($cars);
 }
 ```
