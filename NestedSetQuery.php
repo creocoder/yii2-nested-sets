@@ -1,6 +1,6 @@
 <?php
 /**
- * @link https://github.com/creocoder/yii2-nested-set
+ * @link https://github.com/creocoder/yii2-nested-set-behavior
  * @copyright Copyright (c) 2013 Alexander Kochetov
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
