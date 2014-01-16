@@ -1,6 +1,6 @@
 {
 	"name": "creocoder/yii2-nested-set-behavior",
-	"description": "Active record model behavior that allows to work with nested set tree",
+	"description": "This extension allows you to get functional for nested set trees.",
 	"keywords": ["yii", "extension", "behavior", "nested set"],
 	"homepage": "https://github.com/creocoder/yii2-nested-set-behavior",
 	"type": "yii2-extension",
