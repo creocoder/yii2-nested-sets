@@ -31,11 +31,11 @@ First you need to configure model as follows:
 class Category extends ActiveRecord
 {
 	public function behaviors() {
-	    return [
-	        'tree' => [
-	            'class' => 'NestedSet',
-	        ],
-	    ];
+		return [
+			'tree' => [
+				'class' => 'NestedSet',
+			],
+		];
 	}
 }
 ```
@@ -46,11 +46,11 @@ Second you need to configure query model as follows:
 class CategoryQuery extends ActiveQuery
 {
 	public function behaviors() {
-	    return [
-	        'tree' => [
-	            'class' => 'NestedSetQuery',
-	        ],
-	    ];
+		return [
+			'tree' => [
+				'class' => 'NestedSetQuery',
+			],
+		];
 	}
 }
 ```
@@ -330,7 +330,7 @@ $ford = Category::find(4);
 $mercedes = Category::find(5);
 
 foreach([$audi, $ford, $mercedes] as $category) {
-    $category->moveAsLast($cars);
+	$category->moveAsLast($cars);
 }
 ```
 
