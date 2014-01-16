@@ -1,7 +1,7 @@
 Nested Set behavior for Yii 2
 =============================
 
-This extension allows managing trees stored in database as nested sets.
+This extension allows you to get functional for nested set trees.
 
 Installation
 ------------
