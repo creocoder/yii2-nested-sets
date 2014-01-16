@@ -32,8 +32,8 @@ class Category extends ActiveRecord
 {
 	public function behaviors() {
 		return [
-			'tree' => [
-				'class' => 'NestedSet',
+			[
+				'class' => NestedSet::getClass(),
 			],
 		];
 	}
@@ -47,8 +47,8 @@ class CategoryQuery extends ActiveQuery
 {
 	public function behaviors() {
 		return [
-			'tree' => [
-				'class' => 'NestedSetQuery',
+			[
+				'class' => NestedSetQuery::getClass(),
 			],
 		];
 	}
