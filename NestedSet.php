@@ -80,9 +80,9 @@ class NestedSet extends Behavior
 	/**
 	 * @inheritdoc
 	 */
-	public function init()
+	public function attach($owner)
 	{
-		parent::init();
+		parent::attach($owner);
 		self::$_cached[get_class($this->owner)][$this->_id = self::$_c++] = $this->owner;
 	}
 
