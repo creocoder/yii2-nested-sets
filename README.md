@@ -33,7 +33,7 @@ class Category extends ActiveRecord
 	public function behaviors() {
 		return [
 			[
-				'class' => NestedSet::getClass(),
+				'class' => NestedSet::className(),
 			],
 		];
 	}
@@ -48,7 +48,7 @@ class CategoryQuery extends ActiveQuery
 	public function behaviors() {
 		return [
 			[
-				'class' => NestedSetQuery::getClass(),
+				'class' => NestedSetQuery::className(),
 			],
 		];
 	}
