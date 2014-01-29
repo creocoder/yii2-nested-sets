@@ -37,6 +37,11 @@ class Category extends ActiveRecord
 			],
 		];
 	}
+
+	public static function createQuery()
+	{
+		return new CategoryQuery(['modelClass' => get_called_class()]);
+	}
 }
 ```
 
