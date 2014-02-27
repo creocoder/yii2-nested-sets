@@ -48,13 +48,12 @@ class Category extends ActiveRecord
 Second you need to configure query model as follows:
 
 ```php
-use creocoder\behaviors;
 class CategoryQuery extends ActiveQuery
 {
 	public function behaviors() {
 		return [
 			[
-				'class' => NestedSetQuery::className(),
+				'class' => \creocoder\behaviors\NestedSetQuery::className(),
 			],
 		];
 	}
