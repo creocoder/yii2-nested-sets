@@ -33,15 +33,14 @@ class Category extends ActiveRecord
 	public function behaviors() {
 		return [
 			[
-				'class' => NestedSet::className(),
+				'class' => \creocoder\behaviors\NestedSet::className(),
 			],
 		];
 	}
 
 	public static function createQuery($config = [])
 	{
-		$config['modelClass'] = get_called_class();
-		return new \app\models\NodeQuery($config);
+		return new \common\models\CategoryQuery(['modelClass' => get_called_class()]);
 	}
 }
 ```
