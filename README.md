@@ -387,6 +387,49 @@ VarDumper::dump($node->isDescendantOf($samsung)); //true;
 Useful code
 ------------
 
+### Recursive tree traversal
+
+```php
+class Category extends ActiveRecord
+	...
+	public static function options($root = 0, $level = NULL){
+		$res = [];
+		if ($root instanceof self){
+			$res[$root->id] = str_repeat('-', $root->level) . ' ' . $root->title;
+			if ($level){
+				foreach ($root->children()->all() as $childRoot){
+					$res += self::options($childRoot, $level - 1);
+				}
+			} elseif (is_null($level)){
+				foreach ($root->children()->all() as $childRoot){
+					$res += self::options($childRoot, NULL);
+				}
+			}
+		} elseif (is_scalar($root)){
+			if ($root == 0){
+				foreach (self::find()->roots()->all() as $rootItem){
+					if ($level)
+						$res += self::options($rootItem, $level - 1);
+					elseif (is_null($level))
+					$res += self::options($rootItem, NULL);
+				}
+			} else {
+				$root = self::find($root);
+				if ($root) 	$res += self::options($root, $level);
+			}
+		}
+		return $res;
+	}
+```
+
+Then you can call it with:
+
+```
+	Category::options();	// List all the tree
+	Category::options(1);	// List all category in tree with root.id=1
+	Category::options(1,3);	// List 3 levels of category in tree with root.id=1
+```
+
 ### Non-recursive tree traversal
 
 ```php
