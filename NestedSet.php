@@ -93,7 +93,7 @@ class NestedSet extends Behavior
 	 */
 	public function descendants($depth = null)
 	{
-		$query = $this->owner->find();
+		$query = $this->owner->find()->orderBy([$this->levelAttribute => SORT_ASC, $this->leftAttribute => SORT_ASC]);
 		$db = $this->owner->getDb();
 		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '>'
 			. $this->owner->getAttribute($this->leftAttribute));
@@ -132,7 +132,7 @@ class NestedSet extends Behavior
 	 */
 	public function ancestors($depth = null)
 	{
-		$query = $this->owner->find();
+		$query = $this->owner->find()->orderBy([$this->levelAttribute => SORT_DESC, $this->leftAttribute => SORT_ASC]);;
 		$db = $this->owner->getDb();
 		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '<'
 			. $this->owner->getAttribute($this->leftAttribute));
@@ -161,22 +161,7 @@ class NestedSet extends Behavior
 	 */
 	public function parent()
 	{
-		$query = $this->owner->find();
-		$db = $this->owner->getDb();
-		$query->andWhere($db->quoteColumnName($this->leftAttribute) . '<'
-			. $this->owner->getAttribute($this->leftAttribute));
-		$query->andWhere($db->quoteColumnName($this->rightAttribute) . '>'
-			. $this->owner->getAttribute($this->rightAttribute));
-		$query->addOrderBy($db->quoteColumnName($this->rightAttribute));
-
-		if ($this->hasManyRoots) {
-			$query->andWhere(
-				$db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute,
-				[':' . $this->rootAttribute => $this->owner->getAttribute($this->rootAttribute)]
-			);
-		}
-
-		return $query;
+		return $this->ancestors(1);
 	}
 
 	/**
