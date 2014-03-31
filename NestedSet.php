@@ -278,24 +278,25 @@ class NestedSet extends Behavior
 		}
 
 		try {
+			$this->_ignoreEvent = true;
 			if ($this->owner->isLeaf()) {
-				$this->_ignoreEvent = true;
 				$result = $this->owner->delete();
-				$this->_ignoreEvent = false;
-			} else {
+			} elseif ($this->owner->beforeDelete()) {
 				$condition = $db->quoteColumnName($this->leftAttribute) . '>='
-					. $this->owner->getAttribute($this->leftAttribute) . ' AND '
+					. $this->owner->getOldAttribute($this->leftAttribute) . ' AND '
 					. $db->quoteColumnName($this->rightAttribute) . '<='
-					. $this->owner->getAttribute($this->rightAttribute);
+					. $this->owner->getOldAttribute($this->rightAttribute);
 				$params = [];
 
 				if ($this->hasManyRoots) {
 					$condition .= ' AND ' . $db->quoteColumnName($this->rootAttribute) . '=:' . $this->rootAttribute;
-					$params[':' . $this->rootAttribute] = $this->owner->getAttribute($this->rootAttribute);
+					$params[':' . $this->rootAttribute] = $this->owner->getOldAttribute($this->rootAttribute);
 				}
 
 				$result = $this->owner->deleteAll($condition, $params) > 0;
+				$this->owner->afterDelete();
 			}
+			$this->_ignoreEvent = false;
 
 			if (!$result) {
 				if (isset($transaction)) {
