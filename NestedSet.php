@@ -43,6 +43,7 @@ class NestedSet extends Behavior
 	 * @var string
 	 */
 	public $levelAttribute = 'level';
+
 	/**
 	 * @var bool
 	 */
@@ -63,6 +64,7 @@ class NestedSet extends Behavior
 	 * @var int
 	 */
 	private static $_c = 0;
+
 
 	/**
 	 * @inheritdoc
