@@ -439,6 +439,34 @@ class NestedSet extends Behavior
 		);
 	}
 
+    /**
+     * Move node left. Returns true if the left-most node
+     * @return boolean whether the moving succeeds.
+     */
+    public function moveLeft()
+    {
+        $prev = $this->prev()->one();
+        if ($prev !== null) {
+            return $this->moveBefore($prev);
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Move node right. Returns true if the right-most node
+     * @return boolean whether the moving succeeds.
+     */
+    public function moveRight()
+    {
+        $next = $this->next()->one();
+        if ($next !== null) {
+            return $this->moveAfter($next);
+        } else {
+            return true;
+        }
+    }
+
 	/**
 	 * Move node as previous sibling of target.
 	 * @param ActiveRecord $target the target.
