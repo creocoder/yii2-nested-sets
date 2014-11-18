@@ -38,9 +38,9 @@ class Category extends ActiveRecord
 		];
 	}
 
-	public static function createQuery()
+	public static function find()
 	{
-		return new CategoryQuery(['modelClass' => get_called_class()]);
+    		return Yii::createObject(CategoryQuery::className(), [get_called_class()]);
 	}
 }
 ```
