@@ -1,20 +1,20 @@
 <?php
 /**
- * @link https://github.com/creocoder/yii2-nested-set-behavior
+ * @link https://github.com/creocoder/yii2-nested-sets-behavior
  * @copyright Copyright (c) 2014 Alexander Kochetov
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
-namespace creocoder\nestedset;
+namespace creocoder\nestedsets;
 
 use yii\base\Behavior;
 
 /**
- * NestedSetQueryBehavior
+ * NestedSetsQueryBehavior
  *
  * @author Alexander Kochetov <creocoder@gmail.com>
  */
-class NestedSetQueryBehavior extends Behavior
+class NestedSetsQueryBehavior extends Behavior
 {
     /**
      * @var \yii\db\ActiveQuery the owner of this behavior.
