@@ -12,15 +12,12 @@ use yii\base\Behavior;
 /**
  * NestedSetsQueryBehavior
  *
+ * @property \yii\db\ActiveQuery $owner
+ *
  * @author Alexander Kochetov <creocoder@gmail.com>
  */
 class NestedSetsQueryBehavior extends Behavior
 {
-    /**
-     * @var \yii\db\ActiveQuery the owner of this behavior.
-     */
-    public $owner;
-
     /**
      * Gets root node(s).
      * @return \yii\db\ActiveRecord the owner.
