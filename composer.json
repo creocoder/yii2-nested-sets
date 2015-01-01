@@ -1,9 +1,9 @@
 {
-    "name": "creocoder/yii2-nested-set-behavior",
-    "description": "The nested set model behavior for the Yii framework",
+    "name": "creocoder/yii2-nested-sets",
+    "description": "The nested sets behavior for the Yii framework",
     "keywords": [
         "yii2",
-        "nested set"
+        "nested sets"
     ],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "creocoder\\nestedset\\": ""
+            "creocoder\\nestedsets\\": ""
         }
     }
 }

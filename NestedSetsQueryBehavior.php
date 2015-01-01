@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/creocoder/yii2-nested-sets-behavior
- * @copyright Copyright (c) 2014 Alexander Kochetov
+ * @copyright Copyright (c) 2015 Alexander Kochetov
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
@@ -19,8 +19,8 @@ use yii\base\Behavior;
 class NestedSetsQueryBehavior extends Behavior
 {
     /**
-     * Gets root node(s).
-     * @return \yii\db\ActiveRecord the owner.
+     * Gets the root nodes.
+     * @return \yii\db\ActiveQuery the owner
      */
     public function roots()
     {
