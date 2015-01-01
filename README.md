@@ -1,5 +1,9 @@
 # Nested Sets Behavior for Yii 2
 
+[![PayPal - The safer, easier way to pay online!](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WJYG53DVUAALL)
+
+## Introduction
+
 The nested sets behavior for the Yii framework.
 
 ## Installation
@@ -67,5 +71,3 @@ class TreeQuery extends \yii\db\ActiveQuery
 ## Usage
 
 TBD.
-
-[![PayPal - The safer, easier way to pay online!](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WJYG53DVUAALL)
