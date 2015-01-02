@@ -7,6 +7,7 @@
 
 namespace tests;
 
+use tests\models\MultipleRootsTree;
 use tests\models\Tree;
 
 /**
@@ -26,6 +27,14 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertTrue($node->makeRoot());
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-make-new-root.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $node = new MultipleRootsTree();
+        $node->id = 1;
+        $node->name = 'Root';
+        $this->assertTrue($node->makeRoot());
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-make-new-root.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
