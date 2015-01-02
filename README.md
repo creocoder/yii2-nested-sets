@@ -3,9 +3,7 @@
 [![PayPal Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WJYG53DVUAALL)
 [![Build Status](https://img.shields.io/travis/creocoder/yii2-nested-sets/master.svg?style=flat-square)](https://travis-ci.org/creocoder/yii2-nested-sets)
 
-## Introduction
-
-The nested sets behavior for the Yii framework.
+A modern nested sets behavior for the Yii framework utilizing the Modified Preorder Tree Traversal algorithm.
 
 ## Installation
 
@@ -14,7 +12,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```bash
-$ php composer.phar require creocoder/yii2-nested-sets dev-master
+$ php composer.phar require creocoder/yii2-nested-sets:dev-master
 ```
 
 or add
