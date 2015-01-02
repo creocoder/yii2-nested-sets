@@ -238,4 +238,76 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node->name = 'Node';
         $node->insert();
     }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::descendants
+     */
+    public function testDescendants()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::children
+     */
+    public function testChildren()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::ancestors
+     */
+    public function testAncestors()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::parent
+     */
+    public function testParent()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::prev
+     */
+    public function testPrev()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::next
+     */
+    public function testNext()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::isDescendantOf
+     */
+    public function testIsDescendantOf()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::isLeaf
+     */
+    public function testIsLeaf()
+    {
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::isRoot
+     */
+    public function testIsRoot()
+    {
+        $this->markTestSkipped();
+    }
 }
