@@ -18,6 +18,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::makeRoot
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterInsert
      */
     public function testMakeNewRoot()
     {
@@ -41,6 +42,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::makeRoot
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterInsert
      * @expectedException \yii\db\Exception
      */
     public function testMakeNewRootExceptionIsRaisedWhenRootIsExists()
@@ -53,6 +55,137 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node->name = 'Root';
         $node->makeRoot();
     }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::prependTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterInsert
+     */
+    public function testPrependNewTo()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: prependTo exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::appendTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterInsert
+     */
+    public function testAppendNewTo()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: appendTo exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertBefore
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterInsert
+     */
+    public function testInsertNewBefore()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: insertBefore exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertAfter
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterInsert
+     */
+    public function testInsertNewAfter()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: insertAfter exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::makeRoot
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterUpdate
+     */
+    public function testMakeExistsRoot()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: makeRoot exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::prependTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterUpdate
+     */
+    public function testPrependExistsTo()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: prependTo exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::appendTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterUpdate
+     */
+    public function testAppendExistsTo()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: appendTo exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertBefore
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterUpdate
+     */
+    public function testInsertExistsBefore()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: insertBefore exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertAfter
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterUpdate
+     */
+    public function testInsertExistsAfter()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: insertAfter exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithDescendants
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterDelete
+     */
+    public function testDeleteWithDescendants()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: deleteWithDescendants exceptions tests here
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::afterDelete
+     */
+    public function testDelete()
+    {
+        $this->markTestSkipped();
+    }
+
+    // @todo: delete exceptions tests here
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert

@@ -1,4 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <multiple_roots_tree id="1" tree="1" lft="1" rgt="2" depth="0" name="Root 1"/>
+    <multiple_roots_tree id="1" lft="1" rgt="44" depth="0" name="Root 1"/>
+    <multiple_roots_tree id="2" lft="" rgt="" depth="1" name="Node 1"/>
+    <multiple_roots_tree id="3" lft="" rgt="" depth="2" name="Node 1.1"/>
+    <multiple_roots_tree id="4" lft="" rgt="" depth="3" name="Node 1.1.1"/>
+    <multiple_roots_tree id="5" lft="" rgt="" depth="3" name="Node 1.1.2"/>
+    <multiple_roots_tree id="6" lft="" rgt="" depth="2" name="Node 1.2"/>
+    <multiple_roots_tree id="7" lft="" rgt="" depth="3" name="Node 1.2.1"/>
+    <multiple_roots_tree id="8" lft="" rgt="" depth="3" name="Node 1.2.2"/>
+    <multiple_roots_tree id="9" lft="" rgt="" depth="1" name="Node 2"/>
+    <multiple_roots_tree id="10" lft="" rgt="" depth="2" name="Node 2.1"/>
+    <multiple_roots_tree id="11" lft="" rgt="" depth="3" name="Node 2.1.1"/>
+    <multiple_roots_tree id="12" lft="" rgt="" depth="3" name="Node 2.1.2"/>
+    <multiple_roots_tree id="13" lft="" rgt="" depth="2" name="Node 2.2"/>
+    <multiple_roots_tree id="14" lft="" rgt="" depth="3" name="Node 2.2.1"/>
+    <multiple_roots_tree id="15" lft="" rgt="" depth="3" name="Node 2.2.2"/>
+    <multiple_roots_tree id="16" lft="" rgt="" depth="1" name="Node 3"/>
+    <multiple_roots_tree id="17" lft="" rgt="" depth="2" name="Node 3.1"/>
+    <multiple_roots_tree id="18" lft="" rgt="" depth="3" name="Node 3.1.1"/>
+    <multiple_roots_tree id="19" lft="" rgt="" depth="3" name="Node 3.1.2"/>
+    <multiple_roots_tree id="20" lft="" rgt="" depth="2" name="Node 3.2"/>
+    <multiple_roots_tree id="21" lft="" rgt="" depth="3" name="Node 3.2.1"/>
+    <multiple_roots_tree id="22" lft="" rgt="" depth="3" name="Node 3.2.2"/>
+
+    <multiple_roots_tree id="23" lft="1" rgt="44" depth="0" name="Root 2"/>
+    <multiple_roots_tree id="24" lft="" rgt="" depth="1" name="Node 1"/>
+    <multiple_roots_tree id="25" lft="" rgt="" depth="2" name="Node 1.1"/>
+    <multiple_roots_tree id="26" lft="" rgt="" depth="3" name="Node 1.1.1"/>
+    <multiple_roots_tree id="27" lft="" rgt="" depth="3" name="Node 1.1.2"/>
+    <multiple_roots_tree id="28" lft="" rgt="" depth="2" name="Node 1.2"/>
+    <multiple_roots_tree id="29" lft="" rgt="" depth="3" name="Node 1.2.1"/>
+    <multiple_roots_tree id="30" lft="" rgt="" depth="3" name="Node 1.2.2"/>
+    <multiple_roots_tree id="31" lft="" rgt="" depth="1" name="Node 2"/>
+    <multiple_roots_tree id="32" lft="" rgt="" depth="2" name="Node 2.1"/>
+    <multiple_roots_tree id="33" lft="" rgt="" depth="3" name="Node 2.1.1"/>
+    <multiple_roots_tree id="34" lft="" rgt="" depth="3" name="Node 2.1.2"/>
+    <multiple_roots_tree id="35" lft="" rgt="" depth="2" name="Node 2.2"/>
+    <multiple_roots_tree id="36" lft="" rgt="" depth="3" name="Node 2.2.1"/>
+    <multiple_roots_tree id="37" lft="" rgt="" depth="3" name="Node 2.2.2"/>
+    <multiple_roots_tree id="38" lft="" rgt="" depth="1" name="Node 3"/>
+    <multiple_roots_tree id="39" lft="" rgt="" depth="2" name="Node 3.1"/>
+    <multiple_roots_tree id="40" lft="" rgt="" depth="3" name="Node 3.1.1"/>
+    <multiple_roots_tree id="41" lft="" rgt="" depth="3" name="Node 3.1.2"/>
+    <multiple_roots_tree id="42" lft="" rgt="" depth="2" name="Node 3.2"/>
+    <multiple_roots_tree id="43" lft="" rgt="" depth="3" name="Node 3.2.1"/>
+    <multiple_roots_tree id="44" lft="" rgt="" depth="3" name="Node 3.2.2"/>
+
+    <multiple_roots_tree id="45" lft="1" rgt="44" depth="0" name="Root 3"/>
+    <multiple_roots_tree id="46" lft="" rgt="" depth="1" name="Node 1"/>
+    <multiple_roots_tree id="47" lft="" rgt="" depth="2" name="Node 1.1"/>
+    <multiple_roots_tree id="48" lft="" rgt="" depth="3" name="Node 1.1.1"/>
+    <multiple_roots_tree id="49" lft="" rgt="" depth="3" name="Node 1.1.2"/>
+    <multiple_roots_tree id="50" lft="" rgt="" depth="2" name="Node 1.2"/>
+    <multiple_roots_tree id="51" lft="" rgt="" depth="3" name="Node 1.2.1"/>
+    <multiple_roots_tree id="52" lft="" rgt="" depth="3" name="Node 1.2.2"/>
+    <multiple_roots_tree id="53" lft="" rgt="" depth="1" name="Node 2"/>
+    <multiple_roots_tree id="54" lft="" rgt="" depth="2" name="Node 2.1"/>
+    <multiple_roots_tree id="55" lft="" rgt="" depth="3" name="Node 2.1.1"/>
+    <multiple_roots_tree id="56" lft="" rgt="" depth="3" name="Node 2.1.2"/>
+    <multiple_roots_tree id="57" lft="" rgt="" depth="2" name="Node 2.2"/>
+    <multiple_roots_tree id="58" lft="" rgt="" depth="3" name="Node 2.2.1"/>
+    <multiple_roots_tree id="59" lft="" rgt="" depth="3" name="Node 2.2.2"/>
+    <multiple_roots_tree id="60" lft="" rgt="" depth="1" name="Node 3"/>
+    <multiple_roots_tree id="61" lft="" rgt="" depth="2" name="Node 3.1"/>
+    <multiple_roots_tree id="62" lft="" rgt="" depth="3" name="Node 3.1.1"/>
+    <multiple_roots_tree id="63" lft="" rgt="" depth="3" name="Node 3.1.2"/>
+    <multiple_roots_tree id="64" lft="" rgt="" depth="2" name="Node 3.2"/>
+    <multiple_roots_tree id="65" lft="" rgt="" depth="3" name="Node 3.2.1"/>
+    <multiple_roots_tree id="66" lft="" rgt="" depth="3" name="Node 3.2.2"/>
 </dataset>
