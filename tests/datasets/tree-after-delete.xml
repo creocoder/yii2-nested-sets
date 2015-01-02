@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <tree id="1" lft="1" rgt="44" depth="0" name="Root"/>
+    <tree id="2" lft="" rgt="" depth="1" name="Node 1"/>
+    <tree id="3" lft="" rgt="" depth="2" name="Node 1.1"/>
+    <tree id="4" lft="" rgt="" depth="3" name="Node 1.1.1"/>
+    <tree id="5" lft="" rgt="" depth="3" name="Node 1.1.2"/>
+    <tree id="6" lft="" rgt="" depth="2" name="Node 1.2"/>
+    <tree id="7" lft="" rgt="" depth="3" name="Node 1.2.1"/>
+    <tree id="8" lft="" rgt="" depth="3" name="Node 1.2.2"/>
+    <tree id="10" lft="" rgt="" depth="1" name="Node 2.1"/>
+    <tree id="11" lft="" rgt="" depth="2" name="Node 2.1.1"/>
+    <tree id="12" lft="" rgt="" depth="2" name="Node 2.1.2"/>
+    <tree id="13" lft="" rgt="" depth="1" name="Node 2.2"/>
+    <tree id="14" lft="" rgt="" depth="2" name="Node 2.2.1"/>
+    <tree id="15" lft="" rgt="" depth="2" name="Node 2.2.2"/>
+    <tree id="16" lft="" rgt="" depth="1" name="Node 3"/>
+    <tree id="17" lft="" rgt="" depth="2" name="Node 3.1"/>
+    <tree id="18" lft="" rgt="" depth="3" name="Node 3.1.1"/>
+    <tree id="19" lft="" rgt="" depth="3" name="Node 3.1.2"/>
+    <tree id="20" lft="" rgt="" depth="2" name="Node 3.2"/>
+    <tree id="21" lft="" rgt="" depth="3" name="Node 3.2.1"/>
+    <tree id="22" lft="" rgt="" depth="3" name="Node 3.2.2"/>
+</dataset>
