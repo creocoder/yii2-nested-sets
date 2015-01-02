@@ -1,7 +1,7 @@
 The nested sets behavior for the Yii framework is free software.
 It is released under the terms of the following BSD License.
 
-Copyright © 2015 by Alexander Kochetov (https://github.com/creocoder)
+Copyright © 2015, Alexander Kochetov (https://github.com/creocoder)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
