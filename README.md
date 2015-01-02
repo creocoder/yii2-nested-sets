@@ -13,13 +13,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 
 Either run
 
-```
-php composer.phar require creocoder/yii2-nested-sets dev-master
+```bash
+$ php composer.phar require creocoder/yii2-nested-sets dev-master
 ```
 
 or add
 
-```json
+```
 "creocoder/yii2-nested-sets": "dev-master"
 ```
 
