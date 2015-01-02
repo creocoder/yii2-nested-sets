@@ -427,14 +427,16 @@ class NestedSetsBehavior extends Behavior
         if ($depth === 0 && $this->node->isRoot()) {
             throw new Exception('Can not create a node when the target node is root.');
         }
+
+        $this->owner->setAttribute($this->leftAttribute, $value);
+        $this->owner->setAttribute($this->rightAttribute, $value + 1);
+        $this->owner->setAttribute($this->depthAttribute, $this->node->getAttribute($this->depthAttribute) + $depth);
+
         if ($this->treeAttribute !== false) {
             $this->owner->setAttribute($this->treeAttribute, $this->node->getAttribute($this->treeAttribute));
         }
 
         $this->shiftLeftRightAttribute($value, 2);
-        $this->owner->setAttribute($this->leftAttribute, $value);
-        $this->owner->setAttribute($this->rightAttribute, $value + 1);
-        $this->owner->setAttribute($this->depthAttribute, $this->node->getAttribute($this->depthAttribute) + $depth);
     }
 
     /**
