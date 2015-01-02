@@ -22,7 +22,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = new Tree();
         $node->id = 1;
-        $node->name = 'Item';
+        $node->name = 'Root';
         $this->assertTrue($node->makeRoot());
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-make-new-root.xml');
@@ -41,7 +41,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->onSetUp();
         $node = new Tree();
         $node->id = 2;
-        $node->name = 'Item';
+        $node->name = 'Root';
         $node->makeRoot();
     }
 
@@ -53,7 +53,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = new Tree();
         $node->id = 1;
-        $node->name = 'Item';
+        $node->name = 'Node';
         $node->insert();
     }
 }
