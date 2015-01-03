@@ -368,7 +368,14 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testIsDescendantOf()
     {
-        $this->markTestSkipped();
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = MultipleRootsTree::findOne(26);
+        $this->assertTrue($node->isDescendantOf(MultipleRootsTree::findOne(25)));
+        $this->assertTrue($node->isDescendantOf(MultipleRootsTree::findOne(23)));
+        $this->assertFalse($node->isDescendantOf(MultipleRootsTree::findOne(3)));
+        $this->assertFalse($node->isDescendantOf(MultipleRootsTree::findOne(1)));
     }
 
     /**
@@ -376,7 +383,11 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testIsLeaf()
     {
-        $this->markTestSkipped();
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $this->assertTrue(Tree::findOne(4)->isLeaf());
+        $this->assertFalse(Tree::findOne(1)->isLeaf());
     }
 
     /**
@@ -384,6 +395,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testIsRoot()
     {
-        $this->markTestSkipped();
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $this->assertTrue(Tree::findOne(1)->isRoot());
+        $this->assertFalse(Tree::findOne(2)->isRoot());
     }
 }
