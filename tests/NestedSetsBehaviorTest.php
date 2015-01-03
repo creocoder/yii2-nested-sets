@@ -836,6 +836,15 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $dataSet = new ArrayDataSet(['tree' => ArrayHelper::toArray($models)]);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-descendants.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = MultipleRootsTree::findOne(31);
+        $models = $node->descendants()->all();
+        $dataSet = new ArrayDataSet(['multiple_roots_tree' => ArrayHelper::toArray($models)]);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-descendants.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     /**
