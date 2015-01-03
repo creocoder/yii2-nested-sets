@@ -41,7 +41,7 @@ class NestedSetsQueryBehavior extends Behavior
 
         $this->owner->andWhere(new Expression(
             $db->quoteColumnName($model->rightAttribute) . ' - ' . $db->quoteColumnName($model->leftAttribute) . ' = 1'
-        ))->addOrderBy([$model->rightAttribute => SORT_ASC]);
+        ))->addOrderBy([$model->leftAttribute => SORT_ASC]);
 
         return $this->owner;
     }
