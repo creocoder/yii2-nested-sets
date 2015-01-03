@@ -50,10 +50,7 @@ class NestedSetsQueryBehavior extends Behavior
         }
 
         $this->owner
-            ->andWhere(new Expression(
-                $db->quoteColumnName($model->rightAttribute) . ' - '
-                . $db->quoteColumnName($model->leftAttribute) . ' = 1'
-            ))
+            ->andWhere([$model->rightAttribute => new Expression($db->quoteColumnName($model->leftAttribute) . '+ 1')])
             ->addOrderBy($columns);
 
         return $this->owner;
