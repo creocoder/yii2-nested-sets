@@ -191,7 +191,15 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testMakeExistsRoot()
     {
-        $this->markTestSkipped();
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = MultipleRootsTree::findOne(31);
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->makeRoot());
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-make-exists-root.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: makeRoot exceptions tests here

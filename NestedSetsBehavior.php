@@ -523,7 +523,7 @@ class NestedSetsBehavior extends Behavior
                     [
                         $this->leftAttribute => new Expression($leftAttribute . sprintf('%+d', 1 - $leftValue)),
                         $this->rightAttribute => new Expression($rightAttribute . sprintf('%+d', 1 - $leftValue)),
-                        $this->depthAttribute => new Expression($depthAttribute  . sprintf('%+d', 1 - $depthValue)),
+                        $this->depthAttribute => new Expression($depthAttribute  . sprintf('%+d', -$depthValue)),
                         $this->treeAttribute => $this->owner->getPrimaryKey(),
                     ],
                     [
