@@ -251,7 +251,13 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testDeleteWithDescendants()
     {
-        $this->markTestSkipped();
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $this->assertEquals(7, Tree::findOne(9)->deleteWithDescendants());
+        $dataSet = $this->getConnection()->createDataSet(['tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-delete-with-descendants.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: deleteWithDescendants exceptions tests here
