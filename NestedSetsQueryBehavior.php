@@ -38,7 +38,7 @@ class NestedSetsQueryBehavior extends Behavior
      * Gets the leaf nodes.
      * @return \yii\db\ActiveQuery the owner
      */
-    public function leaf()
+    public function leaves()
     {
         $model = new $this->owner->modelClass();
         $db = $model->getDb();
