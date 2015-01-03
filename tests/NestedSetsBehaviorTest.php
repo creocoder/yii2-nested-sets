@@ -73,6 +73,17 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-prepend-new-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = new MultipleRootsTree();
+        $node->id = 67;
+        $node->name = 'New node';
+        $this->assertTrue($node->prependTo(MultipleRootsTree::findOne(31)));
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-prepend-new-to.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: prependTo exceptions tests here
@@ -93,6 +104,17 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertTrue($node->appendTo(Tree::findOne(9)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-append-new-to.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = new MultipleRootsTree();
+        $node->id = 67;
+        $node->name = 'New node';
+        $this->assertTrue($node->appendTo(MultipleRootsTree::findOne(31)));
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-append-new-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
@@ -115,6 +137,17 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-new-before.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = new MultipleRootsTree();
+        $node->id = 67;
+        $node->name = 'New node';
+        $this->assertTrue($node->insertBefore(MultipleRootsTree::findOne(31)));
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-new-before.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: insertBefore exceptions tests here
@@ -135,6 +168,17 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertTrue($node->insertAfter(Tree::findOne(9)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-new-after.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = new MultipleRootsTree();
+        $node->id = 67;
+        $node->name = 'New node';
+        $this->assertTrue($node->insertAfter(MultipleRootsTree::findOne(31)));
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-new-after.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
