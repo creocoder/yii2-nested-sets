@@ -8,6 +8,7 @@
 namespace creocoder\nestedsets;
 
 use yii\base\Behavior;
+use yii\db\Expression;
 
 /**
  * NestedSetsQueryBehavior
@@ -24,7 +25,23 @@ class NestedSetsQueryBehavior extends Behavior
      */
     public function roots()
     {
-        $this->owner->andWhere([(new $this->owner->modelClass)->leftAttribute => 1]);
+        $this->owner->andWhere([(new $this->owner->modelClass())->leftAttribute => 1]);
+
+        return $this->owner;
+    }
+
+    /**
+     * Gets the leaf nodes.
+     * @return \yii\db\ActiveQuery the owner
+     */
+    public function leaf()
+    {
+        $model = new $this->owner->modelClass();
+        $db = $model->getDb();
+
+        $this->owner->andWhere(new Expression(
+            $db->quoteColumnName($model->rightAttribute) . ' - ' . $db->quoteColumnName($model->leftAttribute) . ' = 1'
+        ));
 
         return $this->owner;
     }
