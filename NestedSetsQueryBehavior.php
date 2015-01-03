@@ -25,7 +25,11 @@ class NestedSetsQueryBehavior extends Behavior
      */
     public function roots()
     {
-        $this->owner->andWhere([(new $this->owner->modelClass())->leftAttribute => 1]);
+        $model = new $this->owner->modelClass();
+
+        $this->owner
+            ->andWhere([$model->leftAttribute => 1])
+            ->addOrderBy([$model->primaryKey()[0] => SORT_ASC]);
 
         return $this->owner;
     }
