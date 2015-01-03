@@ -395,7 +395,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
-    // @todo: deleteWithDescendants exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithDescendants
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
+     * @expectedException \yii\db\Exception
+     */
+    public function testDeleteWithDescendantsExceptionIsRaisedWhenNodeIsNewRecord()
+    {
+        $node = new Tree();
+        $node->deleteWithDescendants();
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
@@ -420,7 +429,28 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
-    // @todo: delete exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
+     * @expectedException \yii\db\Exception
+     */
+    public function testDeleteExceptionIsRaisedWhenNodeIsNewRecord()
+    {
+        $node = new Tree();
+        $node->delete();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
+     * @expectedException \yii\base\NotSupportedException
+     */
+    public function testDeleteExceptionIsRaisedWhenNodeIsRoot()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(1);
+        $node->delete();
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
