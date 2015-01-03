@@ -9,6 +9,7 @@ namespace tests;
 
 use tests\models\MultipleRootsTree;
 use tests\models\Tree;
+use yii\helpers\ArrayHelper;
 
 /**
  * NestedSetsBehaviorTest
@@ -827,7 +828,14 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testDescendants()
     {
-        $this->markTestSkipped();
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $models = $node->descendants()->all();
+        $dataSet = new ArrayDataSet(['tree' => ArrayHelper::toArray($models)]);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-descendants.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     /**
