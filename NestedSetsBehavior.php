@@ -238,7 +238,7 @@ class NestedSetsBehavior extends Behavior
      * @param integer $depth the depth
      * @return \yii\db\ActiveQuery
      */
-    public function ancestors($depth = null)
+    public function parents($depth = null)
     {
         $query = $this->owner->find();
 
@@ -257,27 +257,6 @@ class NestedSetsBehavior extends Behavior
         }
 
         return $query->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
-    }
-
-    /**
-     * Gets the parent of the node.
-     * @return \yii\db\ActiveQuery
-     */
-    public function parent()
-    {
-        $query = $this->owner->find();
-
-        $condition = [
-            'and',
-            ['<', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
-            ['>', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
-        ];
-
-        if ($this->treeAttribute !== false) {
-            $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
-        }
-
-        return $query->andWhere($condition)->addOrderBy([$this->rightAttribute => SORT_ASC]);
     }
 
     /**
