@@ -269,6 +269,14 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-delete.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $this->assertEquals(1, MultipleRootsTree::findOne(31)->delete());
+        $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-delete.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: delete exceptions tests here
