@@ -111,11 +111,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node = new Tree();
         $node->id = 23;
         $node->name = 'New node';
-        //$this->assertTrue($node->insertBefore(Tree::findOne(9)));
-        //$dataSet = $this->getConnection()->createDataSet(['tree']);
-        //$expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-new-before.xml');
-        //$this->assertDataSetsEqual($expectedDataSet, $dataSet);
-        $this->markTestIncomplete();
+        $this->assertTrue($node->insertBefore(Tree::findOne(9)));
+        $dataSet = $this->getConnection()->createDataSet(['tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-new-before.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: insertBefore exceptions tests here
@@ -133,11 +132,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node = new Tree();
         $node->id = 23;
         $node->name = 'New node';
-        //$this->assertTrue($node->insertAfter(Tree::findOne(9)));
-        //$dataSet = $this->getConnection()->createDataSet(['tree']);
-        //$expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-new-after.xml');
-        //$this->assertDataSetsEqual($expectedDataSet, $dataSet);
-        $this->markTestIncomplete();
+        $this->assertTrue($node->insertAfter(Tree::findOne(9)));
+        $dataSet = $this->getConnection()->createDataSet(['tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-new-after.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     // @todo: insertAfter exceptions tests here
