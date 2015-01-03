@@ -44,7 +44,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeInsert
      * @expectedException \yii\db\Exception
      */
-    public function testMakeNewRootExceptionIsRaisedWhenRootIsExists()
+    public function testMakeNewRootExceptionIsRaisedWhenTreeAttributeIsFalseAndRootIsExists()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
@@ -321,7 +321,33 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
-    // @todo: makeRoot exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::makeRoot
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testMakeExistsRootExceptionIsRaisedWhenTreeAttributeIsFalse()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->makeRoot();
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::makeRoot
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testMakeExistsRootExceptionIsRaisedWhenItsRoot()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = MultipleRootsTree::findOne(23);
+        $node->makeRoot();
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::prependTo
