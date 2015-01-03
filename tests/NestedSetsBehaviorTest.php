@@ -359,7 +359,47 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->markTestSkipped();
     }
 
-    // @todo: prependTo exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::prependTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testPrependExistsToExceptionIsRaisedWhenTargetIsNewRecord()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->prependTo(new Tree());
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::prependTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testPrependExistsToExceptionIsRaisedWhenTargetIsSame()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->prependTo(Tree::findOne(9));
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::prependTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testPrependExistsToExceptionIsRaisedWhenTargetIsDescendant()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->prependTo(Tree::findOne(11));
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::appendTo
@@ -371,7 +411,47 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->markTestSkipped();
     }
 
-    // @todo: appendTo exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::appendTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testAppendExistsToExceptionIsRaisedWhenTargetIsNewRecord()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->appendTo(new Tree());
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::appendTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testAppendExistsToExceptionIsRaisedWhenTargetIsSame()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->appendTo(Tree::findOne(9));
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::appendTo
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testAppendExistsToExceptionIsRaisedWhenTargetIsDescendant()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->appendTo(Tree::findOne(11));
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::insertBefore
@@ -383,7 +463,47 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->markTestSkipped();
     }
 
-    // @todo: insertBefore exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertBefore
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsBeforeExceptionIsRaisedWhenTargetIsNewRecord()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertBefore(new Tree());
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertBefore
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsBeforeExceptionIsRaisedWhenTargetIsSame()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertBefore(Tree::findOne(9));
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertBefore
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsBeforeExceptionIsRaisedWhenTargetIsDescendant()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertBefore(Tree::findOne(11));
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::insertAfter
@@ -395,7 +515,47 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->markTestSkipped();
     }
 
-    // @todo: insertAfter exceptions tests here
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertAfter
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsAfterExceptionIsRaisedWhenTargetIsNewRecord()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertAfter(new Tree());
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertAfter
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsAfterExceptionIsRaisedWhenTargetIsSame()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertAfter(Tree::findOne(9));
+    }
+
+    /**
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::insertAfter
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsAfterExceptionIsRaisedWhenTargetIsDescendant()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertAfter(Tree::findOne(11));
+    }
 
     /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithDescendants
