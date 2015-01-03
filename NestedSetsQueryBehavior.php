@@ -43,10 +43,18 @@ class NestedSetsQueryBehavior extends Behavior
         $model = new $this->owner->modelClass();
         $db = $model->getDb();
 
+        $columns = [$model->leftAttribute => SORT_ASC];
+
+        if ($model->treeAttribute !== false) {
+            $columns = [$model->treeAttribute => SORT_ASC] + $columns;
+        }
+
         $this->owner
-            ->andWhere(new Expression($db->quoteColumnName($model->rightAttribute)
-                . ' - ' . $db->quoteColumnName($model->leftAttribute) . ' = 1'))
-            ->addOrderBy([$model->leftAttribute => SORT_ASC]);
+            ->andWhere(new Expression(
+                $db->quoteColumnName($model->rightAttribute) . ' - '
+                . $db->quoteColumnName($model->leftAttribute) . ' = 1'
+            ))
+            ->addOrderBy($columns);
 
         return $this->owner;
     }
