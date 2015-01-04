@@ -313,20 +313,11 @@ class NestedSetsBehavior extends Behavior
      */
     public function beforeInsert()
     {
-        if ($this->node !== null && !$this->node->getIsNewRecord()) {
-            $this->node->refresh();
-        }
+        $this->refreshNode();
 
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
-                $this->owner->setAttribute($this->leftAttribute, 1);
-                $this->owner->setAttribute($this->rightAttribute, 2);
-                $this->owner->setAttribute($this->depthAttribute, 0);
-
-                if ($this->treeAttribute === false && $this->owner->find()->roots()->exists()) {
-                    throw new Exception('Can not create more than one root when "treeAttribute" is false.');
-                }
-
+                $this->beforeInsertRootNode();
                 break;
             case self::OPERATION_PREPEND_TO:
                 $this->beforeInsertNode($this->node->getAttribute($this->leftAttribute) + 1, 1);
@@ -343,6 +334,20 @@ class NestedSetsBehavior extends Behavior
             default:
                 throw new NotSupportedException('Method "'. get_class($this->owner) . '::insert" is not supported for inserting new nodes.');
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function beforeInsertRootNode()
+    {
+        if ($this->treeAttribute === false && $this->owner->find()->roots()->exists()) {
+            throw new Exception('Can not create more than one root when "treeAttribute" is false.');
+        }
+
+        $this->owner->setAttribute($this->leftAttribute, 1);
+        $this->owner->setAttribute($this->rightAttribute, 2);
+        $this->owner->setAttribute($this->depthAttribute, 0);
     }
 
     /**
@@ -399,9 +404,7 @@ class NestedSetsBehavior extends Behavior
      */
     public function beforeUpdate()
     {
-        if ($this->node !== null && !$this->node->getIsNewRecord()) {
-            $this->node->refresh();
-        }
+        $this->refreshNode();
 
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
@@ -623,6 +626,16 @@ class NestedSetsBehavior extends Behavior
 
         $this->operation = null;
         $this->node = null;
+    }
+
+    /**
+     * @return void
+     */
+    protected function refreshNode()
+    {
+        if ($this->node !== null && !$this->node->getIsNewRecord()) {
+            $this->node->refresh();
+        }
     }
 
     /**
