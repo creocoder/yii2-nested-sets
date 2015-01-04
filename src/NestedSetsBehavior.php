@@ -313,7 +313,9 @@ class NestedSetsBehavior extends Behavior
      */
     public function beforeInsert()
     {
-        $this->refreshNode();
+        if ($this->node !== null && !$this->node->getIsNewRecord()) {
+            $this->node->refresh();
+        }
 
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
@@ -404,7 +406,9 @@ class NestedSetsBehavior extends Behavior
      */
     public function beforeUpdate()
     {
-        $this->refreshNode();
+        if ($this->node !== null && !$this->node->getIsNewRecord()) {
+            $this->node->refresh();
+        }
 
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
@@ -626,16 +630,6 @@ class NestedSetsBehavior extends Behavior
 
         $this->operation = null;
         $this->node = null;
-    }
-
-    /**
-     * @return void
-     */
-    protected function refreshNode()
-    {
-        if ($this->node !== null && !$this->node->getIsNewRecord()) {
-            $this->node->refresh();
-        }
     }
 
     /**
