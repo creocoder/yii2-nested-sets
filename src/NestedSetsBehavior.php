@@ -438,19 +438,19 @@ class NestedSetsBehavior extends Behavior
     {
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
-                $this->updateRootInternal();
+                $this->moveNodeAsRoot();
                 break;
             case self::OPERATION_PREPEND_TO:
-                $this->updateNodeInternal($this->node->getAttribute($this->leftAttribute) + 1, 1);
+                $this->moveNode($this->node->getAttribute($this->leftAttribute) + 1, 1);
                 break;
             case self::OPERATION_APPEND_TO:
-                $this->updateNodeInternal($this->node->getAttribute($this->rightAttribute), 1);
+                $this->moveNode($this->node->getAttribute($this->rightAttribute), 1);
                 break;
             case self::OPERATION_INSERT_BEFORE:
-                $this->updateNodeInternal($this->node->getAttribute($this->leftAttribute), 0);
+                $this->moveNode($this->node->getAttribute($this->leftAttribute), 0);
                 break;
             case self::OPERATION_INSERT_AFTER:
-                $this->updateNodeInternal($this->node->getAttribute($this->rightAttribute) + 1, 0);
+                $this->moveNode($this->node->getAttribute($this->rightAttribute) + 1, 0);
                 break;
             default:
                 return;
@@ -463,7 +463,7 @@ class NestedSetsBehavior extends Behavior
     /**
      * @return void
      */
-    protected function updateRootInternal()
+    protected function moveNodeAsRoot()
     {
         $db = $this->owner->getDb();
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
@@ -497,7 +497,7 @@ class NestedSetsBehavior extends Behavior
      * @param integer $depth
      * @throws Exception
      */
-    protected function updateNodeInternal($value, $depth)
+    protected function moveNode($value, $depth)
     {
         $db = $this->owner->getDb();
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
