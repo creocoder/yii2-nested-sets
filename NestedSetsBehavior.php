@@ -398,10 +398,6 @@ class NestedSetsBehavior extends Behavior
             throw new Exception('Can not create a node when the target node is new record.');
         }
 
-        if ($this->owner->equals($this->node)) {
-            throw new Exception('Can not create a node when the target node is same.');
-        }
-
         if ($depth === 0 && $this->node->isRoot()) {
             throw new Exception('Can not create a node when the target node is root.');
         }

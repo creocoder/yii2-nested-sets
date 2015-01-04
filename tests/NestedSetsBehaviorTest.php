@@ -83,18 +83,6 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node->prependTo(new Tree());
     }
 
-    /**
-     * @expectedException \yii\db\Exception
-     */
-    public function testPrependNewToExceptionIsRaisedWhenTargetIsSame()
-    {
-        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
-        $this->getDatabaseTester()->setDataSet($dataSet);
-        $this->getDatabaseTester()->onSetUp();
-        $node = new Tree(['id' => 9, 'name' => 'New node']);
-        $node->prependTo(Tree::findOne(9));
-    }
-
     public function testAppendNewTo()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
@@ -129,18 +117,6 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node->appendTo(new Tree());
     }
 
-    /**
-     * @expectedException \yii\db\Exception
-     */
-    public function testAppendNewToExceptionIsRaisedWhenTargetIsSame()
-    {
-        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
-        $this->getDatabaseTester()->setDataSet($dataSet);
-        $this->getDatabaseTester()->onSetUp();
-        $node = new Tree(['id' => 9, 'name' => 'New node']);
-        $node->appendTo(Tree::findOne(9));
-    }
-
     public function testInsertNewBefore()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
@@ -173,18 +149,6 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = new Tree(['name' => 'New node']);
         $node->insertBefore(new Tree());
-    }
-
-    /**
-     * @expectedException \yii\db\Exception
-     */
-    public function testInsertNewBeforeExceptionIsRaisedWhenTargetIsSame()
-    {
-        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
-        $this->getDatabaseTester()->setDataSet($dataSet);
-        $this->getDatabaseTester()->onSetUp();
-        $node = new Tree(['id' => 9, 'name' => 'New node']);
-        $node->insertBefore(Tree::findOne(9));
     }
 
     /**
@@ -231,18 +195,6 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = new Tree(['name' => 'New node']);
         $node->insertAfter(new Tree());
-    }
-
-    /**
-     * @expectedException \yii\db\Exception
-     */
-    public function testInsertNewAfterExceptionIsRaisedWhenTargetIsSame()
-    {
-        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
-        $this->getDatabaseTester()->setDataSet($dataSet);
-        $this->getDatabaseTester()->onSetUp();
-        $node = new Tree(['id' => 9, 'name' => 'New node']);
-        $node->insertAfter(Tree::findOne(9));
     }
 
     /**
