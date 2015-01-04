@@ -482,6 +482,38 @@ class NestedSetsBehavior extends Behavior
      */
     public function afterUpdate($event)
     {
+        switch ($this->operation) {
+            case self::OPERATION_MAKE_ROOT:
+                $this->updateRootInternal();
+                $this->operation = null;
+                $this->node = null;
+
+                return;
+            case self::OPERATION_PREPEND_TO:
+                $this->updateNodeInternal($this->node->getAttribute($this->leftAttribute) + 1, 1);
+                break;
+            case self::OPERATION_APPEND_TO:
+                $this->updateNodeInternal($this->node->getAttribute($this->rightAttribute), 1);
+                break;
+            case self::OPERATION_INSERT_BEFORE:
+                $this->updateNodeInternal($this->node->getAttribute($this->leftAttribute), 0);
+                break;
+            case self::OPERATION_INSERT_AFTER:
+                $this->updateNodeInternal($this->node->getAttribute($this->rightAttribute) + 1, 0);
+                break;
+            default:
+                return;
+        }
+
+        $this->operation = null;
+        $this->node = null;
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateRootInternal()
+    {
         $db = $this->owner->getDb();
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
         $rightValue = $this->owner->getAttribute($this->rightAttribute);
@@ -491,47 +523,39 @@ class NestedSetsBehavior extends Behavior
         $rightAttribute = $db->quoteColumnName($this->rightAttribute);
         $depthAttribute = $db->quoteColumnName($this->depthAttribute);
 
-        switch ($this->operation) {
-            case self::OPERATION_MAKE_ROOT:
-                $this->owner->updateAll(
-                    [
-                        $this->leftAttribute => new Expression($leftAttribute . sprintf('%+d', 1 - $leftValue)),
-                        $this->rightAttribute => new Expression($rightAttribute . sprintf('%+d', 1 - $leftValue)),
-                        $this->depthAttribute => new Expression($depthAttribute  . sprintf('%+d', -$depthValue)),
-                        $this->treeAttribute => $this->owner->getPrimaryKey(),
-                    ],
-                    [
-                        'and',
-                        ['>=', $this->leftAttribute, $leftValue],
-                        ['<=', $this->rightAttribute, $rightValue],
-                        [$this->treeAttribute => $treeValue]
-                    ]
-                );
+        $this->owner->updateAll(
+            [
+                $this->leftAttribute => new Expression($leftAttribute . sprintf('%+d', 1 - $leftValue)),
+                $this->rightAttribute => new Expression($rightAttribute . sprintf('%+d', 1 - $leftValue)),
+                $this->depthAttribute => new Expression($depthAttribute  . sprintf('%+d', -$depthValue)),
+                $this->treeAttribute => $this->owner->getPrimaryKey(),
+            ],
+            [
+                'and',
+                ['>=', $this->leftAttribute, $leftValue],
+                ['<=', $this->rightAttribute, $rightValue],
+                [$this->treeAttribute => $treeValue]
+            ]
+        );
 
-                $this->shiftLeftRightAttribute($rightValue + 1, $leftValue - $rightValue - 1);
-                $this->operation = null;
-                $this->node = null;
+        $this->shiftLeftRightAttribute($rightValue + 1, $leftValue - $rightValue - 1);
+    }
 
-                return;
-            case self::OPERATION_PREPEND_TO:
-                $value = $this->node->getAttribute($this->leftAttribute) + 1;
-                $depth = 1;
-                break;
-            case self::OPERATION_APPEND_TO:
-                $value = $this->node->getAttribute($this->rightAttribute);
-                $depth = 1;
-                break;
-            case self::OPERATION_INSERT_BEFORE:
-                $value = $this->node->getAttribute($this->leftAttribute);
-                $depth = 0;
-                break;
-            case self::OPERATION_INSERT_AFTER:
-                $value = $this->node->getAttribute($this->rightAttribute) + 1;
-                $depth = 0;
-                break;
-            default:
-                return;
-        }
+    /**
+     * @param integer $value
+     * @param integer $depth
+     * @throws Exception
+     */
+    protected function updateNodeInternal($value, $depth)
+    {
+        $db = $this->owner->getDb();
+        $leftValue = $this->owner->getAttribute($this->leftAttribute);
+        $rightValue = $this->owner->getAttribute($this->rightAttribute);
+        $depthValue = $this->owner->getAttribute($this->depthAttribute);
+        $treeValue = $this->owner->getAttribute($this->treeAttribute);
+        $leftAttribute = $db->quoteColumnName($this->leftAttribute);
+        $rightAttribute = $db->quoteColumnName($this->rightAttribute);
+        $depthAttribute = $db->quoteColumnName($this->depthAttribute);
 
         if ($depth === 0 && $this->node->isRoot()) {
             throw new Exception('Can not move a node when the target node is root.');
@@ -600,8 +624,6 @@ class NestedSetsBehavior extends Behavior
             );
 
             $this->shiftLeftRightAttribute($rightValue + 1, $leftValue - $rightValue - 1);
-            $this->operation = null;
-            $this->node = null;
         }
     }
 
