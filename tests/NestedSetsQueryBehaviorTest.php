@@ -16,9 +16,6 @@ use yii\helpers\ArrayHelper;
  */
 class NestedSetsQueryBehaviorTest extends DatabaseTestCase
 {
-    /**
-     * @covers \creocoder\nestedsets\NestedSetsQueryBehavior::roots
-     */
     public function testRoots()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
@@ -38,9 +35,6 @@ class NestedSetsQueryBehaviorTest extends DatabaseTestCase
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
-    /**
-     * @covers \creocoder\nestedsets\NestedSetsQueryBehavior::leaves
-     */
     public function testLeaves()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
