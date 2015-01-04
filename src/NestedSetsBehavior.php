@@ -353,11 +353,10 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @param \yii\base\ModelEvent $event
      * @throws Exception
      * @throws NotSupportedException
      */
-    public function beforeInsert($event)
+    public function beforeInsert()
     {
         if ($this->node !== null && !$this->node->getIsNewRecord()) {
             $this->node->refresh();
@@ -414,10 +413,9 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @param \yii\db\AfterSaveEvent $event
      * @throws Exception
      */
-    public function afterInsert($event)
+    public function afterInsert()
     {
         if ($this->operation === self::OPERATION_MAKE_ROOT && $this->treeAttribute !== false) {
             $this->owner->setAttribute($this->treeAttribute, $this->owner->getPrimaryKey());
@@ -438,10 +436,9 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @param \yii\base\ModelEvent $event
      * @throws Exception
      */
-    public function beforeUpdate($event)
+    public function beforeUpdate()
     {
         if ($this->node !== null && !$this->node->getIsNewRecord()) {
             $this->node->refresh();
@@ -480,10 +477,9 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @param \yii\db\AfterSaveEvent $event
      * @throws Exception
      */
-    public function afterUpdate($event)
+    public function afterUpdate()
     {
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
@@ -623,11 +619,10 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @param \yii\base\ModelEvent $event
      * @throws Exception
      * @throws NotSupportedException
      */
-    public function beforeDelete($event)
+    public function beforeDelete()
     {
         if ($this->owner->getIsNewRecord()) {
             throw new Exception('Can not delete a node when it is new record.');
@@ -641,10 +636,9 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @param \yii\base\Event $event
      * @throws Exception
      */
-    public function afterDelete($event)
+    public function afterDelete()
     {
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
         $rightValue = $this->owner->getAttribute($this->rightAttribute);
