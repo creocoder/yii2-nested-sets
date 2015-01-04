@@ -210,8 +210,6 @@ class NestedSetsBehavior extends Behavior
      */
     public function children($depth = null)
     {
-        $query = $this->owner->find();
-
         $condition = [
             'and',
             ['>', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
@@ -224,7 +222,7 @@ class NestedSetsBehavior extends Behavior
 
         $this->applyTreeAttributeCondition($condition);
 
-        return $query->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
+        return $this->owner->find()->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
     }
 
     /**
@@ -234,8 +232,6 @@ class NestedSetsBehavior extends Behavior
      */
     public function parents($depth = null)
     {
-        $query = $this->owner->find();
-
         $condition = [
             'and',
             ['<', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
@@ -248,7 +244,7 @@ class NestedSetsBehavior extends Behavior
 
         $this->applyTreeAttributeCondition($condition);
 
-        return $query->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
+        return $this->owner->find()->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
     }
 
     /**
@@ -257,11 +253,10 @@ class NestedSetsBehavior extends Behavior
      */
     public function prev()
     {
-        $query = $this->owner->find();
         $condition = [$this->rightAttribute => $this->owner->getAttribute($this->leftAttribute) - 1];
         $this->applyTreeAttributeCondition($condition);
 
-        return $query->andWhere($condition);
+        return $this->owner->find()->andWhere($condition);
     }
 
     /**
@@ -270,11 +265,10 @@ class NestedSetsBehavior extends Behavior
      */
     public function next()
     {
-        $query = $this->owner->find();
         $condition = [$this->leftAttribute => $this->owner->getAttribute($this->rightAttribute) + 1];
         $this->applyTreeAttributeCondition($condition);
 
-        return $query->andWhere($condition);
+        return $this->owner->find()->andWhere($condition);
     }
 
     /**
