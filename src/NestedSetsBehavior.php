@@ -488,10 +488,7 @@ class NestedSetsBehavior extends Behavior
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
                 $this->updateRootInternal();
-                $this->operation = null;
-                $this->node = null;
-
-                return;
+                break;
             case self::OPERATION_PREPEND_TO:
                 $this->updateNodeInternal($this->node->getAttribute($this->leftAttribute) + 1, 1);
                 break;
