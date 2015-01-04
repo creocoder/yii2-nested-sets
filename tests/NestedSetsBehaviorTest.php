@@ -498,6 +498,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node->insertBefore(Tree::findOne(11));
     }
 
+    /**
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsBeforeExceptionIsRaisedWhenTargetIsRoot()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertBefore(Tree::findOne(1));
+    }
+
     public function testInsertExistsAfter()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
@@ -580,6 +592,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
         $node->insertAfter(Tree::findOne(11));
+    }
+
+    /**
+     * @expectedException \yii\db\Exception
+     */
+    public function testInsertExistsAfterExceptionIsRaisedWhenTargetIsRoot()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->insertAfter(Tree::findOne(1));
     }
 
     public function testDeleteWithChildren()
