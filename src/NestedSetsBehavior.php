@@ -458,10 +458,13 @@ class NestedSetsBehavior extends Behavior
                 }
 
                 break;
-            case self::OPERATION_PREPEND_TO:
-            case self::OPERATION_APPEND_TO:
             case self::OPERATION_INSERT_BEFORE:
             case self::OPERATION_INSERT_AFTER:
+                if ($this->node->isRoot()) {
+                    throw new Exception('Can not move a node when the target node is root.');
+                }
+            case self::OPERATION_PREPEND_TO:
+            case self::OPERATION_APPEND_TO:
                 if ($this->node->getIsNewRecord()) {
                     throw new Exception('Can not move a node when the target node is new record.');
                 }
@@ -556,11 +559,6 @@ class NestedSetsBehavior extends Behavior
         $leftAttribute = $db->quoteColumnName($this->leftAttribute);
         $rightAttribute = $db->quoteColumnName($this->rightAttribute);
         $depthAttribute = $db->quoteColumnName($this->depthAttribute);
-
-        if ($depth === 0 && $this->node->isRoot()) {
-            throw new Exception('Can not move a node when the target node is root.');
-        }
-
         $nodeRootValue = $this->node->getAttribute($this->treeAttribute);
         $depth = $this->node->getAttribute($this->depthAttribute) - $depthValue + $depth;
 
