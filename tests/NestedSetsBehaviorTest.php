@@ -685,6 +685,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node->insert();
     }
 
+    public function testUpdate()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $node->name = 'Updated node 2';
+        $this->assertEquals(1, $node->update());
+    }
+
     public function testChildren()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
