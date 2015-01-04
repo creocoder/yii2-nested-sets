@@ -436,7 +436,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
      * @expectedException \yii\db\Exception
      */
-    public function testPrependExistsToExceptionIsRaisedWhenTargetIsDescendant()
+    public function testPrependExistsToExceptionIsRaisedWhenTargetIsChild()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
@@ -531,7 +531,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
      * @expectedException \yii\db\Exception
      */
-    public function testAppendExistsToExceptionIsRaisedWhenTargetIsDescendant()
+    public function testAppendExistsToExceptionIsRaisedWhenTargetIsChild()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
@@ -626,7 +626,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
      * @expectedException \yii\db\Exception
      */
-    public function testInsertExistsBeforeExceptionIsRaisedWhenTargetIsDescendant()
+    public function testInsertExistsBeforeExceptionIsRaisedWhenTargetIsChild()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
@@ -721,7 +721,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeUpdate
      * @expectedException \yii\db\Exception
      */
-    public function testInsertExistsAfterExceptionIsRaisedWhenTargetIsDescendant()
+    public function testInsertExistsAfterExceptionIsRaisedWhenTargetIsChild()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
@@ -731,38 +731,38 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     }
 
     /**
-     * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithDescendants
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithChildren
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
      * @covers \creocoder\nestedsets\NestedSetsBehavior::afterDelete
      */
-    public function testDeleteWithDescendants()
+    public function testDeleteWithChildren()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
-        $this->assertEquals(7, Tree::findOne(9)->deleteWithDescendants());
+        $this->assertEquals(7, Tree::findOne(9)->deleteWithChildren());
         $dataSet = $this->getConnection()->createDataSet(['tree']);
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-delete-with-descendants.xml');
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-delete-with-children.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
 
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
-        $this->assertEquals(7, MultipleRootsTree::findOne(31)->deleteWithDescendants());
+        $this->assertEquals(7, MultipleRootsTree::findOne(31)->deleteWithChildren());
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-delete-with-descendants.xml');
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-delete-with-children.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
     /**
-     * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithDescendants
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::deleteWithChildren
      * @covers \creocoder\nestedsets\NestedSetsBehavior::beforeDelete
      * @expectedException \yii\db\Exception
      */
-    public function testDeleteWithDescendantsExceptionIsRaisedWhenNodeIsNewRecord()
+    public function testDeleteWithChildrenExceptionIsRaisedWhenNodeIsNewRecord()
     {
         $node = new Tree();
-        $node->deleteWithDescendants();
+        $node->deleteWithChildren();
     }
 
     /**
@@ -824,30 +824,6 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     }
 
     /**
-     * @covers \creocoder\nestedsets\NestedSetsBehavior::descendants
-     */
-    public function testDescendants()
-    {
-        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
-        $this->getDatabaseTester()->setDataSet($dataSet);
-        $this->getDatabaseTester()->onSetUp();
-        $node = Tree::findOne(9);
-        $models = $node->descendants()->all();
-        $dataSet = new ArrayDataSet(['tree' => ArrayHelper::toArray($models)]);
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-descendants.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
-
-        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
-        $this->getDatabaseTester()->setDataSet($dataSet);
-        $this->getDatabaseTester()->onSetUp();
-        $node = MultipleRootsTree::findOne(31);
-        $models = $node->descendants()->all();
-        $dataSet = new ArrayDataSet(['multiple_roots_tree' => ArrayHelper::toArray($models)]);
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-descendants.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
-    }
-
-    /**
      * @covers \creocoder\nestedsets\NestedSetsBehavior::children
      */
     public function testChildren()
@@ -868,6 +844,24 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $models = $node->children()->all();
         $dataSet = new ArrayDataSet(['multiple_roots_tree' => ArrayHelper::toArray($models)]);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-children.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(9);
+        $models = $node->children(1)->all();
+        $dataSet = new ArrayDataSet(['tree' => ArrayHelper::toArray($models)]);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-children-with-depth.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = MultipleRootsTree::findOne(31);
+        $models = $node->children(1)->all();
+        $dataSet = new ArrayDataSet(['multiple_roots_tree' => ArrayHelper::toArray($models)]);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-children-with-depth.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
@@ -892,6 +886,24 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $models = $node->parents()->all();
         $dataSet = new ArrayDataSet(['multiple_roots_tree' => ArrayHelper::toArray($models)]);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-parents.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = Tree::findOne(11);
+        $models = $node->parents(1)->all();
+        $dataSet = new ArrayDataSet(['tree' => ArrayHelper::toArray($models)]);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-parents-with-depth.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+        $node = MultipleRootsTree::findOne(33);
+        $models = $node->parents(1)->all();
+        $dataSet = new ArrayDataSet(['multiple_roots_tree' => ArrayHelper::toArray($models)]);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-parents-with-depth.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
@@ -944,18 +956,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     }
 
     /**
-     * @covers \creocoder\nestedsets\NestedSetsBehavior::isDescendantOf
+     * @covers \creocoder\nestedsets\NestedSetsBehavior::isChildOf
      */
-    public function testIsDescendantOf()
+    public function testIsChildOf()
     {
         $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree.xml');
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(26);
-        $this->assertTrue($node->isDescendantOf(MultipleRootsTree::findOne(25)));
-        $this->assertTrue($node->isDescendantOf(MultipleRootsTree::findOne(23)));
-        $this->assertFalse($node->isDescendantOf(MultipleRootsTree::findOne(3)));
-        $this->assertFalse($node->isDescendantOf(MultipleRootsTree::findOne(1)));
+        $this->assertTrue($node->isChildOf(MultipleRootsTree::findOne(25)));
+        $this->assertTrue($node->isChildOf(MultipleRootsTree::findOne(23)));
+        $this->assertFalse($node->isChildOf(MultipleRootsTree::findOne(3)));
+        $this->assertFalse($node->isChildOf(MultipleRootsTree::findOne(1)));
     }
 
     /**
