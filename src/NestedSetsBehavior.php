@@ -327,27 +327,31 @@ class NestedSetsBehavior extends Behavior
                     throw new Exception('Can not create more than one root when "treeAttribute" is false.');
                 }
 
-                return;
+                break;
             case self::OPERATION_PREPEND_TO:
-                $value = $this->node->getAttribute($this->leftAttribute) + 1;
-                $depth = 1;
+                $this->beforeInsertNode($this->node->getAttribute($this->leftAttribute) + 1, 1);
                 break;
             case self::OPERATION_APPEND_TO:
-                $value = $this->node->getAttribute($this->rightAttribute);
-                $depth = 1;
+                $this->beforeInsertNode($this->node->getAttribute($this->rightAttribute), 1);
                 break;
             case self::OPERATION_INSERT_BEFORE:
-                $value = $this->node->getAttribute($this->leftAttribute);
-                $depth = 0;
+                $this->beforeInsertNode($this->node->getAttribute($this->leftAttribute), 0);
                 break;
             case self::OPERATION_INSERT_AFTER:
-                $value = $this->node->getAttribute($this->rightAttribute) + 1;
-                $depth = 0;
+                $this->beforeInsertNode($this->node->getAttribute($this->rightAttribute) + 1, 0);
                 break;
             default:
                 throw new NotSupportedException('Method "'. get_class($this->owner) . '::insert" is not supported for inserting new nodes.');
         }
+    }
 
+    /**
+     * @param integer $value
+     * @param integer $depth
+     * @throws Exception
+     */
+    protected function beforeInsertNode($value, $depth)
+    {
         if ($this->node->getIsNewRecord()) {
             throw new Exception('Can not create a node when the target node is new record.');
         }
