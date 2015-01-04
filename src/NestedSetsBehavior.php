@@ -75,33 +75,12 @@ class NestedSetsBehavior extends Behavior
      * @param boolean $runValidation
      * @param array $attributes
      * @return boolean
-     * @throws Exception
      */
     public function makeRoot($runValidation = true, $attributes = null)
     {
         $this->operation = self::OPERATION_MAKE_ROOT;
 
-        if ($this->owner->getIsNewRecord()) {
-            if ($this->treeAttribute === false && $this->owner->find()->roots()->exists()) {
-                throw new Exception('Can not create more than one root when "treeAttribute" is false.');
-            }
-
-            $this->owner->setAttribute($this->leftAttribute, 1);
-            $this->owner->setAttribute($this->rightAttribute, 2);
-            $this->owner->setAttribute($this->depthAttribute, 0);
-
-            return $this->owner->insert($runValidation, $attributes);
-        } else {
-            if ($this->treeAttribute === false) {
-                throw new Exception('Can not move a node as the root when "treeAttribute" is false.');
-            }
-
-            if ($this->owner->isRoot()) {
-                throw new Exception('Can not move the root node as the root.');
-            }
-
-            return $this->owner->update($runValidation, $attributes) !== false;
-        }
+        return $this->owner->save($runValidation, $attributes);
     }
 
     /**
@@ -338,6 +317,7 @@ class NestedSetsBehavior extends Behavior
 
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
+                $this->beforeInsertRootNode();
                 break;
             case self::OPERATION_PREPEND_TO:
                 $this->beforeInsertNode($this->node->getAttribute($this->leftAttribute) + 1, 1);
@@ -354,6 +334,20 @@ class NestedSetsBehavior extends Behavior
             default:
                 throw new NotSupportedException('Method "'. get_class($this->owner) . '::insert" is not supported for inserting new nodes.');
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function beforeInsertRootNode()
+    {
+        if ($this->treeAttribute === false && $this->owner->find()->roots()->exists()) {
+            throw new Exception('Can not create more than one root when "treeAttribute" is false.');
+        }
+
+        $this->owner->setAttribute($this->leftAttribute, 1);
+        $this->owner->setAttribute($this->rightAttribute, 2);
+        $this->owner->setAttribute($this->depthAttribute, 0);
     }
 
     /**
@@ -414,6 +408,14 @@ class NestedSetsBehavior extends Behavior
 
         switch ($this->operation) {
             case self::OPERATION_MAKE_ROOT:
+                if ($this->treeAttribute === false) {
+                    throw new Exception('Can not move a node as the root when "treeAttribute" is false.');
+                }
+
+                if ($this->owner->isRoot()) {
+                    throw new Exception('Can not move the root node as the root.');
+                }
+
                 break;
             case self::OPERATION_INSERT_BEFORE:
             case self::OPERATION_INSERT_AFTER:
