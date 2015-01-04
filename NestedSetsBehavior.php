@@ -157,43 +157,51 @@ class NestedSetsBehavior extends Behavior
     {
         $this->operation = self::OPERATION_DELETE_WITH_CHILDREN;
 
+        if (!$this->owner->isTransactional(ActiveRecord::OP_DELETE)) {
+            return $this->deleteWithChildrenInternal();
+        }
+
+        $transaction = $this->owner->getDb()->beginTransaction();
+
         try {
-            if ($this->owner->isTransactional(ActiveRecord::OP_DELETE)) {
-                $transaction = $this->owner->getDb()->beginTransaction();
-            }
+            $result = $this->deleteWithChildrenInternal();
 
-            if (!$this->owner->beforeDelete()) {
-                if (isset($transaction)) {
-                    $transaction->rollBack();
-                }
-
-                return false;
-            }
-
-            $condition = [
-                'and',
-                ['>=', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
-                ['<=', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)]
-            ];
-
-            if ($this->treeAttribute !== false) {
-                $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
-            }
-
-            $result = $this->owner->deleteAll($condition);
-            $this->owner->setOldAttributes(null);
-            $this->owner->afterDelete();
-
-            if (isset($transaction)) {
+            if ($result === false) {
+                $transaction->rollBack();
+            } else {
                 $transaction->commit();
             }
-        } catch (\Exception $e) {
-            if (isset($transaction)) {
-                $transaction->rollBack();
-            }
 
+            return $result;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * @return integer|false the number of rows deleted or false if
+     * the deletion is unsuccessful for some reason.
+     */
+    protected function deleteWithChildrenInternal()
+    {
+        if (!$this->owner->beforeDelete()) {
+            return false;
+        }
+
+        $condition = [
+            'and',
+            ['>=', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
+            ['<=', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)]
+        ];
+
+        if ($this->treeAttribute !== false) {
+            $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
+        }
+
+        $result = $this->owner->deleteAll($condition);
+        $this->owner->setOldAttributes(null);
+        $this->owner->afterDelete();
 
         return $result;
     }
