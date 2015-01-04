@@ -27,7 +27,7 @@ class NestedSetsBehavior extends Behavior
     const OPERATION_APPEND_TO = 'appendTo';
     const OPERATION_INSERT_BEFORE = 'insertBefore';
     const OPERATION_INSERT_AFTER = 'insertAfter';
-    const OPERATION_DELETE_WITH_DESCENDANTS = 'deleteWithDescendants';
+    const OPERATION_DELETE_WITH_CHILDREN = 'deleteWithChildren';
 
     /**
      * @var string
@@ -148,14 +148,14 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * Deletes a node and its descendants.
+     * Deletes a node and its children.
      * @return integer|false the number of rows deleted or false if
      * the deletion is unsuccessful for some reason.
      * @throws \Exception
      */
-    public function deleteWithDescendants()
+    public function deleteWithChildren()
     {
-        $this->operation = self::OPERATION_DELETE_WITH_DESCENDANTS;
+        $this->operation = self::OPERATION_DELETE_WITH_CHILDREN;
 
         try {
             if ($this->owner->isTransactional(ActiveRecord::OP_DELETE)) {
@@ -199,11 +199,11 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * Gets the descendants of the node.
+     * Gets the children of the node.
      * @param integer $depth the depth
      * @return \yii\db\ActiveQuery
      */
-    public function descendants($depth = null)
+    public function children($depth = null)
     {
         $query = $this->owner->find();
 
@@ -222,15 +222,6 @@ class NestedSetsBehavior extends Behavior
         }
 
         return $query->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
-    }
-
-    /**
-     * Gets the children of the node.
-     * @return \yii\db\ActiveQuery
-     */
-    public function children()
-    {
-        return $this->descendants(1);
     }
 
     /**
@@ -292,11 +283,11 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * Determines whether the node is descendant of the parent node.
+     * Determines whether the node is child of the parent node.
      * @param \yii\db\ActiveRecord $node the parent node
-     * @return boolean whether the node is descendant of the parent node
+     * @return boolean whether the node is child of the parent node
      */
-    public function isDescendantOf($node)
+    public function isChildOf($node)
     {
         $result = ($this->owner->getAttribute($this->leftAttribute) > $node->getAttribute($this->leftAttribute))
             && ($this->owner->getAttribute($this->rightAttribute) < $node->getAttribute($this->rightAttribute));
@@ -475,8 +466,8 @@ class NestedSetsBehavior extends Behavior
                     throw new Exception('Can not move a node when the target node is same.');
                 }
     
-                if ($this->node->isDescendantOf($this->owner)) {
-                    throw new Exception('Can not move a node when the target node is descendant.');
+                if ($this->node->isChildOf($this->owner)) {
+                    throw new Exception('Can not move a node when the target node is child.');
                 }
         }
     }
@@ -621,7 +612,7 @@ class NestedSetsBehavior extends Behavior
             throw new Exception('Can not delete a node when it is new record.');
         }
 
-        if ($this->owner->isRoot() && $this->operation !== self::OPERATION_DELETE_WITH_DESCENDANTS) {
+        if ($this->owner->isRoot() && $this->operation !== self::OPERATION_DELETE_WITH_CHILDREN) {
             throw new NotSupportedException('Method "'. get_class($this->owner) . '::delete" is not supported for deleting root nodes.');
         }
 
@@ -637,7 +628,7 @@ class NestedSetsBehavior extends Behavior
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
         $rightValue = $this->owner->getAttribute($this->rightAttribute);
 
-        if ($this->owner->isLeaf() || $this->operation === self::OPERATION_DELETE_WITH_DESCENDANTS) {
+        if ($this->owner->isLeaf() || $this->operation === self::OPERATION_DELETE_WITH_CHILDREN) {
             $this->shiftLeftRightAttribute($rightValue + 1, $leftValue - $rightValue - 1);
         } else {
             $condition = [
