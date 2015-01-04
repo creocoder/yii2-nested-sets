@@ -204,42 +204,40 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * Gets the children of the node.
-     * @param integer $depth the depth
-     * @return \yii\db\ActiveQuery
-     */
-    public function children($depth = null)
-    {
-        $condition = [
-            'and',
-            ['>', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
-            ['<', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
-        ];
-
-        if ($depth !== null) {
-            $condition[] = ['<=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) + $depth];
-        }
-
-        $this->applyTreeAttributeCondition($condition);
-
-        return $this->owner->find()->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
-    }
-
-    /**
      * Gets the parents of the node.
      * @param integer $depth the depth
      * @return \yii\db\ActiveQuery
      */
     public function parents($depth = null)
     {
+        return $this->parentsOrChildren(true, $depth);
+    }
+
+    /**
+     * Gets the children of the node.
+     * @param integer $depth the depth
+     * @return \yii\db\ActiveQuery
+     */
+    public function children($depth = null)
+    {
+        return $this->parentsOrChildren(false, $depth);
+    }
+
+    /**
+     * @param boolean $parents
+     * @param integer $depth
+     * @return \yii\db\ActiveQuery
+     */
+    protected function parentsOrChildren($parents, $depth)
+    {
         $condition = [
             'and',
-            ['<', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
-            ['>', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
+            [$parents ? '<' : '>', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
+            [$parents ? '>' : '<', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
         ];
 
         if ($depth !== null) {
-            $condition[] = ['>=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) - $depth];
+            $condition[] = [$parents ? '>=' : '<=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) + ($parents ? -$depth : $depth)];
         }
 
         $this->applyTreeAttributeCondition($condition);
