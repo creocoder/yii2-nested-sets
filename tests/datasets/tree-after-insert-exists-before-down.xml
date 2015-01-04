@@ -8,7 +8,7 @@
     <tree id="6" lft="9" rgt="14" depth="2" name="Node 1.2"/>
     <tree id="7" lft="10" rgt="11" depth="3" name="Node 1.2.1"/>
     <tree id="8" lft="12" rgt="13" depth="3" name="Node 1.2.2"/>
-    <tree id="9" lft="16" rgt="29" depth="1" name="Node 2"/>
+    <tree id="9" lft="16" rgt="29" depth="1" name="Updated node 2"/>
     <tree id="10" lft="17" rgt="22" depth="2" name="Node 2.1"/>
     <tree id="11" lft="18" rgt="19" depth="3" name="Node 2.1.1"/>
     <tree id="12" lft="20" rgt="21" depth="3" name="Node 2.1.2"/>

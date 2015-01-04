@@ -252,7 +252,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->prependTo(Tree::findOne(2));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->prependTo(Tree::findOne(2)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-prepend-exists-up-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -261,7 +262,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->prependTo(Tree::findOne(16));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->prependTo(Tree::findOne(16)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-prepend-exists-down-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -270,7 +272,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->prependTo(MultipleRootsTree::findOne(24));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->prependTo(MultipleRootsTree::findOne(24)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-prepend-exists-up-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -279,7 +282,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->prependTo(MultipleRootsTree::findOne(38));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->prependTo(MultipleRootsTree::findOne(38)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-prepend-exists-down-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -288,7 +292,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(9);
-        $node->prependTo(MultipleRootsTree::findOne(53));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->prependTo(MultipleRootsTree::findOne(53)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-prepend-exists-another-tree-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -336,7 +341,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->appendTo(Tree::findOne(2));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->appendTo(Tree::findOne(2)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-append-exists-up-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -345,7 +351,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->appendTo(Tree::findOne(16));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->appendTo(Tree::findOne(16)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-append-exists-down-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -354,7 +361,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->appendTo(MultipleRootsTree::findOne(24));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->appendTo(MultipleRootsTree::findOne(24)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-append-exists-up-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -363,7 +371,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->appendTo(MultipleRootsTree::findOne(38));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->appendTo(MultipleRootsTree::findOne(38)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-append-exists-down-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -372,7 +381,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(9);
-        $node->appendTo(MultipleRootsTree::findOne(53));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->appendTo(MultipleRootsTree::findOne(53)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-append-exists-another-tree-to.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -420,7 +430,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->insertBefore(Tree::findOne(2));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertBefore(Tree::findOne(2)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-exists-before-up.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -429,7 +440,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->insertBefore(Tree::findOne(16));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertBefore(Tree::findOne(16)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-exists-before-down.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -438,7 +450,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->insertBefore(MultipleRootsTree::findOne(24));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertBefore(MultipleRootsTree::findOne(24)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-exists-before-up.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -447,7 +460,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->insertBefore(MultipleRootsTree::findOne(38));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertBefore(MultipleRootsTree::findOne(38)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-exists-before-down.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -456,7 +470,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(9);
-        $node->insertBefore(MultipleRootsTree::findOne(53));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertBefore(MultipleRootsTree::findOne(53)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-exists-before-another-tree.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -516,7 +531,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->insertAfter(Tree::findOne(2));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertAfter(Tree::findOne(2)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-exists-after-up.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -525,7 +541,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = Tree::findOne(9);
-        $node->insertAfter(Tree::findOne(16));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertAfter(Tree::findOne(16)));
         $dataSet = $this->getConnection()->createDataSet(['tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/tree-after-insert-exists-after-down.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -534,7 +551,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->insertAfter(MultipleRootsTree::findOne(24));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertAfter(MultipleRootsTree::findOne(24)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-exists-after-up.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -543,7 +561,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(31);
-        $node->insertAfter(MultipleRootsTree::findOne(38));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertAfter(MultipleRootsTree::findOne(38)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-exists-after-down.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
@@ -552,7 +571,8 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
         $node = MultipleRootsTree::findOne(9);
-        $node->insertAfter(MultipleRootsTree::findOne(53));
+        $node->name = 'Updated node 2';
+        $this->assertTrue($node->insertAfter(MultipleRootsTree::findOne(53)));
         $dataSet = $this->getConnection()->createDataSet(['multiple_roots_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/datasets/multiple-roots-tree-after-insert-exists-after-another-tree.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);

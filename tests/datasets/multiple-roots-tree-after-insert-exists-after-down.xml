@@ -30,7 +30,7 @@
     <multiple_roots_tree id="28" tree="23" lft="9" rgt="14" depth="2" name="Node 1.2"/>
     <multiple_roots_tree id="29" tree="23" lft="10" rgt="11" depth="3" name="Node 1.2.1"/>
     <multiple_roots_tree id="30" tree="23" lft="12" rgt="13" depth="3" name="Node 1.2.2"/>
-    <multiple_roots_tree id="31" tree="23" lft="30" rgt="43" depth="1" name="Node 2"/>
+    <multiple_roots_tree id="31" tree="23" lft="30" rgt="43" depth="1" name="Updated node 2"/>
     <multiple_roots_tree id="32" tree="23" lft="31" rgt="36" depth="2" name="Node 2.1"/>
     <multiple_roots_tree id="33" tree="23" lft="32" rgt="33" depth="3" name="Node 2.1.1"/>
     <multiple_roots_tree id="34" tree="23" lft="34" rgt="35" depth="3" name="Node 2.1.2"/>
