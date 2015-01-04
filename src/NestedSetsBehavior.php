@@ -195,10 +195,7 @@ class NestedSetsBehavior extends Behavior
             ['<=', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)]
         ];
 
-        if ($this->treeAttribute !== false) {
-            $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
-        }
-
+        $this->applyTreeAttributeCondition($condition);
         $result = $this->owner->deleteAll($condition);
         $this->owner->setOldAttributes(null);
         $this->owner->afterDelete();
@@ -225,9 +222,7 @@ class NestedSetsBehavior extends Behavior
             $condition[] = ['<=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) + $depth];
         }
 
-        if ($this->treeAttribute !== false) {
-            $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
-        }
+        $this->applyTreeAttributeCondition($condition);
 
         return $query->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
     }
@@ -251,9 +246,7 @@ class NestedSetsBehavior extends Behavior
             $condition[] = ['>=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) - $depth];
         }
 
-        if ($this->treeAttribute !== false) {
-            $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
-        }
+        $this->applyTreeAttributeCondition($condition);
 
         return $query->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
     }
@@ -266,10 +259,7 @@ class NestedSetsBehavior extends Behavior
     {
         $query = $this->owner->find();
         $condition = [$this->rightAttribute => $this->owner->getAttribute($this->leftAttribute) - 1];
-
-        if ($this->treeAttribute !== false) {
-            $condition = ['and', $condition, [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)]];
-        }
+        $this->applyTreeAttributeCondition($condition);
 
         return $query->andWhere($condition);
     }
@@ -282,10 +272,7 @@ class NestedSetsBehavior extends Behavior
     {
         $query = $this->owner->find();
         $condition = [$this->leftAttribute => $this->owner->getAttribute($this->rightAttribute) + 1];
-
-        if ($this->treeAttribute !== false) {
-            $condition = ['and', $condition, [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)]];
-        }
+        $this->applyTreeAttributeCondition($condition);
 
         return $query->andWhere($condition);
     }
@@ -324,32 +311,6 @@ class NestedSetsBehavior extends Behavior
     public function isRoot()
     {
         return $this->owner->getAttribute($this->leftAttribute) == 1;
-    }
-
-    /**
-     * @param integer $value
-     * @param integer $delta
-     */
-    protected function shiftLeftRightAttribute($value, $delta)
-    {
-        $db = $this->owner->getDb();
-
-        foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
-            $condition = ['>=', $attribute, $value];
-
-            if ($this->treeAttribute !== false) {
-                $condition = [
-                    'and',
-                    $condition,
-                    [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)]
-                ];
-            }
-
-            $this->owner->updateAll(
-                [$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $delta))],
-                $condition
-            );
-        }
     }
 
     /**
@@ -548,14 +509,13 @@ class NestedSetsBehavior extends Behavior
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
         $rightValue = $this->owner->getAttribute($this->rightAttribute);
         $depthValue = $this->owner->getAttribute($this->depthAttribute);
-        $treeValue = $this->owner->getAttribute($this->treeAttribute);
         $leftAttribute = $db->quoteColumnName($this->leftAttribute);
         $rightAttribute = $db->quoteColumnName($this->rightAttribute);
         $depthAttribute = $db->quoteColumnName($this->depthAttribute);
         $nodeRootValue = $this->node->getAttribute($this->treeAttribute);
         $depth = $this->node->getAttribute($this->depthAttribute) - $depthValue + $depth;
 
-        if ($this->treeAttribute === false || $treeValue === $nodeRootValue) {
+        if ($this->treeAttribute === false || $this->owner->getAttribute($this->treeAttribute) === $nodeRootValue) {
             $delta = $rightValue - $leftValue + 1;
             $this->shiftLeftRightAttribute($value, $delta);
 
@@ -565,10 +525,7 @@ class NestedSetsBehavior extends Behavior
             }
 
             $condition = ['and', ['>=', $this->leftAttribute, $leftValue], ['<=', $this->rightAttribute, $rightValue]];
-
-            if ($this->treeAttribute !== false) {
-                $condition[] = [$this->treeAttribute => $treeValue];
-            }
+            $this->applyTreeAttributeCondition($condition);
 
             $this->owner->updateAll(
                 [$this->depthAttribute => new Expression($depthAttribute . sprintf('%+d', $depth))],
@@ -577,10 +534,7 @@ class NestedSetsBehavior extends Behavior
 
             foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
                 $condition = ['and', ['>=', $attribute, $leftValue], ['<=', $attribute, $rightValue]];
-
-                if ($this->treeAttribute !== false) {
-                    $condition[] = [$this->treeAttribute => $treeValue];
-                }
+                $this->applyTreeAttributeCondition($condition);
 
                 $this->owner->updateAll(
                     [$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $value - $leftValue))],
@@ -610,7 +564,7 @@ class NestedSetsBehavior extends Behavior
                     'and',
                     ['>=', $this->leftAttribute, $leftValue],
                     ['<=', $this->rightAttribute, $rightValue],
-                    [$this->treeAttribute => $treeValue],
+                    [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)],
                 ]
             );
 
@@ -652,10 +606,7 @@ class NestedSetsBehavior extends Behavior
                 ['<=', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)]
             ];
 
-            if ($this->treeAttribute !== false) {
-                $condition[] = [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)];
-            }
-
+            $this->applyTreeAttributeCondition($condition);
             $db = $this->owner->getDb();
 
             $this->owner->updateAll(
@@ -672,5 +623,39 @@ class NestedSetsBehavior extends Behavior
 
         $this->operation = null;
         $this->node = null;
+    }
+
+    /**
+     * @param integer $value
+     * @param integer $delta
+     */
+    protected function shiftLeftRightAttribute($value, $delta)
+    {
+        $db = $this->owner->getDb();
+
+        foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
+            $condition = ['>=', $attribute, $value];
+            $this->applyTreeAttributeCondition($condition);
+
+            $this->owner->updateAll(
+                [$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $delta))],
+                $condition
+            );
+        }
+    }
+
+    /**
+     * @param array $condition
+     */
+    protected function applyTreeAttributeCondition(&$condition)
+    {
+        if ($this->treeAttribute !== false) {
+            $condition = [
+                'and',
+                $condition,
+                [$this->treeAttribute => $this->owner->getAttribute($this->treeAttribute)]
+            ];
+        }
+
     }
 }
