@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <tree id="10" lft="17" rgt="22" depth="2" name="Node 2.1"/>
+    <tree id="11" lft="18" rgt="19" depth="3" name="Node 2.1.1"/>
+    <tree id="12" lft="20" rgt="21" depth="3" name="Node 2.1.2"/>
+    <tree id="13" lft="23" rgt="28" depth="2" name="Node 2.2"/>
+    <tree id="14" lft="24" rgt="25" depth="3" name="Node 2.2.1"/>
+    <tree id="15" lft="26" rgt="27" depth="3" name="Node 2.2.2"/>
+    <multiple_roots_tree id="32" tree="23" lft="17" rgt="22" depth="2" name="Node 2.1"/>
+    <multiple_roots_tree id="33" tree="23" lft="18" rgt="19" depth="3" name="Node 2.1.1"/>
+    <multiple_roots_tree id="34" tree="23" lft="20" rgt="21" depth="3" name="Node 2.1.2"/>
+    <multiple_roots_tree id="35" tree="23" lft="23" rgt="28" depth="2" name="Node 2.2"/>
+    <multiple_roots_tree id="36" tree="23" lft="24" rgt="25" depth="3" name="Node 2.2.1"/>
+    <multiple_roots_tree id="37" tree="23" lft="26" rgt="27" depth="3" name="Node 2.2.2"/>
+</dataset>

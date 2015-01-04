@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <tree id="1" lft="1" rgt="44" depth="0" name="Root"/>
+    <multiple_roots_tree id="1" tree="1" lft="1" rgt="44" depth="0" name="Root 1"/>
+    <multiple_roots_tree id="23" tree="23" lft="1" rgt="44" depth="0" name="Root 2"/>
+    <multiple_roots_tree id="45" tree="45" lft="1" rgt="44" depth="0" name="Root 3"/>
+</dataset>

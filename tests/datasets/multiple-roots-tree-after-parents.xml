@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-    <multiple_roots_tree id="23" tree="23" lft="1" rgt="44" depth="0" name="Root 2"/>
-    <multiple_roots_tree id="31" tree="23" lft="16" rgt="29" depth="1" name="Node 2"/>
-    <multiple_roots_tree id="32" tree="23" lft="17" rgt="22" depth="2" name="Node 2.1"/>
-</dataset>
