@@ -226,7 +226,7 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * Gets the ancestors of the node.
+     * Gets the parents of the node.
      * @param integer $depth the depth
      * @return \yii\db\ActiveQuery
      */
