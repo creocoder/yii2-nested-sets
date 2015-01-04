@@ -503,13 +503,11 @@ class NestedSetsBehavior extends Behavior
         $leftValue = $this->owner->getAttribute($this->leftAttribute);
         $rightValue = $this->owner->getAttribute($this->rightAttribute);
         $depthValue = $this->owner->getAttribute($this->depthAttribute);
-        $leftAttribute = $db->quoteColumnName($this->leftAttribute);
-        $rightAttribute = $db->quoteColumnName($this->rightAttribute);
         $depthAttribute = $db->quoteColumnName($this->depthAttribute);
-        $nodeRootValue = $this->node->getAttribute($this->treeAttribute);
         $depth = $this->node->getAttribute($this->depthAttribute) - $depthValue + $depth;
 
-        if ($this->treeAttribute === false || $this->owner->getAttribute($this->treeAttribute) === $nodeRootValue) {
+        if ($this->treeAttribute === false
+            || $this->owner->getAttribute($this->treeAttribute) === $this->node->getAttribute($this->treeAttribute)) {
             $delta = $rightValue - $leftValue + 1;
             $this->shiftLeftRightAttribute($value, $delta);
 
@@ -538,6 +536,10 @@ class NestedSetsBehavior extends Behavior
 
             $this->shiftLeftRightAttribute($rightValue + 1, -$delta);
         } else {
+            $leftAttribute = $db->quoteColumnName($this->leftAttribute);
+            $rightAttribute = $db->quoteColumnName($this->rightAttribute);
+            $nodeRootValue = $this->node->getAttribute($this->treeAttribute);
+
             foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
                 $this->owner->updateAll(
                     [$attribute => new Expression($db->quoteColumnName($attribute) . sprintf('%+d', $rightValue - $leftValue + 1))],
