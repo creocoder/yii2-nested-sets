@@ -25,6 +25,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
      */
     public function getDataSet()
     {
-        return $this->createFlatXMLDataSet(__DIR__ . '/datasets/_init.xml');
+        return $this->createFlatXMLDataSet(__DIR__ . '/data/test.xml');
     }
 }
