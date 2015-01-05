@@ -16,7 +16,7 @@ use yii\db\Expression;
 /**
  * NestedSetsBehavior
  *
- * @property \yii\db\ActiveRecord $owner
+ * @property ActiveRecord $owner
  *
  * @author Alexander Kochetov <creocoder@gmail.com>
  */
@@ -50,7 +50,7 @@ class NestedSetsBehavior extends Behavior
      */
     protected $operation;
     /**
-     * @var \yii\db\ActiveRecord|null
+     * @var ActiveRecord|null
      */
     protected $node;
 
@@ -86,7 +86,7 @@ class NestedSetsBehavior extends Behavior
     /**
      * Creates a node as the first child of the target node if the active
      * record is new or moves it as the first child of the target node.
-     * @param \yii\db\ActiveRecord $node
+     * @param ActiveRecord $node
      * @param boolean $runValidation
      * @param array $attributes
      * @return boolean
@@ -102,7 +102,7 @@ class NestedSetsBehavior extends Behavior
     /**
      * Creates a node as the last child of the target node if the active
      * record is new or moves it as the last child of the target node.
-     * @param \yii\db\ActiveRecord $node
+     * @param ActiveRecord $node
      * @param boolean $runValidation
      * @param array $attributes
      * @return boolean
@@ -118,7 +118,7 @@ class NestedSetsBehavior extends Behavior
     /**
      * Creates a node as the previous sibling of the target node if the active
      * record is new or moves it as the previous sibling of the target node.
-     * @param \yii\db\ActiveRecord $node
+     * @param ActiveRecord $node
      * @param boolean $runValidation
      * @param array $attributes
      * @return boolean
@@ -134,7 +134,7 @@ class NestedSetsBehavior extends Behavior
     /**
      * Creates a node as the next sibling of the target node if the active
      * record is new or moves it as the next sibling of the target node.
-     * @param \yii\db\ActiveRecord $node
+     * @param ActiveRecord $node
      * @param boolean $runValidation
      * @param array $attributes
      * @return boolean
@@ -273,7 +273,7 @@ class NestedSetsBehavior extends Behavior
 
     /**
      * Determines whether the node is child of the parent node.
-     * @param \yii\db\ActiveRecord $node the parent node
+     * @param ActiveRecord $node the parent node
      * @return boolean whether the node is child of the parent node
      */
     public function isChildOf($node)
@@ -308,7 +308,6 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @throws Exception
      * @throws NotSupportedException
      */
     public function beforeInsert()
@@ -443,7 +442,7 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @throws Exception
+     * @return void
      */
     public function afterUpdate()
     {
@@ -506,7 +505,6 @@ class NestedSetsBehavior extends Behavior
     /**
      * @param integer $value
      * @param integer $depth
-     * @throws Exception
      */
     protected function moveNode($value, $depth)
     {
@@ -597,7 +595,7 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * @throws Exception
+     * @return void
      */
     public function afterDelete()
     {
