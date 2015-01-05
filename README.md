@@ -70,4 +70,80 @@ class TreeQuery extends \yii\db\ActiveQuery
 
 ## Usage
 
-TBD.
+### Quick Example
+#### Making a root node
+
+```php
+$countries = new Menu(['name' => 'Countries']);
+$countries->makeRoot();
+```
+
+#### Make a node as the last child of another node
+
+```php
+$australia = new Menu(['name' => 'Australia']);
+$australia->appendTo($countries);
+```
+
+The tree will look like this
+```
+- Countries
+    - Australia
+```
+
+#### Make a node as the first child of another node
+
+```php
+$russia = new Menu(['name' => 'Russia']);
+$russia->prependTo($countries);
+```
+
+The tree will look like this
+```
+- Countries
+    - Russia
+    - Australia
+```
+
+#### Append a node after another node
+
+```php
+$newZeeland = new Menu(['name' => 'New Zeeland']);
+$newZeeland->insertBefore($australia);
+```
+
+The tree will look like this
+```
+- Countries
+    - Russia
+    - New Zeeland
+    - Australia
+```
+
+#### Append a node before another node
+
+```php
+$argentina = new Menu(['name' => 'Argentina']);
+$argentina->insertAfter($australia);
+```
+
+The tree will look like this
+```
+- Countries
+    - Russia
+    - New Zeeland
+    - Australia
+    - Argentina
+```
+
+### Installation
+
+Configuring the model soon to come
+
+## BASIC USAGE
+
+Soon to come
+
+## ADVANCED USAGE
+
+Soon to come
