@@ -150,3 +150,15 @@ The tree will look like this
     - Australia
     - Argentina
 ```
+
+### Installation
+
+Configuring the model soon to come
+
+## BASIC USAGE
+
+Soon to come
+
+## ADVANCED USAGE
+
+Soon to come
