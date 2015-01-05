@@ -105,21 +105,6 @@ The tree will look like this
     - Australia
 ```
 
-#### Append a node before another node
-
-```php
-$newZeeland = new Menu(['name' => 'New Zeeland']);
-$newZeeland->insertBefore($australia);
-```
-
-The tree will look like this
-```
-- Countries
-    - Russia
-    - New Zeeland
-    - Australia
-```
-
 #### Append a node after another node
 
 ```php
