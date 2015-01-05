@@ -105,7 +105,7 @@ The tree will look like this
     - Australia
 ```
 
-#### Append a node after another node
+#### Append a node before another node
 
 ```php
 $newZeeland = new Menu(['name' => 'New Zeeland']);
@@ -120,7 +120,7 @@ The tree will look like this
     - Australia
 ```
 
-#### Append a node before another node
+#### Append a node after another node
 
 ```php
 $argentina = new Menu(['name' => 'Argentina']);
