@@ -22,10 +22,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->setDataSet($dataSet);
         $this->getDatabaseTester()->onSetUp();
 
-        $node = new Tree(['id' => 1, 'name' => 'Root']);
+        $node = new Tree(['name' => 'Root']);
         $this->assertTrue($node->makeRoot());
 
-        $node = new MultipleRootsTree(['id' => 1, 'name' => 'Root']);
+        $node = new MultipleRootsTree(['name' => 'Root']);
         $this->assertTrue($node->makeRoot());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_roots_tree']);
@@ -38,16 +38,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testMakeRootNewExceptionIsRaisedWhenTreeAttributeIsFalseAndRootIsExists()
     {
-        $node = new Tree(['id' => 2, 'name' => 'Root']);
+        $node = new Tree(['name' => 'Root']);
         $node->makeRoot();
     }
 
     public function testPrependToNew()
     {
-        $node = new Tree(['id' => 23, 'name' => 'New node']);
+        $node = new Tree(['name' => 'New node']);
         $this->assertTrue($node->prependTo(Tree::findOne(9)));
 
-        $node = new MultipleRootsTree(['id' => 67, 'name' => 'New node']);
+        $node = new MultipleRootsTree(['name' => 'New node']);
         $this->assertTrue($node->prependTo(MultipleRootsTree::findOne(31)));
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_roots_tree']);
@@ -66,10 +66,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
 
     public function testAppendToNew()
     {
-        $node = new Tree(['id' => 23, 'name' => 'New node']);
+        $node = new Tree(['name' => 'New node']);
         $this->assertTrue($node->appendTo(Tree::findOne(9)));
 
-        $node = new MultipleRootsTree(['id' => 67, 'name' => 'New node']);
+        $node = new MultipleRootsTree(['name' => 'New node']);
         $this->assertTrue($node->appendTo(MultipleRootsTree::findOne(31)));
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_roots_tree']);
@@ -88,10 +88,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
 
     public function testInsertBeforeNew()
     {
-        $node = new Tree(['id' => 23, 'name' => 'New node']);
+        $node = new Tree(['name' => 'New node']);
         $this->assertTrue($node->insertBefore(Tree::findOne(9)));
 
-        $node = new MultipleRootsTree(['id' => 67, 'name' => 'New node']);
+        $node = new MultipleRootsTree(['name' => 'New node']);
         $this->assertTrue($node->insertBefore(MultipleRootsTree::findOne(31)));
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_roots_tree']);
@@ -119,10 +119,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
 
     public function testInsertAfterNew()
     {
-        $node = new Tree(['id' => 23, 'name' => 'New node']);
+        $node = new Tree(['name' => 'New node']);
         $this->assertTrue($node->insertAfter(Tree::findOne(9)));
 
-        $node = new MultipleRootsTree(['id' => 67, 'name' => 'New node']);
+        $node = new MultipleRootsTree(['name' => 'New node']);
         $this->assertTrue($node->insertAfter(MultipleRootsTree::findOne(31)));
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_roots_tree']);
@@ -519,7 +519,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
      */
     public function testExceptionIsRaisedWhenInsertIsCalled()
     {
-        $node = new Tree(['id' => 1, 'name' => 'Node']);
+        $node = new Tree(['name' => 'Node']);
         $node->insert();
     }
 
