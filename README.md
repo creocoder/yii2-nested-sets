@@ -53,6 +53,7 @@ class Tree extends \yii\db\ActiveRecord
 }
 ```
 
+### Single Tree mode
 Second you need to configure query model as follows:
 
 ```php
@@ -65,6 +66,38 @@ class TreeQuery extends \yii\db\ActiveQuery
             NestedSetsQueryBehavior::className(),
         ];
     }
+}
+```
+
+The model has to have several fields:
+1. `lft`, type integer, if you do not want to use this default name you have to set up the behavior in this way.
+The example assumes that you want to change the name to `left`.
+```php
+public function behaviors() {
+    return [
+        'nestedSets' => [
+            'class' => NestedSetsBehavior::className(),
+            'leftAttribute' => 'left',
+        ],
+    ];
+}
+```
+2. `rgt`, type integer. To change the name of the field make the same setting as for lft,
+but use the attribute `rightAttribute`
+3. `depth`, type integer. To change the name of the field make the same setting as for lft,
+but use the attribute `depthAttribute`
+
+### Multiple Tree mode
+If you use a tree with multiple roots, besides the fields set up for the single tree, you have to set up an additional
+field. The type of the new field is integer. The following example is for a tree attribute field named `root`
+```php
+public function behaviors() {
+    return [
+        'nestedSets' => [
+            'class' => NestedSetsBehavior::className(),
+            'treeAttribute' => 'root',
+        ],
+    ];
 }
 ```
 
