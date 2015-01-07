@@ -69,9 +69,11 @@ class TreeQuery extends \yii\db\ActiveQuery
 }
 ```
 
-The model has to have several fields:
-1. `lft`, type integer, if you do not want to use this default name you have to set up the behavior in this way.
-The example assumes that you want to change the name to `left`.
+The model has to have several fields. The fields that need to be set up are:
+
+1. `lft`, type integer. If you do not want to use this default name you can change it by setting up
+the `rightAttribute` attribute. The example assumes that you want to change the name to `left`.
+
 ```php
 public function behaviors() {
     return [
@@ -82,10 +84,25 @@ public function behaviors() {
     ];
 }
 ```
+
 2. `rgt`, type integer. To change the name of the field make the same setting as for lft,
 but use the attribute `rightAttribute`
+
 3. `depth`, type integer. To change the name of the field make the same setting as for lft,
 but use the attribute `depthAttribute`
+
+
+These fields should be set up in the rules section of the model like this.
+```php
+public function rules()
+    {
+        return [
+            ............
+            [['lft', 'rgt', 'depth'], 'integer'],
+            ............
+        ];
+    }
+```
 
 ### Multiple Tree mode
 If you use a tree with multiple roots, besides the fields set up for the single tree, you have to set up an additional
@@ -100,6 +117,8 @@ public function behaviors() {
     ];
 }
 ```
+
+Add this field to the rules function in the same way as the ones for the single tree.
 
 ## Usage
 
