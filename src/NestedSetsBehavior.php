@@ -248,6 +248,24 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
+     * Gets the leaves of the node.
+     * @return \yii\db\ActiveQuery
+     */
+    public function leaves()
+    {
+        $condition = [
+            'and',
+            ['>', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
+            ['<', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
+            [$this->rightAttribute => new Expression($this->owner->getDb()->quoteColumnName($this->leftAttribute) . '+ 1')],
+        ];
+
+        $this->applyTreeAttributeCondition($condition);
+
+        return $this->owner->find()->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
+    }
+
+    /**
      * Gets the previous sibling of the node.
      * @return \yii\db\ActiveQuery
      */
