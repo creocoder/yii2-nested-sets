@@ -204,28 +204,6 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
-     * Gets the children of the node.
-     * @param integer $depth the depth
-     * @return \yii\db\ActiveQuery
-     */
-    public function children($depth = null)
-    {
-        $condition = [
-            'and',
-            ['>', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
-            ['<', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
-        ];
-
-        if ($depth !== null) {
-            $condition[] = ['<=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) + $depth];
-        }
-
-        $this->applyTreeAttributeCondition($condition);
-
-        return $this->owner->find()->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
-    }
-
-    /**
      * Gets the parents of the node.
      * @param integer $depth the depth
      * @return \yii\db\ActiveQuery
@@ -240,6 +218,28 @@ class NestedSetsBehavior extends Behavior
 
         if ($depth !== null) {
             $condition[] = ['>=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) - $depth];
+        }
+
+        $this->applyTreeAttributeCondition($condition);
+
+        return $this->owner->find()->andWhere($condition)->addOrderBy([$this->leftAttribute => SORT_ASC]);
+    }
+
+    /**
+     * Gets the children of the node.
+     * @param integer $depth the depth
+     * @return \yii\db\ActiveQuery
+     */
+    public function children($depth = null)
+    {
+        $condition = [
+            'and',
+            ['>', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
+            ['<', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
+        ];
+
+        if ($depth !== null) {
+            $condition[] = ['<=', $this->depthAttribute, $this->owner->getAttribute($this->depthAttribute) + $depth];
         }
 
         $this->applyTreeAttributeCondition($condition);
@@ -272,6 +272,15 @@ class NestedSetsBehavior extends Behavior
     }
 
     /**
+     * Determines whether the node is root.
+     * @return boolean whether the node is root
+     */
+    public function isRoot()
+    {
+        return $this->owner->getAttribute($this->leftAttribute) == 1;
+    }
+
+    /**
      * Determines whether the node is child of the parent node.
      * @param ActiveRecord $node the parent node
      * @return boolean whether the node is child of the parent node
@@ -296,15 +305,6 @@ class NestedSetsBehavior extends Behavior
     public function isLeaf()
     {
         return $this->owner->getAttribute($this->rightAttribute) - $this->owner->getAttribute($this->leftAttribute) === 1;
-    }
-
-    /**
-     * Determines whether the node is root.
-     * @return boolean whether the node is root
-     */
-    public function isRoot()
-    {
-        return $this->owner->getAttribute($this->leftAttribute) == 1;
     }
 
     /**
