@@ -180,7 +180,27 @@ The tree will look like this
 
 ### Installation
 
-Configuring the model soon to come
+#### Migration
+
+This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension.  
+
+```php
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+        
+		$this->createTable('Menu', [
+            .....................
+            'root' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            'lft' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            'rgt' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            'depth' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            .....................
+        ], $tableOptions);
+```
+
+If you are using a model with a single node you should remove the root field as it is unnecessary.
 
 ## BASIC USAGE
 
