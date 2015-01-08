@@ -530,25 +530,6 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertEquals(1, $node->update());
     }
 
-    public function testChildren()
-    {
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->children()->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children()->all()),
-        ]);
-
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-children.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
-
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->children(1)->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children(1)->all()),
-        ]);
-
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-children-with-depth.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
-    }
-
     public function testParents()
     {
         $dataSet = new ArrayDataSet([
@@ -565,6 +546,25 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         ]);
 
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-parents-with-depth.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+    }
+
+    public function testChildren()
+    {
+        $dataSet = new ArrayDataSet([
+            'tree' => ArrayHelper::toArray(Tree::findOne(9)->children()->all()),
+            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children()->all()),
+        ]);
+
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-children.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+
+        $dataSet = new ArrayDataSet([
+            'tree' => ArrayHelper::toArray(Tree::findOne(9)->children(1)->all()),
+            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children(1)->all()),
+        ]);
+
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-children-with-depth.xml');
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
@@ -590,6 +590,12 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
+    public function testIsRoot()
+    {
+        $this->assertTrue(Tree::findOne(1)->isRoot());
+        $this->assertFalse(Tree::findOne(2)->isRoot());
+    }
+
     public function testIsChildOf()
     {
         $node = MultipleRootsTree::findOne(26);
@@ -603,11 +609,5 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $this->assertTrue(Tree::findOne(4)->isLeaf());
         $this->assertFalse(Tree::findOne(1)->isLeaf());
-    }
-
-    public function testIsRoot()
-    {
-        $this->assertTrue(Tree::findOne(1)->isRoot());
-        $this->assertFalse(Tree::findOne(2)->isRoot());
     }
 }
