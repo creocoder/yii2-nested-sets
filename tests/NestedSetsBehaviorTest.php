@@ -568,6 +568,17 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertDataSetsEqual($expectedDataSet, $dataSet);
     }
 
+    public function testLeaves()
+    {
+        $dataSet = new ArrayDataSet([
+            'tree' => ArrayHelper::toArray(Tree::findOne(9)->leaves()->all()),
+            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->leaves()->all()),
+        ]);
+
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-leaves.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+    }
+
     public function testPrev()
     {
         $dataSet = new ArrayDataSet([
