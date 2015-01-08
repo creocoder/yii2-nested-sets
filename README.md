@@ -92,17 +92,7 @@ but use the attribute `rightAttribute`
 but use the attribute `depthAttribute`
 
 
-These fields should be set up in the rules section of the model like this.
-```php
-public function rules()
-    {
-        return [
-            ............
-            [['lft', 'rgt', 'depth'], 'integer'],
-            ............
-        ];
-    }
-```
+You should not add these fields to the rules() section of the model.
 
 ### Multiple Tree mode
 If you use a tree with multiple roots, besides the fields set up for the single tree, you have to set up an additional
@@ -118,7 +108,7 @@ public function behaviors() {
 }
 ```
 
-Add this field to the rules function in the same way as the ones for the single tree.
+You should not add this field to the rules() section of the model.
 
 ## Usage
 
