@@ -532,73 +532,87 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
 
     public function testParents()
     {
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(11)->parents()->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(33)->parents()->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-parents.php'),
+            ArrayHelper::toArray(Tree::findOne(11)->parents()->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-parents.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-parents-multiple-roots.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(33)->parents()->all())
+        );
 
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(11)->parents(1)->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(33)->parents(1)->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-parents-with-depth.php'),
+            ArrayHelper::toArray(Tree::findOne(11)->parents(1)->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-parents-with-depth.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-parents-multiple-roots-with-depth.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(33)->parents(1)->all())
+        );
     }
 
     public function testChildren()
     {
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->children()->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children()->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-children.php'),
+            ArrayHelper::toArray(Tree::findOne(9)->children()->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-children.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-children-multiple-roots.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children()->all())
+        );
 
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->children(1)->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children(1)->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-children-with-depth.php'),
+            ArrayHelper::toArray(Tree::findOne(9)->children(1)->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-children-with-depth.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-children-multiple-roots-with-depth.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(31)->children(1)->all())
+        );
     }
 
     public function testLeaves()
     {
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->leaves()->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->leaves()->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-leaves.php'),
+            ArrayHelper::toArray(Tree::findOne(9)->leaves()->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-leaves.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-leaves-multiple-roots.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(31)->leaves()->all())
+        );
     }
 
     public function testPrev()
     {
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->prev()->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->prev()->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-prev.php'),
+            ArrayHelper::toArray(Tree::findOne(9)->prev()->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-prev.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-prev-multiple-roots.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(31)->prev()->all())
+        );
     }
 
     public function testNext()
     {
-        $dataSet = new ArrayDataSet([
-            'tree' => ArrayHelper::toArray(Tree::findOne(9)->next()->all()),
-            'multiple_roots_tree' => ArrayHelper::toArray(MultipleRootsTree::findOne(31)->next()->all()),
-        ]);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-next.php'),
+            ArrayHelper::toArray(Tree::findOne(9)->next()->all())
+        );
 
-        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-next.xml');
-        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+        $this->assertEquals(
+            require(__DIR__ . '/data/test-next-multiple-roots.php'),
+            ArrayHelper::toArray(MultipleRootsTree::findOne(31)->next()->all())
+        );
     }
 
     public function testIsRoot()
