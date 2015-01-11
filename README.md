@@ -143,7 +143,7 @@ class TreeQuery extends \yii\db\ActiveQuery
 The model has to have several fields. The fields that need to be set up are:
 
 1. `lft`, type integer. If you do not want to use this default name you can change it by setting up
-the `leftAttribute` attribute. The example assumes that you want to change the name to `left`.
+the `leftAttribute` attribute. The example assumes that you want to change the name to `left`
 
     ```php
     public function behaviors() {
@@ -180,15 +180,15 @@ public function behaviors() {
 
 ### Migration examples
 
-This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension.
+This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension
 
 ```php
-$this->createTable('menu', [
-    //...
-    'root' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-    'lft' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-    'rgt' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-    'depth' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+$this->createTable('{{%menu}}', [
+    'id' => Schema::TYPE_PK,
+    'root' => Schema::TYPE_INTEGER,
+    'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
     //...
 ]);
 ```
