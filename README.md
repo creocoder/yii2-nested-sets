@@ -44,7 +44,7 @@ The tree will look like this
     - Australia
 ```
 
-### Append a node before another node
+### Insert a node before another node
 
 ```php
 $newZeeland = new Menu(['name' => 'New Zeeland']);
@@ -60,11 +60,11 @@ The tree will look like this
     - Australia
 ```
 
-### Append a node after another node
+### Insert a node after another node
 
 ```php
-$argentina = new Menu(['name' => 'Argentina']);
-$argentina->insertAfter($australia);
+$unitedStates = new Menu(['name' => 'United States']);
+$unitedStates->insertAfter($australia);
 ```
 
 The tree will look like this
@@ -73,7 +73,7 @@ The tree will look like this
     - Russia
     - New Zeeland
     - Australia
-    - Argentina
+    - United States
 ```
 
 ## Installation
