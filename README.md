@@ -197,9 +197,9 @@ If you are using a model with a single node you should remove the root field as 
 
 ## Advanced Usage
 
-### Getting all the root nodes
+### Getting the root nodes
 
-To get all the root nodes for a multiple tree
+To get all the root nodes
 
 ```php
 $roots = Menu::find()->roots()->all();
@@ -208,12 +208,22 @@ foreach($roots as $root) {
 }
 ```
 
-### Getting all the leaves
+### Getting the leaves nodes
 
-To get leaves for a multiple tree. The leaves are the nodes that have no children
+To get all the leaves nodes
 
 ```php
 $leaves = Menu::find()->leaves()->all();
+foreach($leaves as $leaf) {
+    echo $leaf->name;
+}
+```
+
+To get all the leaves of a node
+
+```php
+$countries = Menu::findOne(['name' => 'Countries']);
+$leaves = $countries->leaves()->all();
 foreach($leaves as $leaf) {
     echo $leaf->name;
 }
