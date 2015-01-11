@@ -177,8 +177,6 @@ public function behaviors() {
 
 You should not add this field to the rules() section of the model.
 
-## Usage
-
 ### Migration examples
 
 This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension.  
