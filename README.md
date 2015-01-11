@@ -23,6 +23,7 @@ $australia->appendTo($countries);
 ```
 
 The tree will look like this
+
 ```
 - Countries
     - Australia
@@ -36,6 +37,7 @@ $russia->prependTo($countries);
 ```
 
 The tree will look like this
+
 ```
 - Countries
     - Russia
@@ -50,6 +52,7 @@ $newZeeland->insertBefore($australia);
 ```
 
 The tree will look like this
+
 ```
 - Countries
     - Russia
@@ -93,7 +96,7 @@ to the `require` section of your `composer.json` file.
 
 ## Configuring
 
-First you need to configure model as follows:
+First you need to configure model as follows
 
 ```php
 use creocoder\nestedsets\NestedSetsBehavior;
@@ -122,7 +125,7 @@ class Tree extends \yii\db\ActiveRecord
 
 ### Single Tree mode
 
-Second you need to configure query model as follows:
+Second you need to configure query model as follows
 
 ```php
 use creocoder\nestedsets\NestedSetsQueryBehavior;
@@ -159,11 +162,11 @@ but use the attribute `rightAttribute`
 3. `depth`, type integer. To change the name of the field make the same setting as for lft,
 but use the attribute `depthAttribute`
 
-You should not add these fields to the rules() section of the model.
-
 ### Multiple Tree mode
+
 If you use a tree with multiple roots, besides the fields set up for the single tree, you have to set up an additional
 field. The type of the new field is integer. The following example is for a tree attribute field named `root`
+
 ```php
 public function behaviors() {
     return [
@@ -175,30 +178,29 @@ public function behaviors() {
 }
 ```
 
-You should not add this field to the rules() section of the model.
-
 ### Migration examples
 
-This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension.  
+This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension.
 
 ```php
-		$this->createTable('Menu', [
-            .....................
-            'root' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-            'lft' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-            'rgt' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-            'depth' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
-            .....................
-        ], $tableOptions);
+$this->createTable('menu', [
+    //...
+    'root' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+    'lft' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+    'rgt' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+    'depth' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+    //...
+]);
 ```
 
 If you are using a model with a single node you should remove the root field as it is unnecessary.
 
-## ADVANCED USAGE
+## Advanced Usage
 
 ### Getting all the root nodes
 
-To get all the root nodes for a multiple tree 
+To get all the root nodes for a multiple tree
+
 ```php
 $roots = Menu::find()->roots()->all();
 foreach($roots as $root) {
@@ -209,6 +211,7 @@ foreach($roots as $root) {
 ### Getting all the leaves
 
 To get leaves for a multiple tree. The leaves are the nodes that have no children
+
 ```php
 $leaves = Menu::find()->leaves()->all();
 foreach($leaves as $leaf) {
@@ -217,19 +220,22 @@ foreach($leaves as $leaf) {
 ```
 
 ### Getting children of a node
-To get all the children of a node. 
+
+To get all the children of a node
+
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
-$children = $countries->children()->all(); 
+$children = $countries->children()->all();
 foreach($children as $child) {
     echo $child->name;
 }
 ```
 
-To get the first level children of a node. 
+To get the first level children of a node
+
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
-$children = $countries->children(1)->all(); 
+$children = $countries->children(1)->all();
 foreach($children as $child) {
     echo $child->name;
 }
