@@ -196,7 +196,7 @@ If you are using a model with a single node you should remove the root field as 
 
 ## ADVANCED USAGE
 
-### Getting all the roots nodes
+### Getting all the root nodes
 
 To get all the root nodes for a multiple tree 
 ```php
@@ -206,6 +206,8 @@ foreach($roots as $root) {
 }
 ```
 
+### Getting all the leaves
+
 To get leaves for a multiple tree. The leaves are the nodes that have no children
 ```php
 $leaves = Menu::find()->leaves()->all();
@@ -214,6 +216,7 @@ foreach($leaves as $leaf) {
 }
 ```
 
+### Getting children of a node
 To get all the children of a node. 
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
