@@ -240,3 +240,23 @@ foreach($children as $child) {
     echo $child->name;
 }
 ```
+
+### Getting parents of a node
+
+To get all the parents of a node
+
+```php
+$countries = Menu::findOne(['name' => 'Countries']);
+$parents = $countries->parents()->all();
+foreach($parents as $parent) {
+    echo $parent->name;
+}
+```
+
+To get the first parent of a node
+
+```php
+$countries = Menu::findOne(['name' => 'Countries']);
+$parent = $countries->parents(1)->one();
+echo $parent->name;
+```
