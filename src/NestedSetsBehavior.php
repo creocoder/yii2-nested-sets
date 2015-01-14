@@ -213,7 +213,7 @@ class NestedSetsBehavior extends Behavior
         $condition = [
             'and',
             ['<', $this->leftAttribute, $this->owner->getAttribute($this->leftAttribute)],
-            ['>', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute)],
+	    ['<=', $this->rightAttribute, $this->owner->getAttribute($this->rightAttribute) + 1],
         ];
 
         if ($depth !== null) {
