@@ -10,6 +10,9 @@ install:
   - composer global require "fxp/composer-asset-plugin:1.0.0-beta4"
   - composer install
 
+before_script:
+  - mysql -e 'create database yii2_nested_sets_test;'
+
 script:
   - phpunit --coverage-clover=coverage.clover
 
