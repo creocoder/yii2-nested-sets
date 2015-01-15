@@ -29,4 +29,16 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
     {
         return $this->createFlatXMLDataSet(__DIR__ . '/data/test.xml');
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function setUp()
+    {
+        if (Yii::$app->get('db', false) === null) {
+            $this->markTestSkipped();
+        } else {
+            parent::setUp();
+        }
+    }
 }

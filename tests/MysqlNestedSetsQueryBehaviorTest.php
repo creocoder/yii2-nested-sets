@@ -20,20 +20,24 @@ class MysqlNestedSetsQueryBehaviorTest extends NestedSetsBehaviorTest
      */
     public static function setUpBeforeClass()
     {
-        Yii::$app->set('db', [
-            'class' => Connection::className(),
-            'dsn' => 'mysql:host=localhost;dbname=yii2_nested_sets_test',
-            'username' => 'root',
-            'password' => '',
-        ]);
+        try {
+            Yii::$app->set('db', [
+                'class' => Connection::className(),
+                'dsn' => 'mysql:host=localhost;dbname=yii2_nested_sets_test',
+                'username' => 'root',
+                'password' => '',
+            ]);
 
-        Yii::$app->getDb()->open();
-        $lines = explode(';', file_get_contents(__DIR__ . '/migrations/mysql.sql'));
+            Yii::$app->getDb()->open();
+            $lines = explode(';', file_get_contents(__DIR__ . '/migrations/mysql.sql'));
 
-        foreach ($lines as $line) {
-            if (trim($line) !== '') {
-                Yii::$app->getDb()->pdo->exec($line);
+            foreach ($lines as $line) {
+                if (trim($line) !== '') {
+                    Yii::$app->getDb()->pdo->exec($line);
+                }
             }
+        } catch (\Exception $e) {
+            Yii::$app->clear('db');
         }
     }
 }

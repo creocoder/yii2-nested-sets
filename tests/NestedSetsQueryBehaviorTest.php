@@ -49,18 +49,22 @@ class NestedSetsQueryBehaviorTest extends DatabaseTestCase
      */
     public static function setUpBeforeClass()
     {
-        Yii::$app->set('db', [
-            'class' => Connection::className(),
-            'dsn' => 'sqlite::memory:',
-        ]);
+        try {
+            Yii::$app->set('db', [
+                'class' => Connection::className(),
+                'dsn' => 'sqlite::memory:',
+            ]);
 
-        Yii::$app->getDb()->open();
-        $lines = explode(';', file_get_contents(__DIR__ . '/migrations/sqlite.sql'));
+            Yii::$app->getDb()->open();
+            $lines = explode(';', file_get_contents(__DIR__ . '/migrations/sqlite.sql'));
 
-        foreach ($lines as $line) {
-            if (trim($line) !== '') {
-                Yii::$app->getDb()->pdo->exec($line);
+            foreach ($lines as $line) {
+                if (trim($line) !== '') {
+                    Yii::$app->getDb()->pdo->exec($line);
+                }
             }
+        } catch (\Exception $e) {
+            Yii::$app->clear('db');
         }
     }
 }
