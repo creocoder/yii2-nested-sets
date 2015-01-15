@@ -9,6 +9,8 @@ namespace tests;
 
 use tests\models\MultipleRootsTree;
 use tests\models\Tree;
+use Yii;
+use yii\db\Connection;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -40,5 +42,25 @@ class NestedSetsQueryBehaviorTest extends DatabaseTestCase
             require(__DIR__ . '/data/test-leaves-multiple-roots-query.php'),
             ArrayHelper::toArray(MultipleRootsTree::find()->leaves()->all())
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass()
+    {
+        Yii::$app->set('db', [
+            'class' => Connection::className(),
+            'dsn' => 'sqlite::memory:',
+        ]);
+
+        Yii::$app->getDb()->open();
+        $lines = explode(';', file_get_contents(__DIR__ . '/migrations/sqlite.sql'));
+
+        foreach ($lines as $line) {
+            if (trim($line) !== '') {
+                Yii::$app->getDb()->pdo->exec($line);
+            }
+        }
     }
 }

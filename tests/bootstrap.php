@@ -10,20 +10,5 @@ Yii::setAlias('@tests', __DIR__);
 
 new \yii\console\Application([
     'id' => 'unit',
-    'basePath' => __DIR__ . '/..',
-    'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'sqlite::memory:',
-        ],
-    ],
+    'basePath' => __DIR__,
 ]);
-
-Yii::$app->db->open();
-$lines = explode(';', file_get_contents(__DIR__ . '/migrations/sqlite.sql'));
-
-foreach ($lines as $line) {
-    if (trim($line) !== '') {
-        Yii::$app->db->pdo->exec($line);
-    }
-}

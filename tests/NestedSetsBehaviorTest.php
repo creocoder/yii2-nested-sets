@@ -9,6 +9,8 @@ namespace tests;
 
 use tests\models\MultipleRootsTree;
 use tests\models\Tree;
+use Yii;
+use yii\db\Connection;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -634,5 +636,25 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $this->assertTrue(Tree::findOne(4)->isLeaf());
         $this->assertFalse(Tree::findOne(1)->isLeaf());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass()
+    {
+        Yii::$app->set('db', [
+            'class' => Connection::className(),
+            'dsn' => 'sqlite::memory:',
+        ]);
+
+        Yii::$app->getDb()->open();
+        $lines = explode(';', file_get_contents(__DIR__ . '/migrations/sqlite.sql'));
+
+        foreach ($lines as $line) {
+            if (trim($line) !== '') {
+                Yii::$app->getDb()->pdo->exec($line);
+            }
+        }
     }
 }
