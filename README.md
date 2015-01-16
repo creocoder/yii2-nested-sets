@@ -96,7 +96,7 @@ to the `require` section of your `composer.json` file.
 
 ## Configuring
 
-First you need to configure model as follows
+Configure model as follows
 
 ```php
 use creocoder\nestedsets\NestedSetsBehavior;
@@ -125,7 +125,7 @@ class Tree extends \yii\db\ActiveRecord
 
 ### Single Tree mode
 
-Second you need to configure query model as follows
+Configure query class as follows
 
 ```php
 use creocoder\nestedsets\NestedSetsQueryBehavior;
