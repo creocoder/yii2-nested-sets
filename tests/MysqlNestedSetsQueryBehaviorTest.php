@@ -13,7 +13,7 @@ use yii\db\Connection;
 /**
  * MysqlNestedSetsQueryBehaviorTest
  */
-class MysqlNestedSetsQueryBehaviorTest extends NestedSetsBehaviorTest
+class MysqlNestedSetsQueryBehaviorTest extends NestedSetsQueryBehaviorTest
 {
     /**
      * @inheritdoc
