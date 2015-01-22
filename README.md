@@ -38,7 +38,7 @@ inside the `up()` method add the following
 ```php
 $this->createTable('{{%menu}}', [
     'id' => Schema::TYPE_PK,
-    // 'root' => Schema::TYPE_INTEGER,
+    // 'tree' => Schema::TYPE_INTEGER,
     'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
     'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
     'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
@@ -46,7 +46,7 @@ $this->createTable('{{%menu}}', [
 ]);
 ```
 
-To use multiple tree mode uncomment `root` field.
+To use multiple tree mode uncomment `tree` field.
 
 ## Configuring
 
@@ -55,12 +55,12 @@ Configure model as follows
 ```php
 use creocoder\nestedsets\NestedSetsBehavior;
 
-class Tree extends \yii\db\ActiveRecord
+class Menu extends \yii\db\ActiveRecord
 {
     public function behaviors() {
         return [
             'class' => NestedSetsBehavior::className(),
-            // 'treeAttribute' => 'root',
+            // 'treeAttribute' => 'tree',
             // 'leftAttribute' => 'lft',
             // 'rightAttribute' => 'rgt',
             // 'depthAttribute' => 'depth',
@@ -76,19 +76,19 @@ class Tree extends \yii\db\ActiveRecord
 
     public static function find()
     {
-        return new TreeQuery(get_called_class());
+        return new MenuQuery(get_called_class());
     }
 }
 ```
 
-To use multiple tree mode uncomment `root` array key inside `behaviors()` method.
+To use multiple tree mode uncomment `treeAttribute` array key inside `behaviors()` method.
 
 Configure query class as follows
 
 ```php
 use creocoder\nestedsets\NestedSetsQueryBehavior;
 
-class TreeQuery extends \yii\db\ActiveQuery
+class MenuQuery extends \yii\db\ActiveQuery
 {
     public function behaviors() {
         return [
