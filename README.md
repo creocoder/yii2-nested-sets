@@ -109,6 +109,12 @@ $countries = new Menu(['name' => 'Countries']);
 $countries->makeRoot();
 ```
 
+The tree will look like this
+
+```
+- Countries
+```
+
 ### Prepending a node as the first child of another node
 
 To prepend a node as the first child of another node
@@ -123,7 +129,6 @@ The tree will look like this
 ```
 - Countries
     - Russia
-    - Australia
 ```
 
 ### Appending a node as the last child of another node
@@ -139,6 +144,7 @@ The tree will look like this
 
 ```
 - Countries
+    - Russia
     - Australia
 ```
 
