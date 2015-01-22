@@ -6,76 +6,6 @@
 
 A modern nested sets behavior for the Yii framework utilizing the Modified Preorder Tree Traversal algorithm.
 
-## Quick Example
-
-### Making a root node
-
-```php
-$countries = new Menu(['name' => 'Countries']);
-$countries->makeRoot();
-```
-
-### Make a node as the last child of another node
-
-```php
-$australia = new Menu(['name' => 'Australia']);
-$australia->appendTo($countries);
-```
-
-The tree will look like this
-
-```
-- Countries
-    - Australia
-```
-
-### Make a node as the first child of another node
-
-```php
-$russia = new Menu(['name' => 'Russia']);
-$russia->prependTo($countries);
-```
-
-The tree will look like this
-
-```
-- Countries
-    - Russia
-    - Australia
-```
-
-### Insert a node before another node
-
-```php
-$newZeeland = new Menu(['name' => 'New Zeeland']);
-$newZeeland->insertBefore($australia);
-```
-
-The tree will look like this
-
-```
-- Countries
-    - Russia
-    - New Zeeland
-    - Australia
-```
-
-### Insert a node after another node
-
-```php
-$unitedStates = new Menu(['name' => 'United States']);
-$unitedStates->insertAfter($australia);
-```
-
-The tree will look like this
-```
-- Countries
-    - Russia
-    - New Zeeland
-    - Australia
-    - United States
-```
-
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
@@ -94,6 +24,30 @@ or add
 
 to the `require` section of your `composer.json` file.
 
+## Migrations
+
+Run the following command
+
+```bash
+$ yii migrate/create create_menu_table
+```
+
+Open the `/path/to/migrations/m_xxxxxx_xxxxxx_create_menu_table.php` file,
+inside the `up()` method add the following
+
+```php
+$this->createTable('{{%menu}}', [
+    'id' => Schema::TYPE_PK,
+    // 'root' => Schema::TYPE_INTEGER,
+    'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
+    //...
+]);
+```
+
+To use multiple tree mode uncomment `root` field.
+
 ## Configuring
 
 Configure model as follows
@@ -105,7 +59,11 @@ class Tree extends \yii\db\ActiveRecord
 {
     public function behaviors() {
         return [
-            NestedSetsBehavior::className(),
+            'class' => NestedSetsBehavior::className(),
+            // 'treeAttribute' => 'root',
+            // 'leftAttribute' => 'lft',
+            // 'rightAttribute' => 'rgt',
+            // 'depthAttribute' => 'depth',
         ];
     }
 
@@ -123,7 +81,7 @@ class Tree extends \yii\db\ActiveRecord
 }
 ```
 
-### Single Tree mode
+To use multiple tree mode uncomment `root` array key inside `behaviors()` method.
 
 Configure query class as follows
 
@@ -140,62 +98,85 @@ class TreeQuery extends \yii\db\ActiveQuery
 }
 ```
 
-The model has to have several fields. The fields that need to be set up are:
+## Usage
 
-1. `lft`, type integer. If you do not want to use this default name you can change it by setting up
-the `leftAttribute` attribute. The example assumes that you want to change the name to `left`
+### Making a root node
 
-    ```php
-    public function behaviors() {
-        return [
-            'nestedSets' => [
-                'class' => NestedSetsBehavior::className(),
-                'leftAttribute' => 'left',
-            ],
-        ];
-    }
-    ```
-
-2. `rgt`, type integer. To change the name of the field make the same setting as for lft,
-but use the attribute `rightAttribute`
-
-3. `depth`, type integer. To change the name of the field make the same setting as for lft,
-but use the attribute `depthAttribute`
-
-### Multiple Tree mode
-
-If you use a tree with multiple roots, besides the fields set up for the single tree, you have to set up an additional
-field. The type of the new field is integer. The following example is for a tree attribute field named `root`
+To make a root node
 
 ```php
-public function behaviors() {
-    return [
-        'nestedSets' => [
-            'class' => NestedSetsBehavior::className(),
-            'treeAttribute' => 'root',
-        ],
-    ];
-}
+$countries = new Menu(['name' => 'Countries']);
+$countries->makeRoot();
 ```
 
-### Migration examples
+### Prepending a node as the first child of another node
 
-This is an example migration to create a table for a model (with multiple roots) and all the fields necessary for the extension
+To prepend a node as the first child of another node
 
 ```php
-$this->createTable('{{%menu}}', [
-    'id' => Schema::TYPE_PK,
-    'root' => Schema::TYPE_INTEGER,
-    'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
-    'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
-    'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
-    //...
-]);
+$russia = new Menu(['name' => 'Russia']);
+$russia->prependTo($countries);
 ```
 
-If you are using a model with a single node you should remove the root field as it is unnecessary.
+The tree will look like this
 
-## Advanced Usage
+```
+- Countries
+    - Russia
+    - Australia
+```
+
+### Appending a node as the last child of another node
+
+To append a node as the last child of another node
+
+```php
+$australia = new Menu(['name' => 'Australia']);
+$australia->appendTo($countries);
+```
+
+The tree will look like this
+
+```
+- Countries
+    - Australia
+```
+
+### Inserting a node before another node
+
+To insert a node before another node
+
+```php
+$newZeeland = new Menu(['name' => 'New Zeeland']);
+$newZeeland->insertBefore($australia);
+```
+
+The tree will look like this
+
+```
+- Countries
+    - Russia
+    - New Zeeland
+    - Australia
+```
+
+### Inserting a node after another node
+
+To insert a node after another node
+
+```php
+$unitedStates = new Menu(['name' => 'United States']);
+$unitedStates->insertAfter($australia);
+```
+
+The tree will look like this
+```
+- Countries
+    - Russia
+    - New Zeeland
+    - Australia
+    - United States
+```
 
 ### Getting the root nodes
 
@@ -203,9 +184,6 @@ To get all the root nodes
 
 ```php
 $roots = Menu::find()->roots()->all();
-foreach($roots as $root) {
-    echo $root->name;
-}
 ```
 
 ### Getting the leaves nodes
@@ -214,9 +192,6 @@ To get all the leaves nodes
 
 ```php
 $leaves = Menu::find()->leaves()->all();
-foreach($leaves as $leaf) {
-    echo $leaf->name;
-}
 ```
 
 To get all the leaves of a node
@@ -224,9 +199,6 @@ To get all the leaves of a node
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
 $leaves = $countries->leaves()->all();
-foreach($leaves as $leaf) {
-    echo $leaf->name;
-}
 ```
 
 ### Getting children of a node
@@ -236,9 +208,6 @@ To get all the children of a node
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
 $children = $countries->children()->all();
-foreach($children as $child) {
-    echo $child->name;
-}
 ```
 
 To get the first level children of a node
@@ -246,9 +215,6 @@ To get the first level children of a node
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
 $children = $countries->children(1)->all();
-foreach($children as $child) {
-    echo $child->name;
-}
 ```
 
 ### Getting parents of a node
@@ -258,9 +224,6 @@ To get all the parents of a node
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
 $parents = $countries->parents()->all();
-foreach($parents as $parent) {
-    echo $parent->name;
-}
 ```
 
 To get the first parent of a node
@@ -268,5 +231,4 @@ To get the first parent of a node
 ```php
 $countries = Menu::findOne(['name' => 'Countries']);
 $parent = $countries->parents(1)->one();
-echo $parent->name;
 ```
