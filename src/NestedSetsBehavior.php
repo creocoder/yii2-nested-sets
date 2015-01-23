@@ -205,7 +205,7 @@ class NestedSetsBehavior extends Behavior
 
     /**
      * Gets the parents of the node.
-     * @param integer $depth the depth
+     * @param integer|null $depth the depth
      * @return \yii\db\ActiveQuery
      */
     public function parents($depth = null)
@@ -227,7 +227,7 @@ class NestedSetsBehavior extends Behavior
 
     /**
      * Gets the children of the node.
-     * @param integer $depth the depth
+     * @param integer|null $depth the depth
      * @return \yii\db\ActiveQuery
      */
     public function children($depth = null)
