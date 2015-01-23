@@ -30,6 +30,10 @@ class NestedSetsBehavior extends Behavior
     const OPERATION_DELETE_WITH_CHILDREN = 'deleteWithChildren';
 
     /**
+     * @var string|false
+     */
+    public $treeAttribute = false;
+    /**
      * @var string
      */
     public $leftAttribute = 'lft';
@@ -37,10 +41,6 @@ class NestedSetsBehavior extends Behavior
      * @var string
      */
     public $rightAttribute = 'rgt';
-    /**
-     * @var string|false
-     */
-    public $treeAttribute = false;
     /**
      * @var string
      */
@@ -305,12 +305,11 @@ class NestedSetsBehavior extends Behavior
      */
     public function isChildOf($node)
     {
-        $result = ($this->owner->getAttribute($this->leftAttribute) > $node->getAttribute($this->leftAttribute))
-            && ($this->owner->getAttribute($this->rightAttribute) < $node->getAttribute($this->rightAttribute));
+        $result = $this->owner->getAttribute($this->leftAttribute) > $node->getAttribute($this->leftAttribute)
+            && $this->owner->getAttribute($this->rightAttribute) < $node->getAttribute($this->rightAttribute);
 
-        if ($this->treeAttribute !== false) {
-            $result = $result
-                && ($this->owner->getAttribute($this->treeAttribute) === $node->getAttribute($this->treeAttribute));
+        if ($result && $this->treeAttribute !== false) {
+            $result = $this->owner->getAttribute($this->treeAttribute) === $node->getAttribute($this->treeAttribute);
         }
 
         return $result;
@@ -448,11 +447,11 @@ class NestedSetsBehavior extends Behavior
                 if ($this->node->getIsNewRecord()) {
                     throw new Exception('Can not move a node when the target node is new record.');
                 }
-    
+
                 if ($this->owner->equals($this->node)) {
                     throw new Exception('Can not move a node when the target node is same.');
                 }
-    
+
                 if ($this->node->isChildOf($this->owner)) {
                     throw new Exception('Can not move a node when the target node is child.');
                 }
