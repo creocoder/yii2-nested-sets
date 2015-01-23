@@ -12,9 +12,9 @@ CREATE TABLE "tree" (
   "name"  TEXT    NOT NULL
 );
 
-DROP TABLE IF EXISTS "multiple_roots_tree";
+DROP TABLE IF EXISTS "multiple_tree";
 
-CREATE TABLE "multiple_roots_tree" (
+CREATE TABLE "multiple_tree" (
   "id"    INTEGER NOT NULL PRIMARY KEY,
   "tree"  INTEGER,
   "lft"   INTEGER NOT NULL,

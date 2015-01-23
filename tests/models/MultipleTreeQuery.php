@@ -10,9 +10,9 @@ namespace tests\models;
 use creocoder\nestedsets\NestedSetsQueryBehavior;
 
 /**
- * MultipleRootsTreeQuery
+ * MultipleTreeQuery
  */
-class MultipleRootsTreeQuery extends \yii\db\ActiveQuery
+class MultipleTreeQuery extends \yii\db\ActiveQuery
 {
     /**
      * @inheritdoc

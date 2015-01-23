@@ -7,7 +7,7 @@
 
 namespace tests;
 
-use tests\models\MultipleRootsTree;
+use tests\models\MultipleTree;
 use tests\models\Tree;
 use Yii;
 use yii\db\Connection;
@@ -26,8 +26,8 @@ class NestedSetsQueryBehaviorTest extends DatabaseTestCase
         );
 
         $this->assertEquals(
-            require(__DIR__ . '/data/test-roots-multiple-roots-query.php'),
-            ArrayHelper::toArray(MultipleRootsTree::find()->roots()->all())
+            require(__DIR__ . '/data/test-roots-multiple-tree-query.php'),
+            ArrayHelper::toArray(MultipleTree::find()->roots()->all())
         );
     }
 
@@ -39,8 +39,8 @@ class NestedSetsQueryBehaviorTest extends DatabaseTestCase
         );
 
         $this->assertEquals(
-            require(__DIR__ . '/data/test-leaves-multiple-roots-query.php'),
-            ArrayHelper::toArray(MultipleRootsTree::find()->leaves()->all())
+            require(__DIR__ . '/data/test-leaves-multiple-tree-query.php'),
+            ArrayHelper::toArray(MultipleTree::find()->leaves()->all())
         );
     }
 

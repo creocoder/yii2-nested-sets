@@ -10,7 +10,7 @@ namespace tests\models;
 use creocoder\nestedsets\NestedSetsBehavior;
 
 /**
- * MultipleRootsTree
+ * MultipleTree
  *
  * @property integer $id
  * @property integer $tree
@@ -19,14 +19,14 @@ use creocoder\nestedsets\NestedSetsBehavior;
  * @property integer $depth
  * @property string $name
  */
-class MultipleRootsTree extends \yii\db\ActiveRecord
+class MultipleTree extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'multiple_roots_tree';
+        return 'multiple_tree';
     }
 
     /**
@@ -67,6 +67,6 @@ class MultipleRootsTree extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new MultipleRootsTreeQuery(get_called_class());
+        return new MultipleTreeQuery(get_called_class());
     }
 }
