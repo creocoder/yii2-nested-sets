@@ -27,7 +27,10 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $node = new Tree(['name' => 'Root']);
         $this->assertTrue($node->makeRoot());
 
-        $node = new MultipleRootsTree(['name' => 'Root']);
+        $node = new MultipleRootsTree(['name' => 'Root 1']);
+        $this->assertTrue($node->makeRoot());
+
+        $node = new MultipleRootsTree(['name' => 'Root 2']);
         $this->assertTrue($node->makeRoot());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_roots_tree']);
