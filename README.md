@@ -41,7 +41,7 @@ $this->createTable('{{%menu}}', [
     'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
     'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
     'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
-    //...
+    'name' => Schema::TYPE_STRING . ' NOT NULL',
 ]);
 ```
 
