@@ -58,11 +58,13 @@ class Menu extends \yii\db\ActiveRecord
 {
     public function behaviors() {
         return [
-            'class' => NestedSetsBehavior::className(),
-            // 'treeAttribute' => 'tree',
-            // 'leftAttribute' => 'lft',
-            // 'rightAttribute' => 'rgt',
-            // 'depthAttribute' => 'depth',
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+                // 'treeAttribute' => 'tree',
+                // 'leftAttribute' => 'lft',
+                // 'rightAttribute' => 'rgt',
+                // 'depthAttribute' => 'depth',
+            ],
         ];
     }
 
