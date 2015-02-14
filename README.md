@@ -20,7 +20,7 @@ $ php composer.phar require creocoder/yii2-nested-sets
 or add
 
 ```
-"creocoder/yii2-nested-sets": "*"
+"creocoder/yii2-nested-sets": "0.9.*"
 ```
 
 to the `require` section of your `composer.json` file.
