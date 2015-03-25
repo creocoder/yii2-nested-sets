@@ -361,6 +361,8 @@ class NestedSetsBehavior extends Behavior
     {
         if ($this->treeAttribute === false && $this->owner->find()->roots()->exists()) {
             throw new Exception('Can not create more than one root when "treeAttribute" is false.');
+        } elseif ($this->treeAttribute && $this->owner->getAttribute($this->treeAttribute) && $this->owner->find()->roots($this->owner->getAttribute($this->treeAttribute))->exists()) {
+            throw new Exception("Can not create more than one root with {$this->treeAttribute} ".$this->owner->getAttribute($this->treeAttribute));
         }
 
         $this->owner->setAttribute($this->leftAttribute, 1);
@@ -399,7 +401,7 @@ class NestedSetsBehavior extends Behavior
      */
     public function afterInsert()
     {
-        if ($this->operation === self::OPERATION_MAKE_ROOT && $this->treeAttribute !== false) {
+        if ($this->operation === self::OPERATION_MAKE_ROOT && $this->treeAttribute !== false && !$this->owner->getAttribute($this->treeAttribute)) {
             $this->owner->setAttribute($this->treeAttribute, $this->owner->getPrimaryKey());
             $primaryKey = $this->owner->primaryKey();
 
