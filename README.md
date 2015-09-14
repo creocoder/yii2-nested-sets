@@ -38,12 +38,12 @@ inside the `up()` method add the following
 
 ```php
 $this->createTable('{{%menu}}', [
-    'id' => Schema::TYPE_PK,
-    // 'tree' => Schema::TYPE_INTEGER,
-    'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
-    'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
-    'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
-    'name' => Schema::TYPE_STRING . ' NOT NULL',
+    'id' => $this->primaryKey(),
+    //'tree' => $this->integer()->notNull(),
+    'lft' => $this->integer()->notNull(),
+    'rgt' => $this->integer()->notNull(),
+    'depth' => $this->integer()->notNull(),
+    'name' => $this->string()->notNull(),
 ]);
 ```
 
