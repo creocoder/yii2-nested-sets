@@ -1,23 +1,28 @@
 {
-	"name": "creocoder/yii2-nested-set-behavior",
-	"description": "This extension allows you to get functional for nested set trees.",
-	"keywords": ["yii", "extension", "behavior", "nested set"],
-	"homepage": "https://github.com/creocoder/yii2-nested-set-behavior",
-	"type": "yii2-extension",
-	"license": "BSD-3-Clause",
-	"authors": [
-		{
-			"name": "Alexander Kochetov",
-			"email": "creocoder@gmail.com"
-		}
-	],
-	"minimum-stability": "dev",
-	"require": {
-		"yiisoft/yii2": "*"
-	},
-	"autoload": {
-		"psr-4": {
-			"creocoder\\behaviors\\": ""
-		}
-	}
+    "name": "creocoder/yii2-nested-sets",
+    "description": "The nested sets behavior for the Yii framework",
+    "keywords": [
+        "yii2",
+        "nested sets"
+    ],
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Alexander Kochetov",
+            "email": "creocoder@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "phpunit/dbunit": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "creocoder\\nestedsets\\": "src"
+        }
+    }
 }

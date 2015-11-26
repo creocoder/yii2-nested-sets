@@ -1,420 +1,249 @@
-Nested Set behavior for Yii 2
-=============================
+# Nested Sets Behavior for Yii 2
 
-This extension allows you to get functional for nested set trees.
+[![Build Status](https://img.shields.io/travis/creocoder/yii2-nested-sets/master.svg?style=flat-square)](https://travis-ci.org/creocoder/yii2-nested-sets)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/creocoder/yii2-nested-sets/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/creocoder/yii2-nested-sets/?branch=master)
+[![Packagist Version](https://img.shields.io/packagist/v/creocoder/yii2-nested-sets.svg?style=flat-square)](https://packagist.org/packages/creocoder/yii2-nested-sets)
+[![Total Downloads](https://img.shields.io/packagist/dt/creocoder/yii2-nested-sets.svg?style=flat-square)](https://packagist.org/packages/creocoder/yii2-nested-sets)
 
-Installation
-------------
+A modern nested sets behavior for the Yii framework utilizing the Modified Preorder Tree Traversal algorithm.
+
+## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 Either run
 
-```sh
-php composer.phar require creocoder/yii2-nested-set-behavior "*"
+```bash
+$ composer require creocoder/yii2-nested-sets
 ```
 
 or add
 
-```json
-"creocoder/yii2-nested-set-behavior": "*"
+```
+"creocoder/yii2-nested-sets": "0.9.*"
 ```
 
-to the require section of your `composer.json` file.
+to the `require` section of your `composer.json` file.
 
-Configuring
---------------------------
+## Migrations
 
-First you need to configure model as follows:
+Run the following command
+
+```bash
+$ yii migrate/create create_menu_table
+```
+
+Open the `/path/to/migrations/m_xxxxxx_xxxxxx_create_menu_table.php` file,
+inside the `up()` method add the following
 
 ```php
-class Category extends ActiveRecord
+$this->createTable('{{%menu}}', [
+    'id' => Schema::TYPE_PK,
+    // 'tree' => Schema::TYPE_INTEGER,
+    'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
+    'name' => Schema::TYPE_STRING . ' NOT NULL',
+]);
+```
+
+To use multiple tree mode uncomment `tree` field.
+
+## Configuring
+
+Configure model as follows
+
+```php
+use creocoder\nestedsets\NestedSetsBehavior;
+
+class Menu extends \yii\db\ActiveRecord
 {
-	public function behaviors() {
-		return [
-			[
-				'class' => NestedSet::className(),
-			],
-		];
-	}
+    public function behaviors() {
+        return [
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+                // 'treeAttribute' => 'tree',
+                // 'leftAttribute' => 'lft',
+                // 'rightAttribute' => 'rgt',
+                // 'depthAttribute' => 'depth',
+            ],
+        ];
+    }
 
-	public static function createQuery()
-	{
-		return new CategoryQuery(['modelClass' => get_called_class()]);
-	}
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    public static function find()
+    {
+        return new MenuQuery(get_called_class());
+    }
 }
 ```
 
-Second you need to configure query model as follows:
+To use multiple tree mode uncomment `treeAttribute` array key inside `behaviors()` method.
+
+Configure query class as follows
 
 ```php
-class CategoryQuery extends ActiveQuery
+use creocoder\nestedsets\NestedSetsQueryBehavior;
+
+class MenuQuery extends \yii\db\ActiveQuery
 {
-	public function behaviors() {
-		return [
-			[
-				'class' => NestedSetQuery::className(),
-			],
-		];
-	}
+    public function behaviors() {
+        return [
+            NestedSetsQueryBehavior::className(),
+        ];
+    }
 }
 ```
 
-There is no need to validate fields specified in `leftAttribute`,
-`rightAttribute`, `rootAttribute` and `levelAttribute` options. Moreover,
-there could be problems if there are validation rules for these. Please
-check if there are no rules for fields mentioned in model's rules() method.
+## Usage
 
-In case of storing a single tree per database, DB structure can be built with
-`schema/schema.sql`. If you're going to store multiple trees you'll need
-`schema/schema-many-roots.sql`.
+### Making a root node
 
-By default `leftAttribute`, `rightAttribute` and `levelAttribute` values are
-matching field names in default DB schemas so you can skip configuring these.
-
-There are two ways this behavior can work: one tree per table and multiple trees
-per table. The mode is selected based on the value of `hasManyRoots` option that
-is `false` by default meaning single tree mode. In multiple trees mode you can
-set `rootAttribute` option to match existing field in the table storing the tree.
-
-Selecting from a tree
----------------------
-
-In the following we'll use an example model `Category` with the following in its
-DB:
-
-~~~
-- 1. Mobile phones
-	- 2. iPhone
-	- 3. Samsung
-		- 4. X100
-		- 5. C200
-	- 6. Motorola
-- 7. Cars
-	- 8. Audi
-	- 9. Ford
-	- 10. Mercedes
-~~~
-
-In this example we have two trees. Tree roots are ones with ID=1 and ID=7.
-
-### Getting all roots
-
-Using `NestedSet::roots()`:
+To make a root node
 
 ```php
-$roots = Category::find()->roots()->all();
+$countries = new Menu(['name' => 'Countries']);
+$countries->makeRoot();
 ```
 
-Result:
+The tree will look like this
 
-Array of Active Record objects corresponding to Mobile phones and Cars nodes.
+```
+- Countries
+```
 
-### Getting all descendants of a node
+### Prepending a node as the first child of another node
 
-Using `NestedSet::descendants()`:
+To prepend a node as the first child of another node
 
 ```php
-$category = Category::find(1);
-$descendants = $category->descendants()->all();
+$russia = new Menu(['name' => 'Russia']);
+$russia->prependTo($countries);
 ```
 
-Result:
+The tree will look like this
 
-Array of Active Record objects corresponding to iPhone, Samsung, X100, C200 and Motorola.
+```
+- Countries
+    - Russia
+```
 
-### Getting all children of a node
+### Appending a node as the last child of another node
 
-Using `NestedSet::children()`:
+To append a node as the last child of another node
 
 ```php
-$category = Category::find(1);
-$descendants = $category->children()->all();
+$australia = new Menu(['name' => 'Australia']);
+$australia->appendTo($countries);
 ```
 
-Result:
+The tree will look like this
 
-Array of Active Record objects corresponding to iPhone, Samsung and Motorola.
+```
+- Countries
+    - Russia
+    - Australia
+```
 
-### Getting all ancestors of a node
+### Inserting a node before another node
 
-Using `NestedSet::ancestors()`:
+To insert a node before another node
 
 ```php
-$category = Category::find(5);
-$ancestors = $category->ancestors()->all();
+$newZeeland = new Menu(['name' => 'New Zeeland']);
+$newZeeland->insertBefore($australia);
 ```
 
-Result:
+The tree will look like this
 
-Array of Active Record objects corresponding to Samsung and Mobile phones.
+```
+- Countries
+    - Russia
+    - New Zeeland
+    - Australia
+```
 
-### Getting parent of a node
+### Inserting a node after another node
 
-Using `NestedSet::parent()`:
+To insert a node after another node
 
 ```php
-$category = Category::find(9);
-$parent = $category->parent()->one();
+$unitedStates = new Menu(['name' => 'United States']);
+$unitedStates->insertAfter($australia);
 ```
 
-Result:
+The tree will look like this
+```
+- Countries
+    - Russia
+    - New Zeeland
+    - Australia
+    - United States
+```
 
-Array of Active Record objects corresponding to Cars.
+### Getting the root nodes
 
-### Getting node siblings
-
-Using `NestedSet::prev()` or
-`NestedSet::next()`:
+To get all the root nodes
 
 ```php
-$category = Category::find(9);
-$nextSibling = $category->next()->one();
+$roots = Menu::find()->roots()->all();
 ```
 
-Result:
+### Getting the leaves nodes
 
-Array of Active Record objects corresponding to Mercedes.
-
-### Getting the whole tree
-
-You can get the whole tree using standard AR methods like the following.
-
-For single tree per table:
+To get all the leaves nodes
 
 ```php
-Category::find()->addOrderBy('lft')->all();
+$leaves = Menu::find()->leaves()->all();
 ```
 
-For multiple trees per table:
+To get all the leaves of a node
 
 ```php
-Category::find()->where('root = ?', [$root_id])->addOrderBy('lft')->all();
+$countries = Menu::findOne(['name' => 'Countries']);
+$leaves = $countries->leaves()->all();
 ```
 
-Modifying a tree
-----------------
+### Getting children of a node
 
-In this section we'll build a tree like the one used in the previous section.
-
-### Creating root nodes
-
-You can create a root node using `NestedSet::saveNode()`.
-In a single tree per table mode you can create only one root node. If you'll attempt
-to create more there will be CException thrown.
+To get all the children of a node
 
 ```php
-$root = new Category;
-$root->title = 'Mobile Phones';
-$root->saveNode();
-$root = new Category;
-$root->title = 'Cars';
-$root->saveNode();
+$countries = Menu::findOne(['name' => 'Countries']);
+$children = $countries->children()->all();
 ```
 
-Result:
-
-~~~
-- 1. Mobile Phones
-- 2. Cars
-~~~
-
-### Adding child nodes
-
-There are multiple methods allowing you adding child nodes. To get more info
-about these refer to API. Let's use these
-to add nodes to the tree we have:
+To get the first level children of a node
 
 ```php
-$category1 = new Category;
-$category1->title = 'Ford';
-$category2 = new Category;
-$category2->title = 'Mercedes';
-$category3 = new Category;
-$category3->title = 'Audi';
-$root = Category::find(1);
-$category1->appendTo($root);
-$category2->insertAfter($category1);
-$category3->insertBefore($category1);
+$countries = Menu::findOne(['name' => 'Countries']);
+$children = $countries->children(1)->all();
 ```
 
-Result:
+### Getting parents of a node
 
-~~~
-- 1. Mobile phones
-	- 3. Audi
-	- 4. Ford
-	- 5. Mercedes
-- 2. Cars
-~~~
-
-Logically the tree above doesn't looks correct. We'll fix it later.
+To get all the parents of a node
 
 ```php
-$category1 = new Category;
-$category1->title = 'Samsung';
-$category2 = new Category;
-$category2->title = 'Motorola';
-$category3 = new Category;
-$category3->title = 'iPhone';
-$root = Category::find(2);
-$category1->appendTo($root);
-$category2->insertAfter($category1);
-$category3->prependTo($root);
+$countries = Menu::findOne(['name' => 'Countries']);
+$parents = $countries->parents()->all();
 ```
 
-Result:
-
-~~~
-- 1. Mobile phones
-	- 3. Audi
-	- 4. Ford
-	- 5. Mercedes
-- 2. Cars
-	- 6. iPhone
-	- 7. Samsung
-	- 8. Motorola
-~~~
+To get the first parent of a node
 
 ```php
-$category1 = new Category;
-$category1->title = 'X100';
-$category2 = new Category;
-$category2->title = 'C200';
-$node = Category::find(3);
-$category1->appendTo($node);
-$category2->prependTo($node);
+$countries = Menu::findOne(['name' => 'Countries']);
+$parent = $countries->parents(1)->one();
 ```
 
-Result:
+## Donating
 
-~~~
-- 1. Mobile phones
-	- 3. Audi
-		- 9. С200
-		- 10. X100
-	- 4. Ford
-	- 5. Mercedes
-- 2. Cars
-	- 6. iPhone
-	- 7. Samsung
-	- 8. Motorola
-~~~
+Support this project and [others by creocoder](https://gratipay.com/creocoder/) via [gratipay](https://gratipay.com/creocoder/).
 
-Modifying a tree
-----------------
-
-In this section we'll finally make our tree logical.
-
-### Tree modification methods
-
-There are several methods allowing you to modify a tree. To get more info
-about these refer to API.
-
-Let's start:
-
-```php
-// move phones to the proper place
-$x100 = Category::find(10);
-$c200 = Category::find(9);
-$samsung = Category::find(7);
-$x100->moveAsFirst($samsung);
-$c200->moveBefore($x100);
-// now move all Samsung phones branch
-$mobile_phones = Category::find(1);
-$samsung->moveAsFirst($mobile_phones);
-// move the rest of phone models
-$iphone = Category::find(6);
-$iphone->moveAsFirst($mobile_phones);
-$motorola = Category::find(8);
-$motorola->moveAfter($samsung);
-// move car models to appropriate place
-$cars = Category::find(2);
-$audi = Category::find(3);
-$ford = Category::find(4);
-$mercedes = Category::find(5);
-
-foreach([$audi, $ford, $mercedes] as $category) {
-	$category->moveAsLast($cars);
-}
-```
-
-Result:
-
-~~~
-- 1. Mobile phones
-	- 6. iPhone
-	- 7. Samsung
-		- 10. X100
-		- 9. С200
-	- 8. Motorola
-- 2. Cars
-	- 3. Audi
-	- 4. Ford
-	- 5. Mercedes
-~~~
-
-### Moving a node making it a new root
-
-There is a special `moveAsRoot()` method that allows moving a node and making it
-a new root. All descendants are moved as well in this case.
-
-Example:
-
-```php
-$node = Category::find(10);
-$node->moveAsRoot();
-```
-
-### Identifying node type
-
-There are three methods to get node type: `isRoot()`, `isLeaf()`, `isDescendantOf()`.
-
-Example:
-
-```php
-$root = Category::find(1);
-VarDumper::dump($root->isRoot()); //true;
-VarDumper::dump($root->isLeaf()); //false;
-$node = Category::find(9);
-VarDumper::dump($node->isDescendantOf($root)); //true;
-VarDumper::dump($node->isRoot()); //false;
-VarDumper::dump($node->isLeaf()); //true;
-$samsung = Category::find(7);
-VarDumper::dump($node->isDescendantOf($samsung)); //true;
-```
-
-Useful code
-------------
-
-### Non-recursive tree traversal
-
-```php
-$categories = Category::find()->addOrderBy('lft')->all();
-$level = 0;
-
-foreach ($categories as $n => $category)
-{
-	if ($category->level == $level) {
-		echo Html::endTag('li') . "\n";
-	} elseif ($category->level > $level) {
-		echo Html::beginTag('ul') . "\n";
-	} else {
-		echo Html::endTag('li') . "\n";
-
-		for ($i = $level - $category->level; $i; $i--) {
-			echo Html::endTag('ul') . "\n";
-			echo Html::endTag('li') . "\n";
-		}
-	}
-
-	echo Html::beginTag('li');
-	echo Html::encode($category->title);
-	$level = $category->level;
-}
-
-for ($i = $level; $i; $i--) {
-	echo Html::endTag('li') . "\n";
-	echo Html::endTag('ul') . "\n";
-}
-```
+[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.svg)](https://gratipay.com/creocoder/)
