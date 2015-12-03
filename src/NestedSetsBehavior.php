@@ -72,79 +72,69 @@ class NestedSetsBehavior extends Behavior
     /**
      * Creates the root node if the active record is new or moves it
      * as the root node.
-     * @param boolean $runValidation
-     * @param array $attributes
-     * @return boolean
+     * @return ActiveRecord
      */
-    public function makeRoot($runValidation = true, $attributes = null)
+    public function makeRoot()
     {
         $this->operation = self::OPERATION_MAKE_ROOT;
 
-        return $this->owner->save($runValidation, $attributes);
+        return $this->owner;
     }
 
     /**
      * Creates a node as the first child of the target node if the active
      * record is new or moves it as the first child of the target node.
-     * @param ActiveRecord $node
-     * @param boolean $runValidation
-     * @param array $attributes
-     * @return boolean
+     * @param $node
+     * @return ActiveRecord
      */
-    public function prependTo($node, $runValidation = true, $attributes = null)
+    public function prependTo($node)
     {
         $this->operation = self::OPERATION_PREPEND_TO;
         $this->node = $node;
 
-        return $this->owner->save($runValidation, $attributes);
+        return $this->owner;
     }
 
     /**
      * Creates a node as the last child of the target node if the active
      * record is new or moves it as the last child of the target node.
-     * @param ActiveRecord $node
-     * @param boolean $runValidation
-     * @param array $attributes
-     * @return boolean
+     * @param $node
+     * @return ActiveRecord
      */
-    public function appendTo($node, $runValidation = true, $attributes = null)
+    public function appendTo($node)
     {
         $this->operation = self::OPERATION_APPEND_TO;
         $this->node = $node;
 
-        return $this->owner->save($runValidation, $attributes);
+        return $this->owner;
     }
 
     /**
      * Creates a node as the previous sibling of the target node if the active
      * record is new or moves it as the previous sibling of the target node.
-     * @param ActiveRecord $node
-     * @param boolean $runValidation
-     * @param array $attributes
-     * @return boolean
+     * @param $node
+     * @return ActiveRecord
      */
-    public function insertBefore($node, $runValidation = true, $attributes = null)
+    public function insertBefore($node)
     {
         $this->operation = self::OPERATION_INSERT_BEFORE;
         $this->node = $node;
 
-        return $this->owner->save($runValidation, $attributes);
+        return $this->owner;
     }
 
     /**
      * Creates a node as the next sibling of the target node if the active
      * record is new or moves it as the next sibling of the target node.
-     * @param ActiveRecord $node
-     * @param boolean $runValidation
-     * @param array $attributes
-     * @return boolean
+     * @param $node
+     * @return ActiveRecord
      */
-    public function insertAfter($node, $runValidation = true, $attributes = null)
+    public function insertAfter($node)
     {
         $this->operation = self::OPERATION_INSERT_AFTER;
         $this->node = $node;
 
-        return $this->owner->save($runValidation, $attributes);
+        return $this->owner;
     }
 
     /**
