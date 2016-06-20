@@ -46,6 +46,10 @@ class NestedSetsBehavior extends Behavior
      */
     public $depthAttribute = 'depth';
     /**
+     * @var string
+     */
+    public $parentAttribute = false;
+    /**
      * @var string|null
      */
     protected $operation;
@@ -679,5 +683,46 @@ class NestedSetsBehavior extends Behavior
             ];
         }
 
+    }
+
+    /**
+     * Rebuilds tree from this node downwards.
+     *
+     * @param null $lft
+     * @param null $depth
+     * @return mixed|null
+     * @throws NotSupportedException
+     */
+    public function rebuildTree($lft = null, $depth = null)
+    {
+        // Check for parent attribute
+        if ($this->parentAttribute === false) {
+            throw new NotSupportedException('Method "'. get_class($this->owner) . '::rebuildTree" is not supported without specifying parent attribute.');
+        }
+
+        // Load initial values from current node, when not specified
+        if ($lft === null) {
+            $lft = max(1, $this->owner->getAttribute($this->leftAttribute));
+        }
+        if ($depth === null) {
+            $depth = max(0, $this->owner->getAttribute($this->depthAttribute));
+        }
+
+        // The right value of this node is the left value + 1
+        $rgt = $lft + 1;
+
+        $children = $this->owner->findAll([$this->parentAttribute => $this->owner->primaryKey]);
+        foreach ($children as $child) {
+            $rgt = $child->rebuildTree($rgt, $depth + 1);
+        }
+
+        // Store new values
+        $this->owner->setAttribute($this->leftAttribute, $lft);
+        $this->owner->setAttribute($this->rightAttribute, $rgt);
+        $this->owner->setAttribute($this->depthAttribute, $depth);
+        $this->owner->save(false, [$this->leftAttribute, $this->rightAttribute, $this->depthAttribute]);
+
+        // return the right value of this node + 1
+        return $rgt + 1;
     }
 }
