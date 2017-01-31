@@ -25,13 +25,13 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->getDatabaseTester()->onSetUp();
 
         $node = new Tree(['name' => 'Root']);
-        $this->assertTrue($node->makeRoot());
+        $this->assertTrue($node->makeRoot()->save());
 
         $node = new MultipleTree(['name' => 'Root 1']);
-        $this->assertTrue($node->makeRoot());
+        $this->assertTrue($node->makeRoot()->save());
 
         $node = new MultipleTree(['name' => 'Root 2']);
-        $this->assertTrue($node->makeRoot());
+        $this->assertTrue($node->makeRoot()->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-make-root-new.xml');
@@ -44,16 +44,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testMakeRootNewExceptionIsRaisedWhenTreeAttributeIsFalseAndRootIsExists()
     {
         $node = new Tree(['name' => 'Root']);
-        $node->makeRoot();
+        $node->makeRoot()->save();
     }
 
     public function testPrependToNew()
     {
         $node = new Tree(['name' => 'New node']);
-        $this->assertTrue($node->prependTo(Tree::findOne(9)));
+        $this->assertTrue($node->prependTo(Tree::findOne(9))->save());
 
         $node = new MultipleTree(['name' => 'New node']);
-        $this->assertTrue($node->prependTo(MultipleTree::findOne(31)));
+        $this->assertTrue($node->prependTo(MultipleTree::findOne(31))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-prepend-to-new.xml');
@@ -66,16 +66,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testPrependToNewExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = new Tree(['name' => 'New node']);
-        $node->prependTo(new Tree());
+        $node->prependTo(new Tree())->save();
     }
 
     public function testAppendToNew()
     {
         $node = new Tree(['name' => 'New node']);
-        $this->assertTrue($node->appendTo(Tree::findOne(9)));
+        $this->assertTrue($node->appendTo(Tree::findOne(9))->save());
 
         $node = new MultipleTree(['name' => 'New node']);
-        $this->assertTrue($node->appendTo(MultipleTree::findOne(31)));
+        $this->assertTrue($node->appendTo(MultipleTree::findOne(31))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-append-to-new.xml');
@@ -88,16 +88,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testAppendNewToExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = new Tree(['name' => 'New node']);
-        $node->appendTo(new Tree());
+        $node->appendTo(new Tree())->save();
     }
 
     public function testInsertBeforeNew()
     {
         $node = new Tree(['name' => 'New node']);
-        $this->assertTrue($node->insertBefore(Tree::findOne(9)));
+        $this->assertTrue($node->insertBefore(Tree::findOne(9))->save());
 
         $node = new MultipleTree(['name' => 'New node']);
-        $this->assertTrue($node->insertBefore(MultipleTree::findOne(31)));
+        $this->assertTrue($node->insertBefore(MultipleTree::findOne(31))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-before-new.xml');
@@ -110,7 +110,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertBeforeNewExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = new Tree(['name' => 'New node']);
-        $node->insertBefore(new Tree());
+        $node->insertBefore(new Tree())->save();
     }
 
     /**
@@ -119,16 +119,16 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertBeforeNewExceptionIsRaisedWhenTargetIsRoot()
     {
         $node = new Tree(['name' => 'New node']);
-        $node->insertBefore(Tree::findOne(1));
+        $node->insertBefore(Tree::findOne(1))->save();
     }
 
     public function testInsertAfterNew()
     {
         $node = new Tree(['name' => 'New node']);
-        $this->assertTrue($node->insertAfter(Tree::findOne(9)));
+        $this->assertTrue($node->insertAfter(Tree::findOne(9))->save());
 
         $node = new MultipleTree(['name' => 'New node']);
-        $this->assertTrue($node->insertAfter(MultipleTree::findOne(31)));
+        $this->assertTrue($node->insertAfter(MultipleTree::findOne(31))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-after-new.xml');
@@ -141,7 +141,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertAfterNewExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = new Tree(['name' => 'New node']);
-        $node->insertAfter(new Tree());
+        $node->insertAfter(new Tree())->save();
     }
 
     /**
@@ -150,14 +150,14 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertAfterNewExceptionIsRaisedWhenTargetIsRoot()
     {
         $node = new Tree(['name' => 'New node']);
-        $node->insertAfter(Tree::findOne(1));
+        $node->insertAfter(Tree::findOne(1))->save();
     }
 
     public function testMakeRootExists()
     {
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->makeRoot());
+        $this->assertTrue($node->makeRoot()->save());
 
         $dataSet = $this->getConnection()->createDataSet(['multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-make-root-exists.xml');
@@ -170,7 +170,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testMakeRootExistsExceptionIsRaisedWhenTreeAttributeIsFalse()
     {
         $node = Tree::findOne(9);
-        $node->makeRoot();
+        $node->makeRoot()->save();
     }
 
     /**
@@ -179,18 +179,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testMakeRootExistsExceptionIsRaisedWhenItsRoot()
     {
         $node = MultipleTree::findOne(23);
-        $node->makeRoot();
+        $node->makeRoot()->save();
     }
 
     public function testPrependToExistsUp()
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->prependTo(Tree::findOne(2)));
+        $this->assertTrue($node->prependTo(Tree::findOne(2))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->prependTo(MultipleTree::findOne(24)));
+        $this->assertTrue($node->prependTo(MultipleTree::findOne(24))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-prepend-to-exists-up.xml');
@@ -201,11 +201,11 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->prependTo(Tree::findOne(16)));
+        $this->assertTrue($node->prependTo(Tree::findOne(16))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->prependTo(MultipleTree::findOne(38)));
+        $this->assertTrue($node->prependTo(MultipleTree::findOne(38))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-prepend-to-exists-down.xml');
@@ -216,7 +216,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = MultipleTree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->prependTo(MultipleTree::findOne(53)));
+        $this->assertTrue($node->prependTo(MultipleTree::findOne(53))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-prepend-to-exists-another-tree.xml');
@@ -229,7 +229,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testPrependToExistsExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = Tree::findOne(9);
-        $node->prependTo(new Tree());
+        $node->prependTo(new Tree())->save();
     }
 
     /**
@@ -238,7 +238,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testPrependToExistsExceptionIsRaisedWhenTargetIsSame()
     {
         $node = Tree::findOne(9);
-        $node->prependTo(Tree::findOne(9));
+        $node->prependTo(Tree::findOne(9))->save();
     }
 
     /**
@@ -247,18 +247,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testPrependToExistsExceptionIsRaisedWhenTargetIsChild()
     {
         $node = Tree::findOne(9);
-        $node->prependTo(Tree::findOne(11));
+        $node->prependTo(Tree::findOne(11))->save();
     }
 
     public function testAppendToExistsUp()
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->appendTo(Tree::findOne(2)));
+        $this->assertTrue($node->appendTo(Tree::findOne(2))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->appendTo(MultipleTree::findOne(24)));
+        $this->assertTrue($node->appendTo(MultipleTree::findOne(24))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-append-to-exists-up.xml');
@@ -269,11 +269,11 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->appendTo(Tree::findOne(16)));
+        $this->assertTrue($node->appendTo(Tree::findOne(16))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->appendTo(MultipleTree::findOne(38)));
+        $this->assertTrue($node->appendTo(MultipleTree::findOne(38))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-append-to-exists-down.xml');
@@ -284,7 +284,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = MultipleTree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->appendTo(MultipleTree::findOne(53)));
+        $this->assertTrue($node->appendTo(MultipleTree::findOne(53))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-append-to-exists-another-tree.xml');
@@ -297,7 +297,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testAppendToExistsExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = Tree::findOne(9);
-        $node->appendTo(new Tree());
+        $node->appendTo(new Tree())->save();
     }
 
     /**
@@ -306,7 +306,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testAppendToExistsExceptionIsRaisedWhenTargetIsSame()
     {
         $node = Tree::findOne(9);
-        $node->appendTo(Tree::findOne(9));
+        $node->appendTo(Tree::findOne(9))->save();
     }
 
     /**
@@ -315,18 +315,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testAppendToExistsExceptionIsRaisedWhenTargetIsChild()
     {
         $node = Tree::findOne(9);
-        $node->appendTo(Tree::findOne(11));
+        $node->appendTo(Tree::findOne(11))->save();
     }
 
     public function testInsertBeforeExistsUp()
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertBefore(Tree::findOne(2)));
+        $this->assertTrue($node->insertBefore(Tree::findOne(2))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertBefore(MultipleTree::findOne(24)));
+        $this->assertTrue($node->insertBefore(MultipleTree::findOne(24))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-before-exists-up.xml');
@@ -337,11 +337,11 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertBefore(Tree::findOne(16)));
+        $this->assertTrue($node->insertBefore(Tree::findOne(16))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertBefore(MultipleTree::findOne(38)));
+        $this->assertTrue($node->insertBefore(MultipleTree::findOne(38))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-before-exists-down.xml');
@@ -352,7 +352,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = MultipleTree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertBefore(MultipleTree::findOne(53)));
+        $this->assertTrue($node->insertBefore(MultipleTree::findOne(53))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-before-exists-another-tree.xml');
@@ -365,7 +365,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertBeforeExistsExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = Tree::findOne(9);
-        $node->insertBefore(new Tree());
+        $node->insertBefore(new Tree())->save();
     }
 
     /**
@@ -374,7 +374,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertBeforeExistsExceptionIsRaisedWhenTargetIsSame()
     {
         $node = Tree::findOne(9);
-        $node->insertBefore(Tree::findOne(9));
+        $node->insertBefore(Tree::findOne(9))->save();
     }
 
     /**
@@ -383,7 +383,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertBeforeExistsExceptionIsRaisedWhenTargetIsChild()
     {
         $node = Tree::findOne(9);
-        $node->insertBefore(Tree::findOne(11));
+        $node->insertBefore(Tree::findOne(11))->save();
     }
 
     /**
@@ -392,18 +392,18 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertBeforeExistsExceptionIsRaisedWhenTargetIsRoot()
     {
         $node = Tree::findOne(9);
-        $node->insertBefore(Tree::findOne(1));
+        $node->insertBefore(Tree::findOne(1))->save();
     }
 
     public function testInsertAfterExistsUp()
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertAfter(Tree::findOne(2)));
+        $this->assertTrue($node->insertAfter(Tree::findOne(2))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertAfter(MultipleTree::findOne(24)));
+        $this->assertTrue($node->insertAfter(MultipleTree::findOne(24))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-after-exists-up.xml');
@@ -414,11 +414,11 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = Tree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertAfter(Tree::findOne(16)));
+        $this->assertTrue($node->insertAfter(Tree::findOne(16))->save());
 
         $node = MultipleTree::findOne(31);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertAfter(MultipleTree::findOne(38)));
+        $this->assertTrue($node->insertAfter(MultipleTree::findOne(38))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['tree', 'multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-after-exists-down.xml');
@@ -429,7 +429,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     {
         $node = MultipleTree::findOne(9);
         $node->name = 'Updated node 2';
-        $this->assertTrue($node->insertAfter(MultipleTree::findOne(53)));
+        $this->assertTrue($node->insertAfter(MultipleTree::findOne(53))->save());
 
         $dataSet = $this->getConnection()->createDataSet(['multiple_tree']);
         $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-insert-after-exists-another-tree.xml');
@@ -442,7 +442,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertAfterExistsExceptionIsRaisedWhenTargetIsNewRecord()
     {
         $node = Tree::findOne(9);
-        $node->insertAfter(new Tree());
+        $node->insertAfter(new Tree())->save();
     }
 
     /**
@@ -451,7 +451,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertAfterExistsExceptionIsRaisedWhenTargetIsSame()
     {
         $node = Tree::findOne(9);
-        $node->insertAfter(Tree::findOne(9));
+        $node->insertAfter(Tree::findOne(9))->save();
     }
 
     /**
@@ -460,7 +460,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertAfterExistsExceptionIsRaisedWhenTargetIsChild()
     {
         $node = Tree::findOne(9);
-        $node->insertAfter(Tree::findOne(11));
+        $node->insertAfter(Tree::findOne(11))->save();
     }
 
     /**
@@ -469,7 +469,7 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
     public function testInsertAfterExistsExceptionIsRaisedWhenTargetIsRoot()
     {
         $node = Tree::findOne(9);
-        $node->insertAfter(Tree::findOne(1));
+        $node->insertAfter(Tree::findOne(1))->save();
     }
 
     public function testDeleteWithChildren()
