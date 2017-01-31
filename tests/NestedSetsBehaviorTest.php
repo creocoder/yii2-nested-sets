@@ -641,6 +641,29 @@ class NestedSetsBehaviorTest extends DatabaseTestCase
         $this->assertFalse(Tree::findOne(1)->isLeaf());
     }
 
+    public function testMakeTreeWithTreeAttribute()
+    {
+        $dataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/clean.xml');
+        $this->getDatabaseTester()->setDataSet($dataSet);
+        $this->getDatabaseTester()->onSetUp();
+
+        $node = new MultipleTree(['name' => 'Root', 'tree' => 10]);
+        $this->assertTrue($node->makeRoot());
+
+        $dataSet = $this->getConnection()->createDataSet(['multiple_tree']);
+        $expectedDataSet = $this->createFlatXMLDataSet(__DIR__ . '/data/test-make-tree-with-tree-attribute.xml');
+        $this->assertDataSetsEqual($expectedDataSet, $dataSet);
+    }
+
+    /**
+     * @expectedException \yii\db\Exception
+     */
+    public function testMakeRootNewExceptionIsRaisedWhenMultiTreeIsCreatedWithExistingTreeAttribute()
+    {
+        $node = new MultipleTree(['name' => 'Root 4', 'tree' => 1]);
+        $node->makeRoot();
+    }
+
     /**
      * @inheritdoc
      */

@@ -21,15 +21,20 @@ class NestedSetsQueryBehavior extends Behavior
 {
     /**
      * Gets the root nodes.
+     * @param mixed $id the optional tree id. Default is `null` to query for all root nodes.
      * @return \yii\db\ActiveQuery the owner
      */
-    public function roots()
+    public function roots($id = null)
     {
         $model = new $this->owner->modelClass();
 
         $this->owner
             ->andWhere([$model->leftAttribute => 1])
             ->addOrderBy([$model->primaryKey()[0] => SORT_ASC]);
+
+        if ($id!==null && $model->treeAttribute!==false) {
+            $this->owner->andWhere([$model->treeAttribute => $id]);
+        }
 
         return $this->owner;
     }
