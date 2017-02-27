@@ -399,7 +399,7 @@ class NestedSetsBehavior extends Behavior
      */
     public function afterInsert()
     {
-        if ($this->operation === self::OPERATION_MAKE_ROOT && $this->treeAttribute !== false) {
+        if ($this->operation === self::OPERATION_MAKE_ROOT && $this->treeAttribute !== false && !$this->owner->getAttribute($this->treeAttribute)) {
             $this->owner->setAttribute($this->treeAttribute, $this->owner->getPrimaryKey());
             $primaryKey = $this->owner->primaryKey();
 
