@@ -98,6 +98,12 @@ class MenuQuery extends \yii\db\ActiveQuery
             NestedSetsQueryBehavior::className(),
         ];
     }
+    
+    public function where($condition) {
+        // Do not allow to break behavior magic
+        return parent::andWhere($condition);
+    }
+    
 }
 ```
 
